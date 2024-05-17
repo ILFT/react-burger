@@ -1,15 +1,17 @@
 import React from 'react';
 
-class BurgerConstructor extends React.Component {
+function BurgerConstructor () {
 
 
-    render(){
+
         return(
+            
             <div>
                 
             </div>
+
         );
-    }
+
 }
 
 

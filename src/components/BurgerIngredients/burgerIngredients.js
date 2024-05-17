@@ -1,15 +1,15 @@
 import React from 'react';
 
-class BurgerIngredients extends React.Component {
+function BurgerIngredients () {
 
 
-    render(){
         return(
-            <div>
+
+                <div>
                 
-            </div>
+                </div>
+
         );
-    }
 }
 
 
