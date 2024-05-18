@@ -14,17 +14,18 @@
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
+
+}
+.container_menu {
+  composes: container;
   justify-content: center;
   list-style-type: none;
   width: 100%;
   gap: 20px;
 }
-
 .container_menu_element {
-  align-items: center;
-  width: 20%;
-  display: flex;
-  flex-wrap: nowrap;
+  composes: container;
+  width: 40%;
 }
 
 .link {
@@ -42,8 +43,8 @@
 
 }
 
-.icon {
-  padding-right: 16px;
+.icon_text {
+  padding: 12px;
 }
 
 .logo{
