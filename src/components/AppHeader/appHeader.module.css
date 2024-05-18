@@ -1,0 +1,14 @@
+.link {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    color:   #9898c2;
+  }
+  
+  .link_active {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    color:#ffffff;
+
+  }

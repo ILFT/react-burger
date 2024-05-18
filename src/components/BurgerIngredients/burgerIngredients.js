@@ -1,8 +1,8 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function BurgerIngredients() {
-
+        const [current,setCurrent] = useState('one');
 
         return (
                 <>
