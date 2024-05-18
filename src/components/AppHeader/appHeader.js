@@ -5,35 +5,33 @@ import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import { BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function AppHeader() {
-    let location = useLocation();
+    const location = useLocation();
 
     return (
-        <header>
-            <nav>
-                <ul>
-                    <li>
+        <header className={styles.header}>
+            <nav className={styles.container}>
+                <ul className={styles.container}>
+                    <li className={styles.container_menu_element}>
                         <NavLink to='/' className={({ isActive }) => (isActive ? styles.link_active : styles.link)}>
-                            <BurgerIcon type={location === '/' ? "primary" : "secondary"} />
-                            <p className="text text_type_main-default"  >Конструктор</p>
+                            <BurgerIcon className={styles.icon} type={location.pathname === '/' ? "primary" : "secondary"} />
+                            <p>Конструктор</p>
                         </NavLink>
                     </li>
-                    <li>
+                    <li className={styles.container_menu_element}>
                         <NavLink to='/list' className={({ isActive }) => (isActive ? styles.link_active : styles.link)}>
-                                <ListIcon type={location === '/list' ? "primary" : "secondary"} />
-                                <p className="text text_type_main-default" >Лента заказов</p>
+                            <ListIcon type={location.pathname === '/list' ? "primary" : "secondary"} />
+                            <p className="text text_type_main-default" >Лента заказов</p>
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink to='/'>
-                            <Logo />
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to='/profile' className={({ isActive }) => (isActive ? styles.link_active : styles.link)}>       
-                                <ProfileIcon type={location === '/profile' ? "primary" : "secondary"} />
-                                <p className="text text_type_main-default" >
-                                    Личный кабинет
-                                </p>
+                </ul>
+                <NavLink className={styles.logo} to='/'>
+                    <Logo />
+                </NavLink>
+                <ul className={styles.container}>
+                    <li className={styles.container_menu_element}>
+                        <NavLink to='/profile' className={({ isActive }) => (isActive ? styles.link_active : styles.link)}>
+                            <ProfileIcon type={location.pathname === '/profile' ? "primary" : "secondary"} />
+                            <p className="text text_type_main-default" >Личный кабинет</p>
                         </NavLink>
                     </li>
                 </ul>
