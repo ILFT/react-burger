@@ -5,7 +5,22 @@ function AppHeader () {
 
         return(
             <header>
-                
+                <nav>
+                    <ul>
+                        <li>
+
+                        </li>
+                        <li>
+                            
+                        </li>
+                        <li>
+                            <Logo />
+                        </li>
+                        <li>
+                            
+                        </li>
+                    </ul>
+                </nav>
             </header>
         );
 }

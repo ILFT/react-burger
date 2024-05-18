@@ -6,9 +6,16 @@ function BurgerConstructor () {
 
         return(
             
-            <div>
-                
-            </div>
+            <aside>
+                // upper roll
+                <div></div>
+                //cycle for all ingredinets maybe use li for swap position 
+                <div></div>
+                //lower roll
+                <div></div>
+                //button and sum
+                <div></div>
+            </aside>
 
         );
 
