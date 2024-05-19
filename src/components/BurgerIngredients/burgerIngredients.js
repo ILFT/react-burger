@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styles from './burgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import IngredientWindow from '../IngredientWindow/ingredientWindow'
 
 
-function BurgerIngredients() {
+function BurgerIngredients(props) {
         const [current, setCurrent] = useState('rolls');
 
+        const rollIngredients = useMemo(() => {
+                return props.ingredients.filter((ingredient) => ingredient.type === "bun");
+        }, [props.ingredients]);
+
+        const sauceIngredients = useMemo(() => {
+                return props.ingredients.filter((ingredient) => ingredient.type === "sauce");
+        }, [props.ingredients]);
+
+        const fillingIngredients = useMemo(() => {
+                return props.ingredients.filter((ingredient) => ingredient.type === "main");
+        }, [props.ingredients]);
+
+
         return (
+
                 <div>
                         <section>
                                 <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
@@ -22,11 +37,23 @@ function BurgerIngredients() {
                                         </Tab>
                                 </div>
                         </section>
-                        <section>
-                                // cycle for tab data
-                                <div>
-                                        // use cylce for function one ingredinet
-                                </div>
+                        <section className={styles.container}>
+                                
+                                {rollIngredients.map((ingredient) => (
+                                        <div key={ingredient._id}>
+                                                <IngredientWindow ingredient={ingredient} />
+                                        </div>
+                                ))}
+                                {sauceIngredients.map((ingredient) => (
+                                        <div key={ingredient._id}>
+                                                <IngredientWindow ingredient={ingredient} />
+                                        </div>
+                                ))}
+                                {fillingIngredients.map((ingredient) => (
+                                        <div key={ingredient._id}>
+                                                <IngredientWindow ingredient={ingredient} />
+                                        </div>
+                                ))}
                         </section>
                 </div>
 

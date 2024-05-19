@@ -1,7 +1,8 @@
 .container {
     align-items: center;
     display: flex;
-    flex-wrap: nowrap;
-  
+    flex-wrap: wrap;
+    width: 50%;
+    gap: 5%;
   }
 
