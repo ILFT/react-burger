@@ -1,24 +1,17 @@
 .constructor{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
     padding-top: 6%;
 }
 
-.container {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-
-}
 
 .icon_text {
     padding: 12px;
 }
 
 .sum {
-    composes: container;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     justify-content: right;
     padding: 4%;
 }

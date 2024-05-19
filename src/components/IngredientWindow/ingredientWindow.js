@@ -7,14 +7,14 @@ function IngredientWindow(props) {
 
 
         return (
-                <div>
+                <div key={props.ingredient._id} className={styles.container_ingredient}>
                         <img src={props.ingredient.image} alt={props.ingredient.name} />
-                        <div >
+                        <div className={styles.container_cost}>
                                 <p className="text text_type_main-default pr-1">{props.ingredient.price}</p>
                                 <CurrencyIcon type='primary' />
                         </div>
-                        <div >
-                                <p className="text text_type_main-default pr-1">{props.ingredient.name}</p>
+                        <div>
+                                <p align='center' className="text text_type_main-default pr-1">{props.ingredient.name}</p>
                         </div>
                         {/*<div >
                                 {(props.ingredient.counter > 0) && <Counter count={props.ingredient.counter} size="default" />}

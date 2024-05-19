@@ -22,7 +22,7 @@ function BurgerIngredients(props) {
 
         return (
 
-                <div>
+                <div className={styles.size}>
                         <section>
                                 <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
                                 <div style={{ display: 'flex' }}>
@@ -37,23 +37,35 @@ function BurgerIngredients(props) {
                                         </Tab>
                                 </div>
                         </section>
-                        <section className={styles.container}>
-                                
-                                {rollIngredients.map((ingredient) => (
-                                        <div key={ingredient._id}>
-                                                <IngredientWindow ingredient={ingredient} />
+                        <section className={styles.container_ingredients}>
+                                <div>
+                                        <p className="text text_type_main-medium pr-1" >Булки</p>
+                                        <div className={styles.container_ingredient}>
+                                                {rollIngredients.map((ingredient) => (
+                                                        <IngredientWindow ingredient={ingredient} />
+                                                ))}
                                         </div>
-                                ))}
-                                {sauceIngredients.map((ingredient) => (
-                                        <div key={ingredient._id}>
-                                                <IngredientWindow ingredient={ingredient} />
+                                </div>
+                                <div>
+                                        <p className="text text_type_main-medium pr-1"  >Соусы</p>
+                                        <div className={styles.container_ingredient}>
+
+                                                {sauceIngredients.map((ingredient) => (
+                                                        <IngredientWindow ingredient={ingredient} />
+                                                ))}
                                         </div>
-                                ))}
-                                {fillingIngredients.map((ingredient) => (
-                                        <div key={ingredient._id}>
-                                                <IngredientWindow ingredient={ingredient} />
+                                </div>
+                                <div>
+                                        <p className="text text_type_main-medium pr-1"  >Начинка</p>
+                                        <div className={styles.container_ingredient}>
+
+                                                {fillingIngredients.map((ingredient) => (
+                                                        <IngredientWindow ingredient={ingredient} />
+                                                ))}
                                         </div>
-                                ))}
+                                </div>
+
+
                         </section>
                 </div>
 

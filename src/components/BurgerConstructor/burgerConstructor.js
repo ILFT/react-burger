@@ -8,7 +8,7 @@ function BurgerConstructor() {
 
     return (
 
-        <aside className={styles.constructor}>
+        <section className={styles.constructor}>
             <div>
                 <ConstructorElement
                     type="top"
@@ -42,7 +42,7 @@ function BurgerConstructor() {
                     Оформить заказ
                 </Button>
             </div>
-        </aside>
+        </section>
 
     );
 

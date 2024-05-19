@@ -1,0 +1,11 @@
+.container_ingredient {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+
+}
+.container_cost {
+    display: flex;
+    justify-content: center;
+}

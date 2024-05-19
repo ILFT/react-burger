@@ -23,7 +23,7 @@ function App() {
         <BrowserRouter>
           <AppHeader />
           <div className={styles.container}>
-          <BurgerIngredients ingredients={ingredients} />
+          <BurgerIngredients  ingredients={ingredients} />
           <BurgerConstructor />
           </div>
         </BrowserRouter>
