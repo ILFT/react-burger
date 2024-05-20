@@ -42,7 +42,7 @@ function BurgerIngredients(props) {
                                         <p className="text text_type_main-medium pr-1" >Булки</p>
                                         <div className={styles.container_ingredient}>
                                                 {rollIngredients.map((ingredient) => (
-                                                        <IngredientWindow ingredient={ingredient} />
+                                                        <IngredientWindow key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
@@ -51,7 +51,7 @@ function BurgerIngredients(props) {
                                         <div className={styles.container_ingredient}>
 
                                                 {sauceIngredients.map((ingredient) => (
-                                                        <IngredientWindow ingredient={ingredient} />
+                                                        <IngredientWindow  key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
@@ -60,7 +60,7 @@ function BurgerIngredients(props) {
                                         <div className={styles.container_ingredient}>
 
                                                 {fillingIngredients.map((ingredient) => (
-                                                        <IngredientWindow ingredient={ingredient} />
+                                                        <IngredientWindow key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>

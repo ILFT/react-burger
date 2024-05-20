@@ -7,7 +7,7 @@ function IngredientWindow(props) {
 
 
         return (
-                <div key={props.ingredient._id} className={styles.container_ingredient}>
+                <div className={styles.container_ingredient}>
                         <img src={props.ingredient.image} alt={props.ingredient.name} />
                         <div className={styles.container_cost}>
                                 <p className="text text_type_main-default pr-1">{props.ingredient.price}</p>
