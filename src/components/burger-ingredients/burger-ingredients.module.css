@@ -12,6 +12,10 @@
   flex-wrap: wrap;
 }
 
+.container{
+  display: flex;
+}
+
 .size {
   flex-basis: 32%;
 }

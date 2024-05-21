@@ -1,23 +1,23 @@
 import React, { useState, useMemo } from 'react';
-import styles from './burgerIngredients.module.css';
+import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientWindow from '../IngredientWindow/ingredientWindow'
+import Ingredient from '../ingredient/ingredient'
 
 
-function BurgerIngredients(props) {
+function BurgerIngredients({addIngredient, ingredients}) {
         const [current, setCurrent] = useState('rolls');
 
         const rollIngredients = useMemo(() => {
-                return props.ingredients.filter((ingredient) => ingredient.type === "bun");
-        }, [props.ingredients]);
+                return ingredients.filter((ingredient) => ingredient.type === "bun");
+        }, [ingredients]);
 
         const sauceIngredients = useMemo(() => {
-                return props.ingredients.filter((ingredient) => ingredient.type === "sauce");
-        }, [props.ingredients]);
+                return ingredients.filter((ingredient) => ingredient.type === "sauce");
+        }, [ingredients]);
 
         const fillingIngredients = useMemo(() => {
-                return props.ingredients.filter((ingredient) => ingredient.type === "main");
-        }, [props.ingredients]);
+                return ingredients.filter((ingredient) => ingredient.type === "main");
+        }, [ingredients]);
 
 
         return (
@@ -25,7 +25,7 @@ function BurgerIngredients(props) {
                 <div className={styles.size}>
                         <section>
                                 <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
-                                <div style={{ display: 'flex' }}>
+                                <div className={styles.container}>
                                         <Tab value="rolls" active={current === 'rolls'} onClick={setCurrent}>
                                                 Булки
                                         </Tab>
@@ -42,7 +42,7 @@ function BurgerIngredients(props) {
                                         <p className="text text_type_main-medium pr-1" >Булки</p>
                                         <div className={styles.container_ingredient}>
                                                 {rollIngredients.map((ingredient) => (
-                                                        <IngredientWindow key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient addIngredient ={addIngredient} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
@@ -51,7 +51,7 @@ function BurgerIngredients(props) {
                                         <div className={styles.container_ingredient}>
 
                                                 {sauceIngredients.map((ingredient) => (
-                                                        <IngredientWindow  key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient  addIngredient ={addIngredient} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
@@ -60,7 +60,7 @@ function BurgerIngredients(props) {
                                         <div className={styles.container_ingredient}>
 
                                                 {fillingIngredients.map((ingredient) => (
-                                                        <IngredientWindow key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient  addIngredient ={addIngredient} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>

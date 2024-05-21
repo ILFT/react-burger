@@ -1,10 +1,21 @@
 import React from 'react';
-import styles from './burgerConstructor.module.css';
+import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const BurgerConstructor = (props) => {
+function BurgerConstructor({ removeIngredient, ingredients, burgerIngredients })  {
 
-    const rollUpLower = props.ingredients.find(ingredient => ingredient._id === "643d69a5c3f7b9001cfa093c");
+    const rollUpLower = ingredients.find(ingredient => ingredient._id === "643d69a5c3f7b9001cfa093c");
+    //console.log(burgerIngredients);
+    function getCostButrger(){
+        if (burgerIngredients.length > 0) {
+            return burgerIngredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
+                return a + b;
+              }) + 2 * rollUpLower.price;
+        }else{
+            return 2 * rollUpLower.price;
+        }
+        
+    }
     
     return (
 
@@ -18,8 +29,17 @@ const BurgerConstructor = (props) => {
                     thumbnail={rollUpLower.image_mobile}
                 />
             </div>
-                //cycle for all ingredinets maybe use li for swap position
-            <div></div>
+            <div className={styles.container_ingredients}>
+                {
+                    burgerIngredients.map((ingredient, index) => (
+                        <ConstructorElement key={index}
+                            text={ingredient.name}
+                            price={ingredient.price}
+                            thumbnail={ingredient.image_mobile}
+                            handleClose={() => removeIngredient(index)}
+                        />))
+                }
+            </div>
             <div>
                 <ConstructorElement
                     type="bottom"
@@ -33,7 +53,7 @@ const BurgerConstructor = (props) => {
             <div className={styles.sum}>
                 <div className={styles.sum}>
                     <p className={styles.icon_text}>
-                        610
+                        {getCostButrger()}
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>

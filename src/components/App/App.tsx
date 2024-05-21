@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import styles from './App.module.css';
+import React, { useEffect, useState, createContext } from 'react';
+import styles from './app.module.css';
 import { BrowserRouter } from "react-router-dom"
 
-import AppHeader from '../AppHeader/appHeader';
-import BurgerIngredients from '../BurgerIngredients/burgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/burgerConstructor';
+import AppHeader from '../app-header/app-header';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
 
 
 function App() {
@@ -12,47 +12,46 @@ function App() {
   const [ingredients, setIngredients] = useState([]);
   const [isLoad, setIsLoad] = useState(false);
 
+  const [burgerIngredient, setBurgerIngredient] = useState([]);
 
+  function addIngredient(ingredient: never){
+    setBurgerIngredient([...burgerIngredient, ingredient]);
+    //console.log(ingredient)
+  }
+  function removeIngredient(indexIngredient: any){
+    setBurgerIngredient([...burgerIngredient.slice(indexIngredient, 1)]);
+    console.log(burgerIngredient)
+  }
 
-
-
+  
   useEffect(() => {
     if (!isLoad) {
-      fetch('https://norma.nomoreparties.space/api/ingredients').then(response => response.json()).then(data => {
+      fetch('https://norma.nomoreparties.space/api/ingredients').then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(`Ошибка ${response.status}`);
+      }).then(data => {
         setIngredients(data.data);
         setIsLoad(true);
-      }).catch(err => console.log(err));
+      }).catch(console.error);
     }
 
-  }, [ingredients])
+  }, [])
 
 
   if (isLoad) {
     return (
-      <main>
-        <div>
-          <BrowserRouter>
-            <AppHeader />
-            <div className={styles.container}>
-              <BurgerIngredients ingredients={ingredients} />
-              <BurgerConstructor ingredients={ingredients} />
-            </div>
-          </BrowserRouter>
-        </div>
-      </main>
+      <BrowserRouter>
+        <AppHeader />
+        <main className={styles.container}>
+            <BurgerIngredients ingredients={ingredients} addIngredient={addIngredient}/>
+            <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} burgerIngredients={burgerIngredient}/>
+        </main>
+      </BrowserRouter>
     )
   } else {
-    return (
-      <main>
-        <div>
-          <BrowserRouter>
-            <AppHeader />
-            <div className={styles.container}>
-            </div>
-          </BrowserRouter>
-        </div>
-      </main>
-    );
+    return null;
 
   }
 
