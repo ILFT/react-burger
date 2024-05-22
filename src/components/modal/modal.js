@@ -9,17 +9,17 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function Modal(props) {
 
-    console.log('modal');
+
     const closeClick = (e) => {
         if (e.key === "Escape") {
+            document.removeEventListener("keydown", closeClick);
             props.closeWindow();
+            
         }
     };
 
 
-    useEffect(() => {
-        document.addEventListener("keydown", closeClick, false);
-    }, [closeClick]);
+    document.addEventListener("keydown", closeClick, false);
 
 
     return ReactDOM.createPortal(
@@ -28,7 +28,7 @@ function Modal(props) {
             {props.children}
         </ModalOverlay>
         ,
-        document.body
+        document.getElementById("modalWindow")
     );
 };
 
