@@ -4,7 +4,7 @@ import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger
 import Ingredient from '../ingredient/ingredient'
 
 
-function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelectedRoll }) {
+function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelectedRoll, checkСount }) {
         const [current, setCurrent] = useState('rolls');
 
         const rollIngredients = useMemo(() => {
@@ -51,7 +51,7 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                                                                 <CurrencyIcon type='primary' />
                                                                         </div>
                                                                         <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
-                                                                        <Counter count={2} size="default" extraClass="m-1" />
+                                                                        <Counter count={2} size="default" extraClass={styles.counter} />
                                                                 </div>
                                                         ) : (
                                                                 <div className={styles.container_ingredientroll} onClick={() => changingRoll(ingredient)}>
@@ -82,7 +82,8 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                         <div className={styles.container_ingredient}>
 
                                                 {sauceIngredients.map((ingredient) => (
-                                                        <Ingredient addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient checkСount = {checkСount} addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                        
                                                 ))}
                                         </div>
                                 </div>
@@ -91,7 +92,7 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                         <div className={styles.container_ingredient}>
 
                                                 {fillingIngredients.map((ingredient) => (
-                                                        <Ingredient addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient checkСount = {checkСount} addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>

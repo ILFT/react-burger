@@ -26,6 +26,9 @@ function App() {
   function changingRoll(roll: never) {
     setChangeRoll(roll);
   }
+  function checkСount(ingredient: any){
+    return burgerIngredient.filter(ingredientInBurger => ingredientInBurger === ingredient).length;
+  }
 
   useEffect(() => {
     if (!isLoad) {
@@ -49,7 +52,7 @@ function App() {
       <BrowserRouter>
         <AppHeader />
         <main className={styles.container}>
-          <BurgerIngredients ingredients={ingredients} addIngredient={addIngredient} changingRoll={changingRoll} isSelectedRoll={changeRoll} />
+          <BurgerIngredients checkСount = {checkСount} ingredients={ingredients} addIngredient={addIngredient} changingRoll={changingRoll} isSelectedRoll={changeRoll} />
           <BurgerConstructor changeRoll={changeRoll} removeIngredient={removeIngredient} burgerIngredients={burgerIngredient} />
         </main>
       </BrowserRouter>

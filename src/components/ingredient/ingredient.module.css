@@ -5,7 +5,13 @@
     width: 50%;
 
 }
+
 .container_cost {
     display: flex;
     justify-content: center;
+}
+
+.counter {
+    position: inherit;
+
 }
