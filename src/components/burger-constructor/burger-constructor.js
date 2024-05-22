@@ -2,9 +2,9 @@ import React from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function BurgerConstructor({ removeIngredient, ingredients, burgerIngredients })  {
+function BurgerConstructor({ removeIngredient, changeRoll, burgerIngredients })  {
 
-    const rollUpLower = ingredients.find(ingredient => ingredient._id === "643d69a5c3f7b9001cfa093c");
+    const rollUpLower = changeRoll;
     //console.log(burgerIngredients);
     function getCostButrger(){
         if (burgerIngredients.length > 0) {

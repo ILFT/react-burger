@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient'
 
 
-function BurgerIngredients({addIngredient, ingredients}) {
+function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelectedRoll }) {
         const [current, setCurrent] = useState('rolls');
 
         const rollIngredients = useMemo(() => {
@@ -39,19 +39,50 @@ function BurgerIngredients({addIngredient, ingredients}) {
                         </section>
                         <section className={styles.container_ingredients}>
                                 <div>
+
                                         <p className="text text_type_main-medium pr-1" >Булки</p>
                                         <div className={styles.container_ingredient}>
                                                 {rollIngredients.map((ingredient) => (
-                                                        <Ingredient addIngredient ={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                        (isSelectedRoll === ingredient) ? (
+                                                                <div className={styles.container_ingredientroll} onClick={() => changingRoll(ingredient)}>
+                                                                        <img src={ingredient.image} alt={ingredient.name} />
+                                                                        <div className={styles.container_cost}>
+                                                                                <p className="text text_type_main-default pr-1">{ingredient.price}</p>
+                                                                                <CurrencyIcon type='primary' />
+                                                                        </div>
+                                                                        <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
+                                                                        <Counter count={2} size="default" extraClass="m-1" />
+                                                                </div>
+                                                        ) : (
+                                                                <div className={styles.container_ingredientroll} onClick={() => changingRoll(ingredient)}>
+                                                                        <img src={ingredient.image} alt={ingredient.name} />
+                                                                        <div className={styles.container_cost}>
+                                                                                <p className="text text_type_main-default pr-1">{ingredient.price}</p>
+                                                                                <CurrencyIcon type='primary' />
+                                                                        </div>
+                                                                        <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
+                                                                </div>
+                                                        )
+
                                                 ))}
                                         </div>
+
+
+
+
+
+
+                                        {/*rollIngredients.map((ingredient) => (
+                                                        <Ingredient addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                ))*/}
+
                                 </div>
                                 <div>
                                         <p className="text text_type_main-medium pr-1"  >Соусы</p>
                                         <div className={styles.container_ingredient}>
 
                                                 {sauceIngredients.map((ingredient) => (
-                                                        <Ingredient  addIngredient ={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
@@ -60,14 +91,14 @@ function BurgerIngredients({addIngredient, ingredients}) {
                                         <div className={styles.container_ingredient}>
 
                                                 {fillingIngredients.map((ingredient) => (
-                                                        <Ingredient  addIngredient ={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
 
 
-                        </section>
-                </div>
+                        </section >
+                </div >
 
         );
 }

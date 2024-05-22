@@ -19,3 +19,15 @@
 .size {
   flex-basis: 32%;
 }
+
+.container_ingredientroll {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+
+}
+.container_cost {
+  display: flex;
+  justify-content: center;
+}

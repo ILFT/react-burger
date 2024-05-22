@@ -12,18 +12,21 @@ function App() {
   const [ingredients, setIngredients] = useState([]);
   const [isLoad, setIsLoad] = useState(false);
 
+  const [changeRoll, setChangeRoll] = useState();
   const [burgerIngredient, setBurgerIngredient] = useState([]);
 
-  function addIngredient(ingredient: never){
+  function addIngredient(ingredient: never) {
     setBurgerIngredient([...burgerIngredient, ingredient]);
-    //console.log(ingredient)
+
   }
-  function removeIngredient(indexIngredient: any){
-    setBurgerIngredient([...burgerIngredient.slice(indexIngredient, 1)]);
-    console.log(burgerIngredient)
+  function removeIngredient(indexIngredient: never) {
+    burgerIngredient.splice(indexIngredient, 1);
+    setBurgerIngredient([...burgerIngredient]);
+  }
+  function changingRoll(roll: never) {
+    setChangeRoll(roll);
   }
 
-  
   useEffect(() => {
     if (!isLoad) {
       fetch('https://norma.nomoreparties.space/api/ingredients').then(response => {
@@ -33,6 +36,7 @@ function App() {
         return Promise.reject(`Ошибка ${response.status}`);
       }).then(data => {
         setIngredients(data.data);
+        setChangeRoll(data.data.find((roll: any) => roll._id === "643d69a5c3f7b9001cfa093c"))
         setIsLoad(true);
       }).catch(console.error);
     }
@@ -45,8 +49,8 @@ function App() {
       <BrowserRouter>
         <AppHeader />
         <main className={styles.container}>
-            <BurgerIngredients ingredients={ingredients} addIngredient={addIngredient}/>
-            <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} burgerIngredients={burgerIngredient}/>
+          <BurgerIngredients ingredients={ingredients} addIngredient={addIngredient} changingRoll={changingRoll} isSelectedRoll={changeRoll} />
+          <BurgerConstructor changeRoll={changeRoll} removeIngredient={removeIngredient} burgerIngredients={burgerIngredient} />
         </main>
       </BrowserRouter>
     )
