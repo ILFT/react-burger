@@ -1,0 +1,28 @@
+.constructor{
+    display: flex;
+    flex-direction: column;
+    padding-top: 6%;
+    gap: 1rem;
+}
+
+
+.icon_text {
+    padding: 12px;
+}
+
+.sum {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: right;
+    padding: 4%;
+}
+
+.container_ingredients {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: scroll;
+    max-height: 37vh;
+  }
