@@ -2,10 +2,15 @@ import React, { useState, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient'
+import  Modal  from '../modal/modal';
+import  IngredientDetails  from '../ingredient-details/ingredient-details';
 
 
 function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelectedRoll, checkСount }) {
         const [current, setCurrent] = useState('rolls');
+        const [isModalVisible, setIsModalVisible] = useState(false);
+
+        const [ingredient, setIngredient] = useState({});
 
         const rollIngredients = useMemo(() => {
                 return ingredients.filter((ingredient) => ingredient.type === "bun");
@@ -19,6 +24,14 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                 return ingredients.filter((ingredient) => ingredient.type === "main");
         }, [ingredients]);
 
+        function modalWindowOpen(ingredient) {
+                setIngredient(ingredient);
+                setIsModalVisible(true);
+        }
+        function modalWindowClose() {
+                setIngredient({});
+                setIsModalVisible(false);
+        }
 
         return (
 
@@ -66,24 +79,14 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
 
                                                 ))}
                                         </div>
-
-
-
-
-
-
-                                        {/*rollIngredients.map((ingredient) => (
-                                                        <Ingredient addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
-                                                ))*/}
-
                                 </div>
                                 <div>
                                         <p className="text text_type_main-medium pr-1"  >Соусы</p>
                                         <div className={styles.container_ingredient}>
 
                                                 {sauceIngredients.map((ingredient) => (
-                                                        <Ingredient checkСount = {checkСount} addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
-                                                        
+                                                        <Ingredient checkСount={checkСount} addIngredient={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
+
                                                 ))}
                                         </div>
                                 </div>
@@ -92,13 +95,22 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                         <div className={styles.container_ingredient}>
 
                                                 {fillingIngredients.map((ingredient) => (
-                                                        <Ingredient checkСount = {checkСount} addIngredient={addIngredient} key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient checkСount={checkСount} addIngredient={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
 
 
                         </section >
+                        {isModalVisible &&
+                                <div style={{ overflow: 'hidden' }}>
+                                        {
+                                                <Modal header="Внимание!" closeWindow={modalWindowClose} >
+                                                        <IngredientDetails props={ingredient} />
+                                                </Modal>
+                                        }
+                                </div>
+                        }
                 </div >
 
         );
