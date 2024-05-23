@@ -6,22 +6,22 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 function Ingredient({ ingredientInfo, ingredient, checkСount }) {
 
         return (
-
-                <div className={styles.container_ingredient} onClick={() => ingredientInfo(ingredient)}>
-                        <img src={ingredient.image} alt={ingredient.name} />
-                        <div className={styles.container_cost}>
-                                <p className="text text_type_main-default pr-1">{ingredient.price}</p>
-                                <CurrencyIcon type='primary' />
-                        </div>
-                        <div>
+                <div className={styles.container_ingredient}>
+                        <div className={styles.container_ingredient_data} onClick={() => ingredientInfo(ingredient)}>
+                                <img src={ingredient.image} alt={ingredient.name} />
+                                <div className={styles.container_cost}>
+                                        <p className="text text_type_main-default pr-1">{ingredient.price}</p>
+                                        <CurrencyIcon type='primary' />
+                                </div>
                                 <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
                         </div>
-                        {
-                                (checkСount(ingredient) > 0) && <Counter count={checkСount(ingredient)} size="default" extraClass={styles.counter} />
-                        }
+                        <div className={styles.container_ingredient_counter}>
+                                {
+                                        (checkСount(ingredient) > 0) && <Counter count={checkСount(ingredient)} size="default" />
+                                }
+
+                        </div>
                 </div>
-
-
         );
 }
 

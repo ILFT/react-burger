@@ -57,23 +57,29 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                         <div className={styles.container_ingredient}>
                                                 {rollIngredients.map((ingredient) => (
                                                         (isSelectedRoll === ingredient) ? (
-                                                                <div className={styles.container_ingredientroll} onClick={() => modalWindowOpen(ingredient)}>
-                                                                        <img src={ingredient.image} alt={ingredient.name} />
-                                                                        <div className={styles.container_cost}>
-                                                                                <p className="text text_type_main-default pr-1">{ingredient.price}</p>
-                                                                                <CurrencyIcon type='primary' />
+                                                                <div className={styles.container_ingredientroll}>
+                                                                        <div className={styles.container_ingredientroll_data} onClick={() => modalWindowOpen(ingredient)}>
+                                                                                <img src={ingredient.image} alt={ingredient.name} />
+                                                                                <div className={styles.container_cost}>
+                                                                                        <p className="text text_type_main-default pr-1">{ingredient.price}</p>
+                                                                                        <CurrencyIcon type='primary' />
+                                                                                </div>
+                                                                                <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
                                                                         </div>
-                                                                        <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
-                                                                        <Counter count={2} size="default" extraClass={styles.counter} />
+                                                                        <div className={styles.container_ingredientroll_counter}>
+                                                                                <Counter count={2} size="default" />
+                                                                        </div>
                                                                 </div>
                                                         ) : (
-                                                                <div className={styles.container_ingredientroll} onClick={() => modalWindowOpen(ingredient)}>
-                                                                        <img src={ingredient.image} alt={ingredient.name} />
-                                                                        <div className={styles.container_cost}>
-                                                                                <p className="text text_type_main-default pr-1">{ingredient.price}</p>
-                                                                                <CurrencyIcon type='primary' />
+                                                                <div className={styles.container_ingredientroll}>
+                                                                        <div className={styles.container_ingredientroll_data} onClick={() => modalWindowOpen(ingredient)}>
+                                                                                <img src={ingredient.image} alt={ingredient.name} />
+                                                                                <div className={styles.container_cost}>
+                                                                                        <p className="text text_type_main-default pr-1">{ingredient.price}</p>
+                                                                                        <CurrencyIcon type='primary' />
+                                                                                </div>
+                                                                                <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
                                                                         </div>
-                                                                        <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
                                                                 </div>
                                                         )
 
