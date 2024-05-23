@@ -5,8 +5,11 @@ import styles from "./ingredient-details.module.css";
 function IngredientDetails(props) {
     return (
         <div className={styles.ingredient_info}>
-            <img src={props.props.image} className={styles.ingredient_image} alt={props.props.name} />
-            <p className=" text text_type_main-medium pt-4 pb-8" >
+
+            <div className={styles.center_align}>
+                <img src={props.props.image} className={styles.ingredient_image} alt={props.props.name} />
+            </div>
+            <p className={styles.center_align + " text text_type_main-medium pt-4 pb-8"} >
                 {props.props.name}
             </p>
 

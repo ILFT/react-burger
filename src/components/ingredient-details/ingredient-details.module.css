@@ -1,24 +1,30 @@
 .ingredient_info {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding-bottom: 6%;
 
 }
 .ingredient_image{
     width: 25%;
     height: 25%;
+    
 
+}
+.center_align{
+    text-align: center;
 }
 .modal__image {
     cursor: pointer;
+
 }
 
 .description {
     display: flex;
-    width: 500px;
-    align-items: center;
-    justify-content: center;
-    flex: 1 1 1 1
+    align-items: stretch;
+    
 }
 .data_info{
     flex: 25%;

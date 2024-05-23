@@ -1,9 +1,12 @@
-.modal_overlay{
+.modal_overlay {
 
   background-color: #000000;
-  opacity: 60%;
+
   min-width: 33vw;
+  min-height: 35vh;
   position: fixed;
-  top: 30%;
+  top: 20%;
   left: 30%;
+  border-radius: 15%;
+
 }
