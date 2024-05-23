@@ -3,11 +3,11 @@ import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 
 
-function Ingredient({ addIngredient, ingredient, checkСount }) {
+function Ingredient({ ingredientInfo, ingredient, checkСount }) {
 
         return (
-                //console.log(addIngredient())
-                <div className={styles.container_ingredient} onClick={() => addIngredient(ingredient)}>
+
+                <div className={styles.container_ingredient} onClick={() => ingredientInfo(ingredient)}>
                         <img src={ingredient.image} alt={ingredient.name} />
                         <div className={styles.container_cost}>
                                 <p className="text text_type_main-default pr-1">{ingredient.price}</p>

@@ -4,8 +4,8 @@ import styles from "./ingredient-details.module.css";
 
 function IngredientDetails(props) {
     return (
-        <div>
-            <img src={props.props.image} className={styles.image} alt={props.props.name} />
+        <div className={styles.ingredient_info}>
+            <img src={props.props.image} className={styles.ingredient_image} alt={props.props.name} />
             <p className=" text text_type_main-medium pt-4 pb-8" >
                 {props.props.name}
             </p>

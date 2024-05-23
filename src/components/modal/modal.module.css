@@ -1,0 +1,7 @@
+.modal_logic{
+    display: flex;
+    flex-direction: column;
+}
+.close_icon{
+    text-align: right;
+}

@@ -36,3 +36,6 @@
   position: inherit;
   
 }
+.modal{
+  overflow: hidden;
+}

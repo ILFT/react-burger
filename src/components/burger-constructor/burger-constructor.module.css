@@ -4,7 +4,8 @@
     padding-top: 6%;
     align-items: stretch;
     gap: 1rem;
-    width: 65vh;
+    flex-basis: 30vw;
+
 }
 
 
@@ -28,6 +29,7 @@
     gap: 1rem;
     overflow-y: scroll;
     max-height: 37vh;
+    min-width: 105%;
   }
 
   .burger_ingredient{
@@ -37,5 +39,9 @@
   }
   .roll{
     padding-left: 4%;
-    padding-right: 6%;
+    padding-right: 10%;
+    min-width: 100%;
+  }
+  .modal{
+    overflow: hidden;
   }

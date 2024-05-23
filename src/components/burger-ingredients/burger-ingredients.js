@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Ingredient from '../ingredient/ingredient'
-import  Modal  from '../modal/modal';
-import  IngredientDetails  from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 
 function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelectedRoll, checkСount }) {
@@ -57,7 +57,7 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                         <div className={styles.container_ingredient}>
                                                 {rollIngredients.map((ingredient) => (
                                                         (isSelectedRoll === ingredient) ? (
-                                                                <div className={styles.container_ingredientroll} onClick={() => changingRoll(ingredient)}>
+                                                                <div className={styles.container_ingredientroll} onClick={() => modalWindowOpen(ingredient)}>
                                                                         <img src={ingredient.image} alt={ingredient.name} />
                                                                         <div className={styles.container_cost}>
                                                                                 <p className="text text_type_main-default pr-1">{ingredient.price}</p>
@@ -67,7 +67,7 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                                                         <Counter count={2} size="default" extraClass={styles.counter} />
                                                                 </div>
                                                         ) : (
-                                                                <div className={styles.container_ingredientroll} onClick={() => changingRoll(ingredient)}>
+                                                                <div className={styles.container_ingredientroll} onClick={() => modalWindowOpen(ingredient)}>
                                                                         <img src={ingredient.image} alt={ingredient.name} />
                                                                         <div className={styles.container_cost}>
                                                                                 <p className="text text_type_main-default pr-1">{ingredient.price}</p>
@@ -85,7 +85,7 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                         <div className={styles.container_ingredient}>
 
                                                 {sauceIngredients.map((ingredient) => (
-                                                        <Ingredient checkСount={checkСount} addIngredient={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient checkСount={checkСount} ingredientInfo={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
 
                                                 ))}
                                         </div>
@@ -95,7 +95,7 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
                                         <div className={styles.container_ingredient}>
 
                                                 {fillingIngredients.map((ingredient) => (
-                                                        <Ingredient checkСount={checkСount} addIngredient={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
+                                                        <Ingredient checkСount={checkСount} ingredientInfo={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
                                                 ))}
                                         </div>
                                 </div>
@@ -103,7 +103,7 @@ function BurgerIngredients({ addIngredient, ingredients, changingRoll, isSelecte
 
                         </section >
                         {isModalVisible &&
-                                <div style={{ overflow: 'hidden' }}>
+                                <div className={styles.modal}>
                                         {
                                                 <Modal header="Внимание!" closeWindow={modalWindowClose} >
                                                         <IngredientDetails props={ingredient} />
