@@ -1,10 +1,13 @@
 import React, { useEffect, useState, createContext } from 'react';
 import styles from './app.module.css';
 import { BrowserRouter } from "react-router-dom"
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+
 
 
 function App() {
@@ -26,7 +29,7 @@ function App() {
   function changingRoll(roll: never) {
     setChangeRoll(roll);
   }
-  function checkСount(ingredient: any){
+  function checkСount(ingredient: any) {
     return burgerIngredient.filter(ingredientInBurger => ingredientInBurger === ingredient).length;
   }
 
@@ -51,10 +54,12 @@ function App() {
     return (
       <BrowserRouter>
         <AppHeader />
-        <main className={styles.container}>
-          <BurgerIngredients checkСount = {checkСount} ingredients={ingredients} addIngredient={addIngredient} changingRoll={changingRoll} isSelectedRoll={changeRoll} />
-          <BurgerConstructor changeRoll={changeRoll} removeIngredient={removeIngredient} burgerIngredients={burgerIngredient} />
-        </main>
+        <DndProvider backend={HTML5Backend}>
+          <main className={styles.container}>
+            <BurgerIngredients checkСount={checkСount} ingredients={ingredients} addIngredient={addIngredient} changingRoll={changingRoll} isSelectedRoll={changeRoll} />
+            <BurgerConstructor addIngredient={addIngredient} changeRoll={changeRoll} removeIngredient={removeIngredient} burgerIngredients={burgerIngredient} />
+          </main>
+        </DndProvider>
       </BrowserRouter>
     )
   } else {

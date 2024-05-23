@@ -3,12 +3,19 @@ import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
+import { useDrop} from 'react-dnd'
 
-function BurgerConstructor({ removeIngredient, changeRoll, burgerIngredients }) {
+function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }) {
 
     const rollUpLower = changeRoll;
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const [, dropRef] = useDrop({
+        accept: 'ingredient',
+        drop: (item) => addIngredient(item)
+        })
+    
 
     function modalWindowOpen() {
         setIsModalVisible(true);
@@ -30,7 +37,7 @@ function BurgerConstructor({ removeIngredient, changeRoll, burgerIngredients }) 
 
     return (
 
-        <section className={styles.constructor}>
+        <section className={styles.constructor} ref={dropRef}>
             <div className={styles.roll}>
                 <ConstructorElement
                     type="top"

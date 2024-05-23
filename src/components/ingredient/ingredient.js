@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
-
+import { useDrag } from 'react-dnd'
 
 function Ingredient({ ingredientInfo, ingredient, checkСount }) {
 
+        const [,dragRef] = useDrag({
+                type: 'ingredient',
+                item: ingredient
+        })
         return (
-                <div className={styles.container_ingredient}>
+                <div draggable={true} className={styles.container_ingredient} ref={dragRef}>
                         <div className={styles.container_ingredient_data} onClick={() => ingredientInfo(ingredient)}>
                                 <img src={ingredient.image} alt={ingredient.name} />
                                 <div className={styles.container_cost}>
