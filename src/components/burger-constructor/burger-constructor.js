@@ -4,12 +4,13 @@ import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktiku
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
+import {useModal} from '../../hooks/hooks'
 
 function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }) {
 
     const rollUpLower = changeRoll;
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const { isModalOpen, openModal, closeModal } = useModal();
 
     const [, dropRef] = useDrop({
         accept: 'ingredient',
@@ -18,10 +19,10 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
 
 
     function modalWindowOpen() {
-        setIsModalVisible(true);
+        openModal(true);
     }
     function modalWindowClose() {
-        setIsModalVisible(false);
+        closeModal(false);
     }
 
     function getCostBurger() {
@@ -84,11 +85,11 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                     Оформить заказ
                 </Button>
             </div>
-            {isModalVisible &&
+            {isModalOpen &&
                 <div className={styles.modal}>
                     {
                         <Modal header="Внимание!" closeWindow={modalWindowClose} >
-                            <OrderDetails />
+                            <OrderDetails closeWindow={modalWindowClose}/>
                         </Modal>
                     }
                 </div>

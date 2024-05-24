@@ -1,9 +1,20 @@
 .order_info {
     display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
     justify-content: space-evenly;
-    gap: 1rem;
-    padding-bottom: 6%;
+    align-items: center;
+    width: 720px;
+    height: 718px;
+    position: fixed;
+    top: 10%;
+    left: 30%;
+    border-radius: 40px;
+    background-color: rgba(28, 28, 33, 1);
+}
+
+.icon {
+    text-align: right;
+    width: 640px;
+    height: 64px;
+
 }

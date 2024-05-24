@@ -25,9 +25,11 @@ function Modal(props) {
 
 
     return ReactDOM.createPortal(
-        <ModalOverlay className={styles.modal_logic}>
-            <div className={styles.close_icon}><CloseIcon type="primary" onClick={() => props.closeWindow()} /></div>
-            {props.children}
+        <ModalOverlay onClose={props.closeWindow} >
+            <div className={styles.modal_logic} onClick={(e)=>e.stopPropagation()}>
+                {props.children}
+            </div>
+
         </ModalOverlay>
         ,
         document.getElementById("modalWindow")

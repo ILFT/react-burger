@@ -1,19 +1,29 @@
 .ingredient_info {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     justify-content: space-evenly;
-    gap: 1rem;
-    padding-bottom: 6%;
-
+    align-items: center;
+    width: 720px;
+    height: 539px;
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    border-radius: 40px;
+    background-color: rgba(28, 28, 33, 1);
+    
 }
 .ingredient_image{
-    width: 25%;
-    height: 25%;
+    width: 480px;
+    height: 240px;
     
 
 }
-.center_align{
+.image_ingredient_div{
+    width: 520px;
+    height: 240px;
+    text-align: center;
+}
+.name_ingredient{
     text-align: center;
 }
 .modal__image {
@@ -24,8 +34,20 @@
 .description {
     display: flex;
     align-items: stretch;
+    width: 516px;
+    height: 56px;
     
 }
 .data_info{
     flex: 25%;
+}
+.name_icon{
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: right;
+    width: 640px;
+    height: 64px;
+    
 }
