@@ -11,7 +11,7 @@ function OrderDetails() {
             <p className=" text text_type_main-medium">
                 идентификатор заказа
             </p>
-            <img src={done} className='pt-14 pb-14' alt="" />
+            <img src={done} className='pt-14 pb-14' alt="Заказ подтвержден" />
             <p className="text text_type_main-default pb-2">
                 Ваш заказ начали готовить
             </p>

@@ -3,14 +3,14 @@ import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
 
-function Ingredient({ ingredientInfo, ingredient, checkСount }) {
+function Ingredient({ ingredientInfo, ingredient, checkCount }) {
 
         const [,dragRef] = useDrag({
                 type: 'ingredient',
                 item: ingredient
         })
         return (
-                <div draggable={true} className={styles.container_ingredient} ref={dragRef}>
+                <div className={styles.container_ingredient} ref={dragRef}>
                         <div className={styles.container_ingredient_data} onClick={() => ingredientInfo(ingredient)}>
                                 <img src={ingredient.image} alt={ingredient.name} />
                                 <div className={styles.container_cost}>
@@ -21,7 +21,7 @@ function Ingredient({ ingredientInfo, ingredient, checkСount }) {
                         </div>
                         <div className={styles.container_ingredient_counter}>
                                 {
-                                        (checkСount(ingredient) > 0) && <Counter count={checkСount(ingredient)} size="default" />
+                                        (checkCount(ingredient) > 0) && <Counter count={checkCount(ingredient)} size="default" />
                                 }
 
                         </div>

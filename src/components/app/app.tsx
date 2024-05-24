@@ -18,18 +18,20 @@ function App() {
   const [changeRoll, setChangeRoll] = useState();
   const [burgerIngredient, setBurgerIngredient] = useState([]);
 
+
   function addIngredient(ingredient: never) {
     setBurgerIngredient([...burgerIngredient, ingredient]);
-
   }
+
   function removeIngredient(indexIngredient: never) {
     burgerIngredient.splice(indexIngredient, 1);
     setBurgerIngredient([...burgerIngredient]);
   }
+
   function changingRoll(roll: never) {
     setChangeRoll(roll);
   }
-  function checkСount(ingredient: any) {
+  function checkCount(ingredient: any) {
     return burgerIngredient.filter(ingredientInBurger => ingredientInBurger === ingredient).length;
   }
 
@@ -56,8 +58,8 @@ function App() {
         <AppHeader />
         <DndProvider backend={HTML5Backend}>
           <main className={styles.container}>
-            <BurgerIngredients checkСount={checkСount} ingredients={ingredients} addIngredient={addIngredient} changingRoll={changingRoll} isSelectedRoll={changeRoll} />
-            <BurgerConstructor addIngredient={addIngredient} changeRoll={changeRoll} removeIngredient={removeIngredient} burgerIngredients={burgerIngredient} />
+            <BurgerIngredients checkCount={checkCount} ingredients={ingredients} isSelectedRoll={changeRoll} />
+            <BurgerConstructor addIngredient={addIngredient} removeIngredient={removeIngredient} changeRoll={changeRoll} burgerIngredients={burgerIngredient}/>
           </main>
         </DndProvider>
       </BrowserRouter>

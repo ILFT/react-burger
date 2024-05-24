@@ -1,6 +1,12 @@
 .modal_logic{
-    display: flex;
-    flex-direction: column;
+
+    background-color: #000000;
+    min-width: 33vw;
+    min-height: 35vh;
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    border-radius: 15%;
 }
 .close_icon{
     text-align: right;

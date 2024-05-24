@@ -1,9 +1,9 @@
-import React , { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useDrop} from 'react-dnd'
+import { useDrop } from 'react-dnd'
 
 function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }) {
 
@@ -14,8 +14,8 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
     const [, dropRef] = useDrop({
         accept: 'ingredient',
         drop: (item) => addIngredient(item)
-        })
-    
+    })
+
 
     function modalWindowOpen() {
         setIsModalVisible(true);
@@ -47,13 +47,13 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                     thumbnail={rollUpLower.image_mobile}
                 />
             </div>
-            <div className={styles.container_ingredients}>
+            <div className={styles.container_ingredients} >
                 {
                     burgerIngredients.map((ingredient, index) => (
 
-                        <div className={styles.burger_ingredient}>
+                        <div className={styles.burger_ingredient} key={index}>
                             <DragIcon type="primary" />
-                            <ConstructorElement key={index}
+                            <ConstructorElement
                                 text={ingredient.name}
                                 price={ingredient.price}
                                 thumbnail={ingredient.image_mobile}
@@ -71,7 +71,6 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                     text={rollUpLower.name + "(низ)"}
                     price={rollUpLower.price}
                     thumbnail={rollUpLower.image_mobile}
-
                 />
             </div>
             <div className={styles.sum}>

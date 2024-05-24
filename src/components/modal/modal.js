@@ -10,16 +10,18 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 function Modal(props) {
 
 
-    const closeClick = (e) => {
-        if (e.key === "Escape") {
-            document.removeEventListener("keydown", closeClick);
-            props.closeWindow();
-            
+    useEffect(() => {
+        function closeClick(evt) {
+            if (evt.key === 'Escape') {
+                props.closeWindow()
+            }
         }
-    };
+        document.addEventListener('keydown', closeClick);
+        return () => {
+            document.removeEventListener('keydown', closeClick);
+        }
 
-
-    document.addEventListener("keydown", closeClick, false);
+    }, [])
 
 
     return ReactDOM.createPortal(
