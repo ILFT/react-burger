@@ -1,0 +1,36 @@
+.modal_logic {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 720px;
+    top: 10%;
+    left: 30%;
+    border-radius: 40px;
+    background-color: rgba(28, 28, 33, 1);
+}
+
+.name_icon {
+
+    text-align: right;
+    padding-top: 2%;
+    padding-right: 4%;
+}
+
+.modal {
+    background: rgba(146, 142, 142, 0);
+    position: fixed;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 40;
+    border-radius: 103px;
+    background-color: #000000;
+    width: 720px;
+    height: 539px;
+    opacity: 100%;
+}

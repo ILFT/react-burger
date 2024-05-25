@@ -12,10 +12,43 @@
   flex-wrap: wrap;
 }
 
-.container{
+.container {
   display: flex;
 }
 
 .size {
   flex-basis: 32%;
+}
+
+.container_ingredientroll {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 50%;
+}
+
+.container_ingredientroll_data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container_cost {
+  display: flex;
+  justify-content: center;
+}
+
+
+.container_ingredientroll_counter {
+  position: sticky;
+  top: 0;
+  right: 0;
+}
+
+.modal {
+  overflow: hidden;
+}
+
+.text_align {
+  align: center;
 }

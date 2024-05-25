@@ -1,0 +1,16 @@
+.order_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 718px;
+    position: relative;
+
+}
+
+.icon {
+    text-align: right;
+    width: 640px;
+    height: 64px;
+
+}

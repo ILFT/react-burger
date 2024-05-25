@@ -1,28 +1,48 @@
-.constructor{
-    display: flex;
-    flex-direction: column;
-    padding-top: 6%;
-    gap: 1rem;
+.constructor_burger {
+  display: flex;
+  flex-direction: column;
+  padding-top: 6%;
+  align-items: stretch;
+  gap: 1rem;
+  flex-basis: 30vw;
 }
 
 
 .icon_text {
-    padding: 12px;
+  padding: 12px;
 }
 
 .sum {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: right;
-    padding: 4%;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: right;
+  padding: 4%;
+  padding-right: 10%;
 }
 
 .container_ingredients {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    overflow-y: scroll;
-    max-height: 37vh;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: scroll;
+  max-height: 37vh;
+  min-width: 102%;
+}
+
+.burger_ingredient {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.roll {
+  padding-left: 4%;
+  padding-right: 10%;
+  min-width: 100%;
+}
+
+.modal {
+  overflow: hidden;
+}
