@@ -5,13 +5,13 @@ import Ingredient from '../ingredient/ingredient'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useModal } from '../../hooks/hooks'
-import { ingredientType } from '../../utils/types'
+import { IngredientType } from '../../utils/types'
 
-function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingredients: ingredientType[], isSelectedRoll?: ingredientType, checkCount: Function }) {
+function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingredients: IngredientType[], isSelectedRoll?: IngredientType, checkCount: Function }) {
         const [current, setCurrent] = useState<string>('rolls');
         const { isModalOpen, openModal, closeModal } = useModal();
 
-        const [ingredient, setIngredient] = useState<ingredientType | undefined>(undefined);
+        const [ingredient, setIngredient] = useState<IngredientType | undefined>(undefined);
 
         const rollIngredients = useMemo(() => {
                 return ingredients.filter((ingredient) => ingredient.type === "bun");
@@ -25,7 +25,7 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingred
                 return ingredients.filter((ingredient) => ingredient.type === "main");
         }, [ingredients]);
 
-        function modalWindowOpen(ingredient: ingredientType) {
+        function modalWindowOpen(ingredient: IngredientType) {
                 setIngredient(ingredient);
                 openModal();
         }

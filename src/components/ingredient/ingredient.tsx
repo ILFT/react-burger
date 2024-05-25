@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
-import { ingredientType } from '../../utils/types'
+import { IngredientType } from '../../utils/types'
 
-function Ingredient({ ingredientInfo, ingredient, checkCount }: { ingredientInfo: Function, ingredient: ingredientType, checkCount: Function }) {
+function Ingredient({ ingredientInfo, ingredient, checkCount }: { ingredientInfo: Function, ingredient: IngredientType, checkCount: Function }) {
 
         const [, dragRef] = useDrag({
                 type: 'ingredient',

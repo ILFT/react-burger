@@ -5,9 +5,9 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
 import { useModal } from '../../hooks/hooks'
-import { ingredientType } from '../../utils/types'
+import { IngredientType } from '../../utils/types'
 
-function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }: { addIngredient: Function, removeIngredient: Function, changeRoll?: ingredientType, burgerIngredients: ingredientType[] }) {
+function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }: { addIngredient: Function, removeIngredient: Function, changeRoll?: IngredientType, burgerIngredients: IngredientType[] }) {
 
     const rollUpLower = changeRoll;
 

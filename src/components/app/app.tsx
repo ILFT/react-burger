@@ -7,19 +7,19 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { ingredientType } from '../../utils/types'
+import { IngredientType } from '../../utils/types'
 
 
 function App() {
 
-  const [ingredients, setIngredients] = useState<ingredientType[]>([]);
+  const [ingredients, setIngredients] = useState<IngredientType[]>([]);
   const [isLoad, setIsLoad] = useState<boolean>(false);
 
-  const [changeRoll, setChangeRoll] = useState<ingredientType>();
-  const [burgerIngredient, setBurgerIngredient] = useState<ingredientType[]>([]);
+  const [changeRoll, setChangeRoll] = useState<IngredientType>();
+  const [burgerIngredient, setBurgerIngredient] = useState<IngredientType[]>([]);
 
 
-  function addIngredient(ingredient: ingredientType) {
+  function addIngredient(ingredient: IngredientType) {
     setBurgerIngredient([...burgerIngredient, ingredient]);
   }
 
@@ -28,10 +28,10 @@ function App() {
     setBurgerIngredient([...burgerIngredient]);
   }
 
-  function changingRoll(roll: ingredientType) {
+  function changingRoll(roll: IngredientType) {
     setChangeRoll(roll);
   }
-  function checkCount(ingredient: ingredientType) {
+  function checkCount(ingredient: IngredientType) {
     return burgerIngredient.filter(ingredientInBurger => ingredientInBurger === ingredient).length;
   }
 
@@ -44,7 +44,7 @@ function App() {
         return Promise.reject(`Ошибка ${response.status}`);
       }).then(data => {
         setIngredients(data.data);
-        setChangeRoll(data.data.find((roll: ingredientType) => roll._id === "643d69a5c3f7b9001cfa093c"))
+        setChangeRoll(data.data.find((roll: IngredientType) => roll._id === "643d69a5c3f7b9001cfa093c"))
         setIsLoad(true);
       }).catch(console.error);
     }

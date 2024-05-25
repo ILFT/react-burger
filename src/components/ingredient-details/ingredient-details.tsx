@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./ingredient-details.module.css";
-import { ingredientType } from '../../utils/types'
+import { IngredientType } from '../../utils/types'
 
-function IngredientDetails({ ingredient }: { ingredient: ingredientType | undefined }) {
+function IngredientDetails({ ingredient }: { ingredient: IngredientType | undefined }) {
     return (
         ingredient ?
             <div className={styles.ingredient_info} >
