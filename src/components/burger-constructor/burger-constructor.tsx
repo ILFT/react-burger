@@ -4,9 +4,10 @@ import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktiku
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
-import {useModal} from '../../hooks/hooks'
+import { useModal } from '../../hooks/hooks'
+import { ingredientType } from '../../utils/types'
 
-function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }) {
+function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }: { addIngredient: Function, removeIngredient: Function, changeRoll?: ingredientType, burgerIngredients: ingredientType[] }) {
 
     const rollUpLower = changeRoll;
 
@@ -18,35 +19,32 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
     })
 
 
-    function modalWindowOpen() {
-        openModal(true);
-    }
-    function modalWindowClose() {
-        closeModal(false);
-    }
-
     function getCostBurger() {
-        if (burgerIngredients.length > 0) {
-            return burgerIngredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
-                return a + b;
-            }) + 2 * rollUpLower.price;
-        } else {
-            return 2 * rollUpLower.price;
+        if (rollUpLower) {
+            if (burgerIngredients.length > 0) {
+                return burgerIngredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
+                    return a + b;
+                }) + 2 * rollUpLower.price;
+            } else {
+                return 2 * rollUpLower.price;
+            }
         }
 
     }
 
     return (
 
-        <section className={styles.constructor} ref={dropRef}>
+        <section className={styles.constructor_burger} ref={dropRef}>
             <div className={styles.roll}>
-                <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text={rollUpLower.name + "(верх)"}
-                    price={rollUpLower.price}
-                    thumbnail={rollUpLower.image_mobile}
-                />
+                {rollUpLower &&
+                    <ConstructorElement
+                        type="top"
+                        isLocked={true}
+                        text={rollUpLower.name + "(верх)"}
+                        price={rollUpLower.price}
+                        thumbnail={rollUpLower.image_mobile}
+                    />
+                }
             </div>
             <div className={styles.container_ingredients} >
                 {
@@ -66,13 +64,15 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                 }
             </div>
             <div className={styles.roll}>
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text={rollUpLower.name + "(низ)"}
-                    price={rollUpLower.price}
-                    thumbnail={rollUpLower.image_mobile}
-                />
+                {rollUpLower &&
+                    <ConstructorElement
+                        type="bottom"
+                        isLocked={true}
+                        text={rollUpLower.name + "(низ)"}
+                        price={rollUpLower.price}
+                        thumbnail={rollUpLower.image_mobile}
+                    />
+                }
             </div>
             <div className={styles.sum}>
                 <div className={styles.sum}>
@@ -81,15 +81,15 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={modalWindowOpen}>
+                <Button htmlType="button" type="primary" size="medium" onClick={openModal}>
                     Оформить заказ
                 </Button>
             </div>
             {isModalOpen &&
                 <div className={styles.modal}>
                     {
-                        <Modal header="Внимание!" closeWindow={modalWindowClose} >
-                            <OrderDetails closeWindow={modalWindowClose}/>
+                        <Modal onClose={closeModal} >
+                            <OrderDetails />
                         </Modal>
                     }
                 </div>

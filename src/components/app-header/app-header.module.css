@@ -16,6 +16,7 @@
   flex-wrap: nowrap;
 
 }
+
 .container_menu {
   composes: container;
   justify-content: center;
@@ -23,6 +24,7 @@
   width: 100%;
   gap: 20px;
 }
+
 .container_menu_element {
   composes: container;
   width: 40%;
@@ -47,6 +49,6 @@
   padding: 12px;
 }
 
-.logo{
+.logo {
   align-items: center;
 }

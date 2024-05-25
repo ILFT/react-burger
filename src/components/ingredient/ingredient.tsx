@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
+import { ingredientType } from '../../utils/types'
 
-function Ingredient({ ingredientInfo, ingredient, checkCount }) {
+function Ingredient({ ingredientInfo, ingredient, checkCount }: { ingredientInfo: Function, ingredient: ingredientType, checkCount: Function }) {
 
-        const [,dragRef] = useDrag({
+        const [, dragRef] = useDrag({
                 type: 'ingredient',
                 item: ingredient
         })
@@ -17,7 +18,7 @@ function Ingredient({ ingredientInfo, ingredient, checkCount }) {
                                         <p className="text text_type_main-default pr-1">{ingredient.price}</p>
                                         <CurrencyIcon type='primary' />
                                 </div>
-                                <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
+                                <p className={styles.text_align + "text text_type_main-default pr-1"}>{ingredient.name}</p>
                         </div>
                         <div className={styles.container_ingredient_counter}>
                                 {

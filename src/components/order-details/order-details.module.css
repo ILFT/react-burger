@@ -3,13 +3,9 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    width: 720px;
     height: 718px;
-    position: fixed;
-    top: 10%;
-    left: 30%;
-    border-radius: 40px;
-    background-color: rgba(28, 28, 33, 1);
+    position: relative;
+
 }
 
 .icon {

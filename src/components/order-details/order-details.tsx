@@ -1,14 +1,10 @@
 import React from "react";
 import styles from "./order-details.module.css";
 import done from '../../images/done.png';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function OrderDetails(props) {
-  return (
-    <div className={styles.order_info}>
-            <div className={styles.icon}>
-                <CloseIcon type="primary" onClick={props.closeWindow} />
-            </div>
+function OrderDetails() {
+    return (
+        <div className={styles.order_info}>
             <p className="text text_type_digits-large pb-16" >
                 034536
             </p>
@@ -24,7 +20,7 @@ function OrderDetails(props) {
             </p>
 
         </div>
-  );
+    );
 };
 
 

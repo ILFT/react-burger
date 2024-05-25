@@ -7,31 +7,31 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-
+import { ingredientType } from '../../utils/types'
 
 
 function App() {
 
-  const [ingredients, setIngredients] = useState([]);
-  const [isLoad, setIsLoad] = useState(false);
+  const [ingredients, setIngredients] = useState<ingredientType[]>([]);
+  const [isLoad, setIsLoad] = useState<boolean>(false);
 
-  const [changeRoll, setChangeRoll] = useState();
-  const [burgerIngredient, setBurgerIngredient] = useState([]);
+  const [changeRoll, setChangeRoll] = useState<ingredientType>();
+  const [burgerIngredient, setBurgerIngredient] = useState<ingredientType[]>([]);
 
 
-  function addIngredient(ingredient: never) {
+  function addIngredient(ingredient: ingredientType) {
     setBurgerIngredient([...burgerIngredient, ingredient]);
   }
 
-  function removeIngredient(indexIngredient: never) {
+  function removeIngredient(indexIngredient: number) {
     burgerIngredient.splice(indexIngredient, 1);
     setBurgerIngredient([...burgerIngredient]);
   }
 
-  function changingRoll(roll: never) {
+  function changingRoll(roll: ingredientType) {
     setChangeRoll(roll);
   }
-  function checkCount(ingredient: any) {
+  function checkCount(ingredient: ingredientType) {
     return burgerIngredient.filter(ingredientInBurger => ingredientInBurger === ingredient).length;
   }
 
@@ -44,7 +44,7 @@ function App() {
         return Promise.reject(`Ошибка ${response.status}`);
       }).then(data => {
         setIngredients(data.data);
-        setChangeRoll(data.data.find((roll: any) => roll._id === "643d69a5c3f7b9001cfa093c"))
+        setChangeRoll(data.data.find((roll: ingredientType) => roll._id === "643d69a5c3f7b9001cfa093c"))
         setIsLoad(true);
       }).catch(console.error);
     }
@@ -59,7 +59,7 @@ function App() {
         <DndProvider backend={HTML5Backend}>
           <main className={styles.container}>
             <BurgerIngredients checkCount={checkCount} ingredients={ingredients} isSelectedRoll={changeRoll} />
-            <BurgerConstructor addIngredient={addIngredient} removeIngredient={removeIngredient} changeRoll={changeRoll} burgerIngredients={burgerIngredient}/>
+            <BurgerConstructor addIngredient={addIngredient} removeIngredient={removeIngredient} changeRoll={changeRoll} burgerIngredients={burgerIngredient} />
           </main>
         </DndProvider>
       </BrowserRouter>

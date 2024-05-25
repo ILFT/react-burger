@@ -4,14 +4,14 @@ import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger
 import Ingredient from '../ingredient/ingredient'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import {useModal} from '../../hooks/hooks'
+import { useModal } from '../../hooks/hooks'
+import { ingredientType } from '../../utils/types'
 
-
-function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }) {
-        const [current, setCurrent] = useState('rolls');
+function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingredients: ingredientType[], isSelectedRoll?: ingredientType, checkCount: Function }) {
+        const [current, setCurrent] = useState<string>('rolls');
         const { isModalOpen, openModal, closeModal } = useModal();
 
-        const [ingredient, setIngredient] = useState({});
+        const [ingredient, setIngredient] = useState<ingredientType | undefined>(undefined);
 
         const rollIngredients = useMemo(() => {
                 return ingredients.filter((ingredient) => ingredient.type === "bun");
@@ -25,12 +25,12 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }) {
                 return ingredients.filter((ingredient) => ingredient.type === "main");
         }, [ingredients]);
 
-        function modalWindowOpen(ingredient) {
+        function modalWindowOpen(ingredient: ingredientType) {
                 setIngredient(ingredient);
                 openModal();
         }
         function modalWindowClose() {
-                setIngredient({});
+                setIngredient(undefined);
                 closeModal();
         }
 
@@ -58,24 +58,24 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }) {
                                         <div className={styles.container_ingredient}>
 
                                                 {rollIngredients.map((ingredient) => (
-                                                        
-                                                                <div className={styles.container_ingredientroll} key={ingredient._id}>
-                                                                        <div className={styles.container_ingredientroll_data} onClick={() => modalWindowOpen(ingredient)}>
-                                                                                <img src={ingredient.image} alt={ingredient.name} />
-                                                                                <div className={styles.container_cost}>
-                                                                                        <p className="text text_type_main-default pr-1">{ingredient.price}</p>
-                                                                                        <CurrencyIcon type='primary' />
-                                                                                </div>
-                                                                                <p align='center' className="text text_type_main-default pr-1">{ingredient.name}</p>
+
+                                                        <div className={styles.container_ingredientroll} key={ingredient._id}>
+                                                                <div className={styles.container_ingredientroll_data} onClick={() => modalWindowOpen(ingredient)}>
+                                                                        <img src={ingredient.image} alt={ingredient.name} />
+                                                                        <div className={styles.container_cost}>
+                                                                                <p className="text text_type_main-default pr-1">{ingredient.price}</p>
+                                                                                <CurrencyIcon type='primary' />
                                                                         </div>
-                                                                
+                                                                        <p className={styles.text_align + "text text_type_main-default pr-1"}>{ingredient.name}</p>
+                                                                </div>
+
                                                                 {(isSelectedRoll === ingredient) &&
                                                                         <div className={styles.container_ingredientroll_counter}>
-                                                                                        <Counter count={2} size="default" />
+                                                                                <Counter count={2} size="default" />
                                                                         </div>
                                                                 }
-                                                                </div>
-                                                        
+                                                        </div>
+
                                                 ))}
 
                                         </div>
@@ -103,8 +103,8 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }) {
                         {isModalOpen &&
                                 <div className={styles.modal}>
                                         {
-                                                <Modal header="Внимание!" closeWindow={modalWindowClose} >
-                                                        <IngredientDetails props={ingredient} closeWindow={modalWindowClose}/>
+                                                <Modal onClose={modalWindowClose} >
+                                                        <IngredientDetails ingredient={ingredient} />
                                                 </Modal>
                                         }
                                 </div>

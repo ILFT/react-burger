@@ -12,7 +12,7 @@
   flex-wrap: wrap;
 }
 
-.container{
+.container {
   display: flex;
 }
 
@@ -26,11 +26,13 @@
   justify-content: center;
   width: 50%;
 }
+
 .container_ingredientroll_data {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .container_cost {
   display: flex;
   justify-content: center;
@@ -42,6 +44,11 @@
   top: 0;
   right: 0;
 }
-.modal{
+
+.modal {
   overflow: hidden;
+}
+
+.text_align {
+  align: center;
 }
