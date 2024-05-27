@@ -4,11 +4,23 @@ import './index.css';
 import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
 
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+
+// Корневой редьюсер, который обрабатывает экшены
+import { rootReducer } from './services/reducers/reducers';
+
+// Инициализируем хранилище с помощью корневого редьюсера
+const store = createStore(rootReducer);
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
+  <Provider store={store}>
     <App />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
