@@ -4,15 +4,12 @@ import './index.css';
 import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
 
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
+import { store } from './services/stores/store';
 
-// Корневой редьюсер, который обрабатывает экшены
-import { rootReducer } from './services/reducers/reducers';
 
-// Инициализируем хранилище с помощью корневого редьюсера
-const store = createStore(rootReducer);
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

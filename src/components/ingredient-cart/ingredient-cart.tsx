@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
-import styles from './ingredient.module.css';
+import styles from './ingredient-cart.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
 import { IngredientType } from '../../utils/types'
+import { useDispatch } from 'react-redux';
 
-function Ingredient({ ingredientInfo, ingredient, checkCount }: { ingredientInfo: Function, ingredient: IngredientType, checkCount: Function }) {
+function IngredientCart({ ingredient }: { ingredient: IngredientType }) {
+
+        const dispatch = useDispatch();
+
+        function ingredientInfo(ingredient: IngredientType) {
+                dispatch({
+                        type: 'INGREDIENTDETAILS_OPEN',
+                        ingredient: ingredient
+                })
+                dispatch({
+                        type: 'MODAL_OPEN'
+                })
+        }
 
         const [, dragRef] = useDrag({
                 type: 'ingredient',
                 item: ingredient
         })
+
         return (
                 <div className={styles.container_ingredient} ref={dragRef}>
                         <div className={styles.container_ingredient_data} onClick={() => ingredientInfo(ingredient)}>
@@ -22,7 +36,7 @@ function Ingredient({ ingredientInfo, ingredient, checkCount }: { ingredientInfo
                         </div>
                         <div className={styles.container_ingredient_counter}>
                                 {
-                                        (checkCount(ingredient) > 0) && <Counter count={checkCount(ingredient)} size="default" />
+                                        (ingredient.count > 0) && <Counter count={ingredient.count} size="default" />
                                 }
 
                         </div>
@@ -31,4 +45,4 @@ function Ingredient({ ingredientInfo, ingredient, checkCount }: { ingredientInfo
 }
 
 
-export default Ingredient; 
+export default IngredientCart; 

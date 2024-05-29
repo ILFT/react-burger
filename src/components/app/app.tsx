@@ -8,32 +8,17 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { IngredientType } from '../../utils/types'
+import { useDispatch } from 'react-redux';
+
 
 
 function App() {
 
-  const [ingredients, setIngredients] = useState<IngredientType[]>([]);
+  const dispatch = useDispatch();
+
   const [isLoad, setIsLoad] = useState<boolean>(false);
 
-  const [changeRoll, setChangeRoll] = useState<IngredientType>();
-  const [burgerIngredient, setBurgerIngredient] = useState<IngredientType[]>([]);
 
-
-  function addIngredient(ingredient: IngredientType) {
-    setBurgerIngredient([...burgerIngredient, ingredient]);
-  }
-
-  function removeIngredient(indexIngredient: number) {
-    burgerIngredient.splice(indexIngredient, 1);
-    setBurgerIngredient([...burgerIngredient]);
-  }
-
-  function changingRoll(roll: IngredientType) {
-    setChangeRoll(roll);
-  }
-  function checkCount(ingredient: IngredientType) {
-    return burgerIngredient.filter(ingredientInBurger => ingredientInBurger === ingredient).length;
-  }
 
   useEffect(() => {
     if (!isLoad) {
@@ -43,8 +28,21 @@ function App() {
         }
         return Promise.reject(`Ошибка ${response.status}`);
       }).then(data => {
-        setIngredients(data.data);
-        setChangeRoll(data.data.find((roll: IngredientType) => roll._id === "643d69a5c3f7b9001cfa093c"))
+        dispatch({
+          type: 'BURGER_INGREDIENTS_INITIAL',
+          rolls: data.data.filter((roll: IngredientType) => roll.type === "bun"),
+          fillings: data.data.filter((filing: IngredientType) => filing.type === "main"),
+          sauces: data.data.filter((sauce: IngredientType) => sauce.type === "sauce"),
+          tab: 'rolls'
+        });
+        dispatch({
+          type: "BURGER_CONSTRUCTOR_CHANGE_ROLL",
+          roll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
+        })
+        dispatch({
+          type: "BURGER_INGREDIENTS_CHANGE_ROLL",
+          changeRoll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
+        })
         setIsLoad(true);
       }).catch(console.error);
     }
@@ -58,8 +56,8 @@ function App() {
         <AppHeader />
         <DndProvider backend={HTML5Backend}>
           <main className={styles.container}>
-            <BurgerIngredients checkCount={checkCount} ingredients={ingredients} isSelectedRoll={changeRoll} />
-            <BurgerConstructor addIngredient={addIngredient} removeIngredient={removeIngredient} changeRoll={changeRoll} burgerIngredients={burgerIngredient} />
+            <BurgerIngredients />
+            <BurgerConstructor />
           </main>
         </DndProvider>
       </BrowserRouter>

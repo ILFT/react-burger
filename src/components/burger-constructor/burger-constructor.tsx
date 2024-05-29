@@ -4,29 +4,74 @@ import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktiku
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
-import { useModal } from '../../hooks/hooks'
-import { IngredientType } from '../../utils/types'
+import { IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
+import { useDispatch, useSelector } from 'react-redux';
+import { store } from '../../services/stores/store';
 
-function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }: { addIngredient: Function, removeIngredient: Function, changeRoll?: IngredientType, burgerIngredients: IngredientType[] }) {
+function BurgerConstructor() {
 
-    const rollUpLower = changeRoll;
+    const dispatch = useDispatch();
 
-    const { isModalOpen, openModal, closeModal } = useModal();
+    const modal = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData)  as IIngredientOrderDetails;
+    const { ingredients, roll } = useSelector<ReturnType<typeof store.getState>>(store => store.burgerConstructorData) as IBurgerConstructor;
 
+    function addIngredient(ingredient: IngredientType) {
+        
+        if(ingredient.type === 'bun'){
+            dispatch({
+                type: "BURGER_CONSTRUCTOR_CHANGE_ROLL",
+                roll: ingredient
+            })
+            dispatch({
+                type: "BURGER_INGREDIENTS_CHANGE_ROLL",
+                changeRoll: ingredient
+            })
+        }else{
+            dispatch({
+                type: "BURGER_CONSTRUCTOR_ADD_INGREDIENT",
+                ingredient: ingredient
+            })
+            dispatch({
+                type: "BURGER_INGREDIENTS_INCREASE_INGREDIENT",
+                increaseIngredient: ingredient
+            })
+        }
+      
+    }
+
+    function removeIngredient(index: number, ingredient: IngredientType) {
+
+        dispatch({
+            type: "BURGER_CONSTRUCTOR_DELETE_INGREDIENT",
+            index: index
+        })
+        dispatch({
+            type: "BURGER_INGREDIENTS_DECREASE_INGREDIENT",
+            decreaseIngredient: ingredient
+        })
+    }
+    
     const [, dropRef] = useDrop({
         accept: 'ingredient',
-        drop: (item) => addIngredient(item)
+        drop: (item: IngredientType) => addIngredient(item)
     })
+
+    function createOrder() {
+        dispatch({
+            type: 'ORDERDETAILS_OPEN',
+            id: 5256161
+        })
+    }
 
 
     function getCostBurger() {
-        if (rollUpLower) {
-            if (burgerIngredients.length > 0) {
-                return burgerIngredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
+        if (roll) {
+            if (ingredients.length > 0) {
+                return ingredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
                     return a + b;
-                }) + 2 * rollUpLower.price;
+                }) + 2 * roll.price;
             } else {
-                return 2 * rollUpLower.price;
+                return 2 * roll.price;
             }
         }
 
@@ -36,19 +81,19 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
 
         <section className={styles.constructor_burger} ref={dropRef}>
             <div className={styles.roll}>
-                {rollUpLower &&
+                {roll &&
                     <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text={rollUpLower.name + "(верх)"}
-                        price={rollUpLower.price}
-                        thumbnail={rollUpLower.image_mobile}
+                        text={roll.name + "(верх)"}
+                        price={roll.price}
+                        thumbnail={roll.image_mobile}
                     />
                 }
             </div>
             <div className={styles.container_ingredients} >
                 {
-                    burgerIngredients.map((ingredient, index) => (
+                    ingredients.map((ingredient, index) => (
 
                         <div className={styles.burger_ingredient} key={index}>
                             <DragIcon type="primary" />
@@ -56,7 +101,7 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                                 text={ingredient.name}
                                 price={ingredient.price}
                                 thumbnail={ingredient.image_mobile}
-                                handleClose={() => removeIngredient(index)}
+                                handleClose={() => removeIngredient(index, ingredient)}
                             />
                         </div>
 
@@ -64,13 +109,13 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                 }
             </div>
             <div className={styles.roll}>
-                {rollUpLower &&
+                {roll &&
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
-                        text={rollUpLower.name + "(низ)"}
-                        price={rollUpLower.price}
-                        thumbnail={rollUpLower.image_mobile}
+                        text={roll.name + "(низ)"}
+                        price={roll.price}
+                        thumbnail={roll.image_mobile}
                     />
                 }
             </div>
@@ -81,14 +126,14 @@ function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burger
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={openModal}>
+                <Button htmlType="button" type="primary" size="medium" onClick={createOrder}>
                     Оформить заказ
                 </Button>
             </div>
-            {isModalOpen &&
+            {modal.isModalOrder &&
                 <div className={styles.modal}>
                     {
-                        <Modal onClose={closeModal} >
+                        <Modal>
                             <OrderDetails />
                         </Modal>
                     }

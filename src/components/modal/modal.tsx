@@ -3,17 +3,23 @@ import styles from "./modal.module.css";
 import ReactDOM from 'react-dom';
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
 
 //const modalRoot = document.getElementById("modal");
 
 
-function Modal({ onClose, children }: { onClose: Function, children: ReactNode }) {
+function Modal({ children }: { children: ReactNode }) {
 
+    const dispatch = useDispatch();
+
+    function closeModal() {
+        dispatch({ type: 'MODAL_CLOSE' })
+    }
 
     useEffect(() => {
         function handleEscape(evt: KeyboardEvent) {
             if (evt.key === 'Escape') {
-                onClose()
+                closeModal()
             }
         }
         document.addEventListener('keydown', handleEscape);
@@ -25,10 +31,10 @@ function Modal({ onClose, children }: { onClose: Function, children: ReactNode }
 
 
     return ReactDOM.createPortal(
-        <ModalOverlay onClose={onClose} >
+        <ModalOverlay >
             <div className={styles.modal_logic} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.name_icon}>
-                    <CloseIcon type="primary" onClick={() => onClose()} />
+                    <CloseIcon type="primary" onClick={closeModal} />
                 </div>
                 {children}
             </div>

@@ -1,38 +1,28 @@
 import React, { useState, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import Ingredient from '../ingredient/ingredient'
+import IngredientCart from '../ingredient-cart/ingredient-cart'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useModal } from '../../hooks/hooks'
-import { IngredientType } from '../../utils/types'
+import { IBurgerIngredients, IIngredientOrderDetails } from '../../utils/types'
+import { useDispatch, useSelector } from 'react-redux';
+import { store, } from '../../services/stores/store';
 
-function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingredients: IngredientType[], isSelectedRoll?: IngredientType, checkCount: Function }) {
-        const [current, setCurrent] = useState<string>('rolls');
-        const { isModalOpen, openModal, closeModal } = useModal();
+function BurgerIngredients() {
 
-        const [ingredient, setIngredient] = useState<IngredientType | undefined>(undefined);
+        const dispatch = useDispatch();
 
-        const rollIngredients = useMemo(() => {
-                return ingredients.filter((ingredient) => ingredient.type === "bun");
-        }, [ingredients]);
+        const { rolls, fillings, sauces, tab } = useSelector<ReturnType<typeof store.getState>>(store => store.burgerIngredientsData) as IBurgerIngredients;
+        const modal = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData)  as IIngredientOrderDetails;
 
-        const sauceIngredients = useMemo(() => {
-                return ingredients.filter((ingredient) => ingredient.type === "sauce");
-        }, [ingredients]);
 
-        const fillingIngredients = useMemo(() => {
-                return ingredients.filter((ingredient) => ingredient.type === "main");
-        }, [ingredients]);
-
-        function modalWindowOpen(ingredient: IngredientType) {
-                setIngredient(ingredient);
-                openModal();
+        function setTab(value: string) {
+                dispatch({
+                        type: 'BURGER_INGREDIENTS_CHANGE_TAB',
+                        tab: value
+                })
         }
-        function modalWindowClose() {
-                setIngredient(undefined);
-                closeModal();
-        }
+
 
         return (
 
@@ -40,13 +30,13 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingred
                         <section>
                                 <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
                                 <div className={styles.container}>
-                                        <Tab value="rolls" active={current === 'rolls'} onClick={setCurrent}>
+                                        <Tab value='rolls' active={tab === 'rolls'} onClick={() => setTab('rolls')}>
                                                 Булки
                                         </Tab>
-                                        <Tab value="sauces" active={current === 'sauces'} onClick={setCurrent}>
+                                        <Tab value='sauces' active={tab === 'sauces'} onClick={() => setTab('sauces')}>
                                                 Соусы
                                         </Tab>
-                                        <Tab value="filling" active={current === 'filling'} onClick={setCurrent}>
+                                        <Tab value='filling' active={tab === 'filling'} onClick={() => setTab('filling')}>
                                                 Начинки
                                         </Tab>
                                 </div>
@@ -56,26 +46,8 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingred
 
                                         <p className="text text_type_main-medium pr-1" >Булки</p>
                                         <div className={styles.container_ingredient}>
-
-                                                {rollIngredients.map((ingredient) => (
-
-                                                        <div className={styles.container_ingredientroll} key={ingredient._id}>
-                                                                <div className={styles.container_ingredientroll_data} onClick={() => modalWindowOpen(ingredient)}>
-                                                                        <img src={ingredient.image} alt={ingredient.name} />
-                                                                        <div className={styles.container_cost}>
-                                                                                <p className="text text_type_main-default pr-1">{ingredient.price}</p>
-                                                                                <CurrencyIcon type='primary' />
-                                                                        </div>
-                                                                        <p className={styles.text_align + "text text_type_main-default pr-1"}>{ingredient.name}</p>
-                                                                </div>
-
-                                                                {(isSelectedRoll === ingredient) &&
-                                                                        <div className={styles.container_ingredientroll_counter}>
-                                                                                <Counter count={2} size="default" />
-                                                                        </div>
-                                                                }
-                                                        </div>
-
+                                                {rolls.map((roll) => (
+                                                        <IngredientCart key={roll._id} ingredient={roll} />
                                                 ))}
 
                                         </div>
@@ -83,8 +55,8 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingred
                                 <div>
                                         <p className="text text_type_main-medium pr-1"  >Соусы</p>
                                         <div className={styles.container_ingredient}>
-                                                {sauceIngredients.map((ingredient) => (
-                                                        <Ingredient checkCount={checkCount} ingredientInfo={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
+                                                {sauces.map((sauce) => (
+                                                        <IngredientCart key={sauce._id} ingredient={sauce} />
 
                                                 ))}
                                         </div>
@@ -92,19 +64,20 @@ function BurgerIngredients({ ingredients, isSelectedRoll, checkCount }: { ingred
                                 <div>
                                         <p className="text text_type_main-medium pr-1"  >Начинка</p>
                                         <div className={styles.container_ingredient}>
-                                                {fillingIngredients.map((ingredient) => (
-                                                        <Ingredient checkCount={checkCount} ingredientInfo={modalWindowOpen} key={ingredient._id} ingredient={ingredient} />
+                                                {fillings.map((filling) => (
+                                                        <IngredientCart key={filling._id} ingredient={filling} />
+
                                                 ))}
                                         </div>
                                 </div>
 
 
                         </section >
-                        {isModalOpen &&
+                        {modal.isModalIngredient &&
                                 <div className={styles.modal}>
                                         {
-                                                <Modal onClose={modalWindowClose} >
-                                                        <IngredientDetails ingredient={ingredient} />
+                                                <Modal >
+                                                        <IngredientDetails />
                                                 </Modal>
                                         }
                                 </div>

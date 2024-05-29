@@ -1,10 +1,12 @@
 import React from "react";
 import styles from "./ingredient-details.module.css";
 import { IngredientType } from '../../utils/types'
+import { useSelector } from "react-redux";
+import { store } from "../../services/stores/store";
 
-function IngredientDetails({ ingredient }: { ingredient: IngredientType | undefined }) {
+function IngredientDetails() {
+    const ingredientDetails = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData.ingredient) as IngredientType;
     return (
-        ingredient ?
             <div className={styles.ingredient_info} >
 
                 <div className={styles.name_icon}>
@@ -12,32 +14,32 @@ function IngredientDetails({ ingredient }: { ingredient: IngredientType | undefi
 
                 </div>
                 <div className={styles.image_ingredient_div}>
-                    <img src={ingredient.image} className={styles.ingredient_image} alt={ingredient.name} />
+                    <img src={ingredientDetails.image} className={styles.ingredient_image} alt={ingredientDetails.name} />
                 </div>
                 <p className={styles.name_ingredient + " text text_type_main-medium pt-4 pb-8"} >
-                    {ingredient.name}
+                    {ingredientDetails.name}
                 </p>
 
 
                 <div className={styles.description + " pr-15 pl-15"}>
                     <div className={styles.data_info}>
                         <p className="text text_type_main-default text_color_inactive pb-2">Калории,ккал</p>
-                        <p className="text text_type_main-default text_color_inactive">{ingredient.calories}</p>
+                        <p className="text text_type_main-default text_color_inactive">{ingredientDetails.calories}</p>
                     </div>
                     <div className={styles.data_info}>
                         <p className="text text_type_main-default text_color_inactive pb-2">Белки, г</p>
-                        <p className="text text_type_main-default text_color_inactive">{ingredient.proteins}</p>
+                        <p className="text text_type_main-default text_color_inactive">{ingredientDetails.proteins}</p>
                     </div>
                     <div className={styles.data_info}>
                         <p className="text text_type_main-default text_color_inactive pb-2">Жиры, г</p>
-                        <p className="text text_type_main-default text_color_inactive">{ingredient.fat}</p>
+                        <p className="text text_type_main-default text_color_inactive">{ingredientDetails.fat}</p>
                     </div>
                     <div className={styles.data_info}>
                         <p className="text text_type_main-default text_color_inactive pb-2">Углеводы, г</p>
-                        <p className="text text_type_main-default text_color_inactive">{ingredient.carbohydrates}</p>
+                        <p className="text text_type_main-default text_color_inactive">{ingredientDetails.carbohydrates}</p>
                     </div>
                 </div>
-            </div> : <div></div>
+            </div> 
 
 
     );
