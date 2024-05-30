@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
@@ -7,17 +7,18 @@ import { useDrop } from 'react-dnd'
 import { IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
 import { useDispatch, useSelector } from 'react-redux';
 import { store } from '../../services/stores/store';
+import ContructorIngredient from '../constructor-ingredient/constructor-ingredient';
 
 function BurgerConstructor() {
 
     const dispatch = useDispatch();
 
-    const modal = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData)  as IIngredientOrderDetails;
+    const modal = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
     const { ingredients, roll } = useSelector<ReturnType<typeof store.getState>>(store => store.burgerConstructorData) as IBurgerConstructor;
 
     function addIngredient(ingredient: IngredientType) {
-        
-        if(ingredient.type === 'bun'){
+
+        if (ingredient.type === 'bun') {
             dispatch({
                 type: "BURGER_CONSTRUCTOR_CHANGE_ROLL",
                 roll: ingredient
@@ -26,7 +27,7 @@ function BurgerConstructor() {
                 type: "BURGER_INGREDIENTS_CHANGE_ROLL",
                 changeRoll: ingredient
             })
-        }else{
+        } else {
             dispatch({
                 type: "BURGER_CONSTRUCTOR_ADD_INGREDIENT",
                 ingredient: ingredient
@@ -36,21 +37,11 @@ function BurgerConstructor() {
                 increaseIngredient: ingredient
             })
         }
-      
+
     }
 
-    function removeIngredient(index: number, ingredient: IngredientType) {
 
-        dispatch({
-            type: "BURGER_CONSTRUCTOR_DELETE_INGREDIENT",
-            index: index
-        })
-        dispatch({
-            type: "BURGER_INGREDIENTS_DECREASE_INGREDIENT",
-            decreaseIngredient: ingredient
-        })
-    }
-    
+
     const [, dropRef] = useDrop({
         accept: 'ingredient',
         drop: (item: IngredientType) => addIngredient(item)
@@ -77,6 +68,7 @@ function BurgerConstructor() {
 
     }
 
+
     return (
 
         <section className={styles.constructor_burger} ref={dropRef}>
@@ -94,17 +86,7 @@ function BurgerConstructor() {
             <div className={styles.container_ingredients} >
                 {
                     ingredients.map((ingredient, index) => (
-
-                        <div className={styles.burger_ingredient} key={index}>
-                            <DragIcon type="primary" />
-                            <ConstructorElement
-                                text={ingredient.name}
-                                price={ingredient.price}
-                                thumbnail={ingredient.image_mobile}
-                                handleClose={() => removeIngredient(index, ingredient)}
-                            />
-                        </div>
-
+                        <ContructorIngredient ingredient={ingredient} index={index} />
                     ))
                 }
             </div>
