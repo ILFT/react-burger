@@ -7,44 +7,56 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { IngredientType } from '../../utils/types'
+import { AppDispatch, IngredientType } from '../../utils/types'
 import { useDispatch } from 'react-redux';
+import { request } from '../../utils/utils';
 
 
 
 function App() {
 
-  const dispatch = useDispatch();
+  const dispatch : any = useDispatch();
 
   const [isLoad, setIsLoad] = useState<boolean>(false);
 
 
+  function initIngredients() {
+    
+    return async (dispatch: AppDispatch) =>{
+      dispatch({
+        type: 'BURGER_INGREDIENTS_INITIAL'
+      })
+      request('https://norma.nomoreparties.space/api/ingredients').then(data => {
+        if (data) {
+          dispatch({
+            type: 'BURGER_INGREDIENTS_INITIAL_SUCCESS',
+            rolls: data.data.filter((roll: IngredientType) => roll.type === "bun"),
+            fillings: data.data.filter((filing: IngredientType) => filing.type === "main"),
+            sauces: data.data.filter((sauce: IngredientType) => sauce.type === "sauce"),
+          })
+          dispatch({
+            type: "BURGER_CONSTRUCTOR_CHANGE_ROLL",
+            roll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
+          })
+          dispatch({
+            type: "BURGER_INGREDIENTS_CHANGE_ROLL",
+            changeRoll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
+          })
+
+          setIsLoad(true);
+        } else {
+          dispatch({
+            type: 'BURGER_INGREDIENTS_INITIAL_FAILED',
+          });
+        }
+      }).catch(console.error);
+    }
+  }
 
   useEffect(() => {
     if (!isLoad) {
-      fetch('https://norma.nomoreparties.space/api/ingredients').then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        return Promise.reject(`Ошибка ${response.status}`);
-      }).then(data => {
-        dispatch({
-          type: 'BURGER_INGREDIENTS_INITIAL',
-          rolls: data.data.filter((roll: IngredientType) => roll.type === "bun"),
-          fillings: data.data.filter((filing: IngredientType) => filing.type === "main"),
-          sauces: data.data.filter((sauce: IngredientType) => sauce.type === "sauce"),
-          tab: 'rolls'
-        });
-        dispatch({
-          type: "BURGER_CONSTRUCTOR_CHANGE_ROLL",
-          roll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
-        })
-        dispatch({
-          type: "BURGER_INGREDIENTS_CHANGE_ROLL",
-          changeRoll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
-        })
-        setIsLoad(true);
-      }).catch(console.error);
+      dispatch(initIngredients());
+      setIsLoad(true);
     }
 
   }, [])

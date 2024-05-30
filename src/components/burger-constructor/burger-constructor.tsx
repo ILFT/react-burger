@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
@@ -54,8 +54,7 @@ function BurgerConstructor() {
         })
     }
 
-
-    function getCostBurger() {
+    const costBurger = useMemo(() => {
         if (roll) {
             if (ingredients.length > 0) {
                 return ingredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
@@ -65,8 +64,8 @@ function BurgerConstructor() {
                 return 2 * roll.price;
             }
         }
+    }, [ingredients, roll])
 
-    }
 
 
     return (
@@ -86,7 +85,7 @@ function BurgerConstructor() {
             <div className={styles.container_ingredients} >
                 {
                     ingredients.map((ingredient, index) => (
-                        <ContructorIngredient ingredient={ingredient} index={index} />
+                        <ContructorIngredient key={index} ingredient={ingredient} index={index} />
                     ))
                 }
             </div>
@@ -104,7 +103,7 @@ function BurgerConstructor() {
             <div className={styles.sum}>
                 <div className={styles.sum}>
                     <p className={styles.icon_text}>
-                        {getCostBurger()}
+                        {costBurger}
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>

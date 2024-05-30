@@ -5,6 +5,8 @@ import {
   BURGER_INGREDIENTS_INCREASE_INGREDIENT,
   BURGER_INGREDIENTS_DECREASE_INGREDIENT,
   BURGER_INGREDIENTS_CHANGE_ROLL,
+  BURGER_INGREDIENTS_INITIAL_SUCCESS,
+  BURGER_INGREDIENTS_INITIAL_FAILED,
   TBurgerIngredientsActions,
 } from '../actions/burger-ingredients-action';
 
@@ -13,7 +15,9 @@ const burgerIngredientsInitialState: IBurgerIngredients = {
   rolls: [],
   fillings: [],
   sauces: [],
-  tab: null,
+  tab: 'rolls',
+  ingredientsRequest: false,
+  ingredientsFailed: false,
 }
 
 export const burgerIngredientsReducer = (state = burgerIngredientsInitialState, action: TBurgerIngredientsActions) => {
@@ -21,10 +25,23 @@ export const burgerIngredientsReducer = (state = burgerIngredientsInitialState, 
     case BURGER_INGREDIENTS_INITIAL: {
       return {
         ...state,
+        ingredientsRequest: true
+      };
+    }
+    case BURGER_INGREDIENTS_INITIAL_SUCCESS: {
+      return {
+        ...state,
         rolls: [...action.rolls].map(roll => { return { ...roll, count: 0 } }),
         fillings: [...action.fillings].map(filling => { return { ...filling, count: 0 } }),
         sauces: [...action.sauces].map(sauce => { return { ...sauce, count: 0 } }),
-        tab: action.tab,
+        ingredientsRequest: false
+      };
+    }
+    case BURGER_INGREDIENTS_INITIAL_FAILED: {
+      return {
+        ...state,
+        ingredientsFailed: true,
+        ingredientsRequest: false
       };
     }
     case BURGER_INGREDIENTS_CHANGE_TAB: {

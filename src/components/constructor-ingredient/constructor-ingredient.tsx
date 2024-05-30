@@ -60,7 +60,7 @@ function ContructorIngredient({ ingredient, index }: { ingredient: IngredientTyp
   drag(drop(refRes))
 
   return (
-    <div className={styles.burger_ingredient} key={index} ref={refRes}>
+    <div className={styles.burger_ingredient} ref={refRes}>
       <DragIcon type="primary" />
       <ConstructorElement
         text={ingredient.name}
