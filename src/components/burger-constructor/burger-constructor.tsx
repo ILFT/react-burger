@@ -4,14 +4,15 @@ import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktiku
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
-import { IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
+import { AppDispatch, IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
 import { useDispatch, useSelector } from 'react-redux';
 import { store } from '../../services/stores/store';
 import ContructorIngredient from '../constructor-ingredient/constructor-ingredient';
+import { request } from '../../utils/utils';
 
 function BurgerConstructor() {
 
-    const dispatch = useDispatch();
+    const dispatch: any = useDispatch();
 
     const modal = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
     const { ingredients, roll } = useSelector<ReturnType<typeof store.getState>>(store => store.burgerConstructorData) as IBurgerConstructor;
@@ -48,10 +49,33 @@ function BurgerConstructor() {
     })
 
     function createOrder() {
-        dispatch({
-            type: 'ORDERDETAILS_OPEN',
-            id: 5256161
-        })
+        dispatch(getOrderNumber(ingredients));
+        //dispatch({
+        //    type: 'ORDERDETAILS_OPEN',
+        //    id: 5256161
+        //})
+    }
+
+    function getOrderNumber(ingredients: IngredientType[]) {
+
+        return function (dispatch: AppDispatch) {
+            dispatch({
+                type: 'ORDERDETAILS_OPEN',
+            })
+            console.log(JSON.stringify([roll,...ingredients,roll]))
+            request('https://norma.nomoreparties.space/api/orders', { method: 'POST', body: JSON.stringify([roll,...ingredients,roll]) }).then(data => {
+                dispatch({
+                    type: 'ORDERDETAILS_OPEN_SUCCESS',
+                    id: data.order.number,
+                });
+            }).catch(() => {
+                dispatch({
+                    type: 'ORDERDETAILS_OPEN_FAILED',
+                })
+            })
+
+
+        }
     }
 
     const costBurger = useMemo(() => {
@@ -65,6 +89,7 @@ function BurgerConstructor() {
             }
         }
     }, [ingredients, roll])
+
 
 
 
@@ -107,7 +132,7 @@ function BurgerConstructor() {
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={createOrder}>
+                <Button htmlType="button" type="primary" size="medium" onClick={() => createOrder()}>
                     Оформить заказ
                 </Button>
             </div>

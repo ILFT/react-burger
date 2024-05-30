@@ -34,6 +34,8 @@ export interface IIngredientOrderDetails {
   id: number | null
   isModalIngredient: boolean
   isModalOrder: boolean
+  orderDetailsRequest: boolean
+  orderDetailsFailed: boolean
 }
 
 export interface IBurgerIngredients {
@@ -57,7 +59,7 @@ export type TApplicationActions =
   TBurgerConstructorActions;
 
 
-  export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
 
 
 export type AppThunk<TReturnType = void> = ThunkAction<TReturnType, RootState, null, TApplicationActions>;
