@@ -4,6 +4,7 @@ import { TBurgerIngredientsActions } from '../services/actions/burger-ingredient
 import { TIngredientDetailsActions } from '../services/actions/ingredient-order-details-action'
 import { store } from '../services/stores/store'
 
+
 export type IngredientType = {
   _id: string
   name: string
@@ -19,6 +20,12 @@ export type IngredientType = {
   __v: number
   count: number
 }
+
+export type IngredientTypeConstructor = {
+  ingredient: IngredientType
+  uuid: string
+}
+
 export type RectResult = {
   bottom: number;
   height: number;
@@ -48,7 +55,7 @@ export interface IBurgerIngredients {
 }
 
 export interface IBurgerConstructor {
-  ingredients: IngredientType[];
+  ingredients: IngredientTypeConstructor[];
   roll: IngredientType | undefined;
 }
 

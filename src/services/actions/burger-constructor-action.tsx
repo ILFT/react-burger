@@ -9,6 +9,7 @@ export const BURGER_CONSTRUCTOR_MOVE_INGEDIENT = 'BURGER_CONSTRUCTOR_MOVE_INGEDI
 export interface IBURGER_CONSTRUCTOR_ADD_INGREDIENT {
     readonly type: typeof BURGER_CONSTRUCTOR_ADD_INGREDIENT;
     readonly ingredient: IngredientType;
+    readonly uuid: string;
 }
 
 export interface IBURGER_CONSTRUCTOR_CHANGE_ROLL {

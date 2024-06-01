@@ -1,4 +1,4 @@
-import { Action } from '@reduxjs/toolkit';
+
 import {
     BURGER_CONSTRUCTOR_ADD_INGREDIENT,
     BURGER_CONSTRUCTOR_CHANGE_ROLL,
@@ -22,7 +22,7 @@ export const burgerConstructorReducer = (state = burgerConstructorInitialState, 
         case BURGER_CONSTRUCTOR_ADD_INGREDIENT: {
             return {
                 ...state,
-                ingredients: [...state.ingredients, action.ingredient],
+                ingredients: [...state.ingredients, { ingredient: action.ingredient, uuid: action.uuid }],
 
             }
         }
@@ -41,7 +41,6 @@ export const burgerConstructorReducer = (state = burgerConstructorInitialState, 
             }
         }
         case BURGER_CONSTRUCTOR_MOVE_INGEDIENT: {
-            // надо перемещать относильено место куда падает indexdropped а не свапать
             let tempIngredients = [...state.ingredients];
             [tempIngredients[action.indexDragged], tempIngredients[action.indexDroped]] = [tempIngredients[action.indexDroped], tempIngredients[action.indexDragged]]
             return {

@@ -12,7 +12,6 @@ export function initIngredients() {
             type: BURGER_INGREDIENTS_INITIAL
         })
         request('/ingredients').then(resulst => {
-            console.log(resulst);
             if (resulst) {
                 dispatch({
                     type: BURGER_INGREDIENTS_INITIAL_SUCCESS,
@@ -20,15 +19,6 @@ export function initIngredients() {
                     fillings: resulst.data.filter((filing: IngredientType) => filing.type === "main"),
                     sauces: resulst.data.filter((sauce: IngredientType) => sauce.type === "sauce"),
                 })
-                dispatch({
-                    type: BURGER_CONSTRUCTOR_CHANGE_ROLL,
-                    roll: resulst.data.filter((roll: IngredientType) => roll.type === "bun")[0]
-                })
-                dispatch({
-                    type: BURGER_INGREDIENTS_CHANGE_ROLL,
-                    changeRoll: resulst.data.filter((roll: IngredientType) => roll.type === "bun")[0]
-                })
-
             } else {
                 dispatch({
                     type: BURGER_INGREDIENTS_INITIAL_FAILED,
@@ -40,14 +30,14 @@ export function initIngredients() {
 
 
 
-export function getOrderNumber(ingredients: IngredientType[]) {
+export function getOrderNumber(ingredientsId: string[]) {
 
     return function (dispatch: AppDispatch) {
         dispatch({
             type: ORDERDETAILS_OPEN,
         })
-        console.log(JSON.stringify([...ingredients]))
-        request('/orders', { method: 'POST', body: JSON.stringify([...ingredients]) }).then(result => {
+        
+        request('/orders', { method: 'POST', body: JSON.stringify({ingredients: ingredientsId}) }).then(result => {
             dispatch({
                 type: ORDERDETAILS_OPEN_SUCCESS,
                 id: result.order.number,

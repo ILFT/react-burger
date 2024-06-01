@@ -6,13 +6,14 @@ import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
 import { IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
 import ContructorIngredient from '../constructor-ingredient/constructor-ingredient';
-import { BURGER_CONSTRUCTOR_ADD_INGREDIENT, BURGER_CONSTRUCTOR_CHANGE_ROLL } from '../../services/actions/burger-constructor-action';
-import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_INCREASE_INGREDIENT } from '../../services/actions/burger-ingredients-action';
+import { BURGER_CONSTRUCTOR_ADD_INGREDIENT, BURGER_CONSTRUCTOR_CHANGE_ROLL, BURGER_CONSTRUCTOR_DELETE_INGREDIENT } from '../../services/actions/burger-constructor-action';
+import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_DECREASE_INGREDIENT, BURGER_INGREDIENTS_INCREASE_INGREDIENT } from '../../services/actions/burger-ingredients-action';
 import { getOrderNumber } from '../../services/actions-thunk';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { v4 as uuid } from 'uuid';
+
 
 function BurgerConstructor() {
-
     const dispatch: any = useAppDispatch();
 
     const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
@@ -32,7 +33,8 @@ function BurgerConstructor() {
         } else {
             dispatch({
                 type: BURGER_CONSTRUCTOR_ADD_INGREDIENT,
-                ingredient: ingredient
+                ingredient: ingredient,
+                uuid: uuid()
             })
             dispatch({
                 type: BURGER_INGREDIENTS_INCREASE_INGREDIENT,
@@ -42,7 +44,20 @@ function BurgerConstructor() {
 
     }
 
+    function clearConstructor() {
+        let tempArray = ingredients.slice();
+        tempArray.map((ingredient, index) => {
+            dispatch({
+                type: BURGER_CONSTRUCTOR_DELETE_INGREDIENT,
+                index: index
+            })
+            dispatch({
+                type: BURGER_INGREDIENTS_DECREASE_INGREDIENT,
+                decreaseIngredient: ingredient
+            })
+        })
 
+    }
 
     const [, dropRef] = useDrop({
         accept: 'ingredient',
@@ -50,11 +65,9 @@ function BurgerConstructor() {
     })
 
     function createOrder() {
-        dispatch(getOrderNumber(ingredients));
-        //dispatch({
-        //    type: 'ORDERDETAILS_OPEN',
-        //    id: 5256161
-        //})
+        if (roll) {
+            dispatch(getOrderNumber([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id]));
+        }
     }
 
 
@@ -62,7 +75,7 @@ function BurgerConstructor() {
     const costBurger = useMemo(() => {
         if (roll) {
             if (ingredients.length > 0) {
-                return ingredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
+                return ingredients.map(item => (item.ingredient.price)).reduce((a, b) => {
                     return a + b;
                 }) + 2 * roll.price;
             } else {
@@ -90,8 +103,8 @@ function BurgerConstructor() {
             </div>
             <div className={styles.container_ingredients} >
                 {
-                    ingredients.map((ingredient, index) => (
-                        <ContructorIngredient key={index} ingredient={ingredient} index={index} />
+                    ingredients.map((item, index) => (
+                        <ContructorIngredient key={item.uuid} ingredient={item.ingredient} index={index} />
                     ))
                 }
             </div>
