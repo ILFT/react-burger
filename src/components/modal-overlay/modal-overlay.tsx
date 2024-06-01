@@ -1,16 +1,15 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import styles from "./modal-overlay.module.css";
-import { useDispatch } from "react-redux";
+import { MODAL_CLOSE } from "../../services/actions/ingredient-order-details-action";
+import { useAppDispatch } from "../../hooks/hooks";
 
 
 function ModalOverlay({ children }: { children: ReactNode }) {
-  const dispatch = useDispatch();
-  function closeModal() {
-    dispatch({ type: 'MODAL_CLOSE' })
-  }
+
+  const dispatch = useAppDispatch();
 
   return (
-    <div className={styles.modal_overlay} onClick={closeModal}>
+    <div className={styles.modal_overlay} onClick={() => dispatch({ type: MODAL_CLOSE })}>
       {children}
     </div>
   );

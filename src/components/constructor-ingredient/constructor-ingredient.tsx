@@ -1,15 +1,16 @@
 import { useRef } from "react";
-import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
-import { IngredientType, RectResult } from "../../utils/types";
+import { useDrag, useDrop } from "react-dnd";
+import { IngredientType } from "../../utils/types";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './constructor-ingredient.module.css';
-import { useDispatch, useSelector } from "react-redux";
-import { store } from "../../services/stores/store";
+import { BURGER_CONSTRUCTOR_DELETE_INGREDIENT, BURGER_CONSTRUCTOR_MOVE_INGEDIENT } from "../../services/actions/burger-constructor-action";
+import { BURGER_INGREDIENTS_DECREASE_INGREDIENT } from "../../services/actions/burger-ingredients-action";
+import { useAppDispatch } from "../../hooks/hooks";
 
 function ContructorIngredient({ ingredient, index }: { ingredient: IngredientType, index: number }) {
 
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   //const ingredients = useSelector<ReturnType<typeof store.getState>>(store => store.burgerConstructorData.ingredients);
 
@@ -17,11 +18,11 @@ function ContructorIngredient({ ingredient, index }: { ingredient: IngredientTyp
   function removeIngredient(index: number, ingredient: IngredientType) {
 
     dispatch({
-      type: "BURGER_CONSTRUCTOR_DELETE_INGREDIENT",
+      type: BURGER_CONSTRUCTOR_DELETE_INGREDIENT,
       index: index
     })
     dispatch({
-      type: "BURGER_INGREDIENTS_DECREASE_INGREDIENT",
+      type: BURGER_INGREDIENTS_DECREASE_INGREDIENT,
       decreaseIngredient: ingredient
     })
   }
@@ -45,7 +46,7 @@ function ContructorIngredient({ ingredient, index }: { ingredient: IngredientTyp
     hover(item: { index: number }) {
       if (item.index !== index) {
         dispatch({
-          type: 'BURGER_CONSTRUCTOR_MOVE_INGEDIENT',
+          type: BURGER_CONSTRUCTOR_MOVE_INGEDIENT,
           indexDragged: item.index,
           indexDroped: index ?? 0,
         });

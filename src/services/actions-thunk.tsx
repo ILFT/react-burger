@@ -1,0 +1,63 @@
+
+import { AppDispatch, IngredientType } from "../utils/types";
+import { request } from "../utils/utils";
+import { BURGER_CONSTRUCTOR_CHANGE_ROLL } from "./actions/burger-constructor-action";
+import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_INITIAL, BURGER_INGREDIENTS_INITIAL_FAILED, BURGER_INGREDIENTS_INITIAL_SUCCESS } from "./actions/burger-ingredients-action";
+import { ORDERDETAILS_OPEN, ORDERDETAILS_OPEN_FAILED, ORDERDETAILS_OPEN_SUCCESS } from "./actions/ingredient-order-details-action";
+
+export function initIngredients() {
+
+    return async (dispatch: AppDispatch) => {
+        dispatch({
+            type: BURGER_INGREDIENTS_INITIAL
+        })
+        request('/ingredients').then(resulst => {
+            console.log(resulst);
+            if (resulst) {
+                dispatch({
+                    type: BURGER_INGREDIENTS_INITIAL_SUCCESS,
+                    rolls: resulst.data.filter((roll: IngredientType) => roll.type === "bun"),
+                    fillings: resulst.data.filter((filing: IngredientType) => filing.type === "main"),
+                    sauces: resulst.data.filter((sauce: IngredientType) => sauce.type === "sauce"),
+                })
+                dispatch({
+                    type: BURGER_CONSTRUCTOR_CHANGE_ROLL,
+                    roll: resulst.data.filter((roll: IngredientType) => roll.type === "bun")[0]
+                })
+                dispatch({
+                    type: BURGER_INGREDIENTS_CHANGE_ROLL,
+                    changeRoll: resulst.data.filter((roll: IngredientType) => roll.type === "bun")[0]
+                })
+
+            } else {
+                dispatch({
+                    type: BURGER_INGREDIENTS_INITIAL_FAILED,
+                });
+            }
+        }).catch(console.error);
+    }
+}
+
+
+
+export function getOrderNumber(ingredients: IngredientType[]) {
+
+    return function (dispatch: AppDispatch) {
+        dispatch({
+            type: ORDERDETAILS_OPEN,
+        })
+        console.log(JSON.stringify([...ingredients]))
+        request('/orders', { method: 'POST', body: JSON.stringify([...ingredients]) }).then(result => {
+            dispatch({
+                type: ORDERDETAILS_OPEN_SUCCESS,
+                id: result.order.number,
+            });
+        }).catch(() => {
+            dispatch({
+                type: ORDERDETAILS_OPEN_FAILED,
+            })
+        })
+
+
+    }
+}

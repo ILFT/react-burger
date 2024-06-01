@@ -1,21 +1,18 @@
-import React, { useState } from 'react';
 import styles from './ingredient-cart.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
 import { IngredientType } from '../../utils/types'
-import { useDispatch } from 'react-redux';
+import { INGREDIENTDETAILS_OPEN } from '../../services/actions/ingredient-order-details-action';
+import { useAppDispatch } from '../../hooks/hooks';
 
 function IngredientCart({ ingredient }: { ingredient: IngredientType }) {
 
-        const dispatch = useDispatch();
+        const dispatch = useAppDispatch();
 
         function ingredientInfo(ingredient: IngredientType) {
                 dispatch({
-                        type: 'INGREDIENTDETAILS_OPEN',
+                        type: INGREDIENTDETAILS_OPEN,
                         ingredient: ingredient
-                })
-                dispatch({
-                        type: 'MODAL_OPEN'
                 })
         }
 

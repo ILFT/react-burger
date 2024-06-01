@@ -1,24 +1,24 @@
-import React, { useState, useMemo, useRef, RefObject } from 'react';
+import { useRef, RefObject } from 'react';
 import styles from './burger-ingredients.module.css';
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab,} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCart from '../ingredient-cart/ingredient-cart'
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IBurgerIngredients, IIngredientOrderDetails } from '../../utils/types'
-import { useDispatch, useSelector } from 'react-redux';
-import { store, } from '../../services/stores/store';
+import { BURGER_INGREDIENTS_CHANGE_TAB } from '../../services/actions/burger-ingredients-action';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 function BurgerIngredients() {
 
-        const dispatch = useDispatch();
+        const dispatch = useAppDispatch();
 
         const rollRef = useRef<HTMLDivElement>(null);
         const filingRef = useRef<HTMLDivElement>(null);
         const sauceRef = useRef<HTMLDivElement>(null);
 
 
-        const { rolls, fillings, sauces, tab } = useSelector<ReturnType<typeof store.getState>>(store => store.burgerIngredientsData) as IBurgerIngredients;
-        const modal = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
+        const { rolls, fillings, sauces, tab } = useAppSelector(store => store.burgerIngredientsData) as IBurgerIngredients;
+        const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
 
 
         function changeTab(value: string, refTab: RefObject<HTMLDivElement>) {
@@ -29,7 +29,7 @@ function BurgerIngredients() {
         }
         function setTab(value: string) {
                 dispatch({
-                        type: 'BURGER_INGREDIENTS_CHANGE_TAB',
+                        type: BURGER_INGREDIENTS_CHANGE_TAB,
                         tab: value
                 })
         }

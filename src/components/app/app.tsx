@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './app.module.css';
 import { BrowserRouter } from "react-router-dom"
 import { DndProvider } from 'react-dnd'
@@ -7,51 +7,21 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { AppDispatch, IngredientType } from '../../utils/types'
 import { useDispatch } from 'react-redux';
-import { request } from '../../utils/utils';
+import { initIngredients } from '../../services/actions-thunk';
+import { useAppDispatch } from '../../hooks/hooks';
+
 
 
 
 function App() {
 
-  const dispatch : any = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [isLoad, setIsLoad] = useState<boolean>(false);
 
 
-  function initIngredients() {
-    
-    return async (dispatch: AppDispatch) =>{
-      dispatch({
-        type: 'BURGER_INGREDIENTS_INITIAL'
-      })
-      request('https://norma.nomoreparties.space/api/ingredients').then(data => {
-        if (data) {
-          dispatch({
-            type: 'BURGER_INGREDIENTS_INITIAL_SUCCESS',
-            rolls: data.data.filter((roll: IngredientType) => roll.type === "bun"),
-            fillings: data.data.filter((filing: IngredientType) => filing.type === "main"),
-            sauces: data.data.filter((sauce: IngredientType) => sauce.type === "sauce"),
-          })
-          dispatch({
-            type: "BURGER_CONSTRUCTOR_CHANGE_ROLL",
-            roll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
-          })
-          dispatch({
-            type: "BURGER_INGREDIENTS_CHANGE_ROLL",
-            changeRoll: data.data.filter((roll: IngredientType) => roll.type === "bun")[0]
-          })
 
-          setIsLoad(true);
-        } else {
-          dispatch({
-            type: 'BURGER_INGREDIENTS_INITIAL_FAILED',
-          });
-        }
-      }).catch(console.error);
-    }
-  }
 
   useEffect(() => {
     if (!isLoad) {

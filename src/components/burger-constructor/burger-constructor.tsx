@@ -1,40 +1,41 @@
-import React, { useMemo, useRef, useState } from 'react';
+import { useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
-import { AppDispatch, IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
-import { useDispatch, useSelector } from 'react-redux';
-import { store } from '../../services/stores/store';
+import { IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
 import ContructorIngredient from '../constructor-ingredient/constructor-ingredient';
-import { request } from '../../utils/utils';
+import { BURGER_CONSTRUCTOR_ADD_INGREDIENT, BURGER_CONSTRUCTOR_CHANGE_ROLL } from '../../services/actions/burger-constructor-action';
+import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_INCREASE_INGREDIENT } from '../../services/actions/burger-ingredients-action';
+import { getOrderNumber } from '../../services/actions-thunk';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 function BurgerConstructor() {
 
-    const dispatch: any = useDispatch();
+    const dispatch: any = useAppDispatch();
 
-    const modal = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
-    const { ingredients, roll } = useSelector<ReturnType<typeof store.getState>>(store => store.burgerConstructorData) as IBurgerConstructor;
+    const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
+    const { ingredients, roll } = useAppSelector(store => store.burgerConstructorData) as IBurgerConstructor;
 
     function addIngredient(ingredient: IngredientType) {
 
         if (ingredient.type === 'bun') {
             dispatch({
-                type: "BURGER_CONSTRUCTOR_CHANGE_ROLL",
+                type: BURGER_CONSTRUCTOR_CHANGE_ROLL,
                 roll: ingredient
             })
             dispatch({
-                type: "BURGER_INGREDIENTS_CHANGE_ROLL",
+                type: BURGER_INGREDIENTS_CHANGE_ROLL,
                 changeRoll: ingredient
             })
         } else {
             dispatch({
-                type: "BURGER_CONSTRUCTOR_ADD_INGREDIENT",
+                type: BURGER_CONSTRUCTOR_ADD_INGREDIENT,
                 ingredient: ingredient
             })
             dispatch({
-                type: "BURGER_INGREDIENTS_INCREASE_INGREDIENT",
+                type: BURGER_INGREDIENTS_INCREASE_INGREDIENT,
                 increaseIngredient: ingredient
             })
         }
@@ -56,27 +57,7 @@ function BurgerConstructor() {
         //})
     }
 
-    function getOrderNumber(ingredients: IngredientType[]) {
 
-        return function (dispatch: AppDispatch) {
-            dispatch({
-                type: 'ORDERDETAILS_OPEN',
-            })
-            console.log(JSON.stringify([roll,...ingredients,roll]))
-            request('https://norma.nomoreparties.space/api/orders', { method: 'POST', body: JSON.stringify([roll,...ingredients,roll]) }).then(data => {
-                dispatch({
-                    type: 'ORDERDETAILS_OPEN_SUCCESS',
-                    id: data.order.number,
-                });
-            }).catch(() => {
-                dispatch({
-                    type: 'ORDERDETAILS_OPEN_FAILED',
-                })
-            })
-
-
-        }
-    }
 
     const costBurger = useMemo(() => {
         if (roll) {
