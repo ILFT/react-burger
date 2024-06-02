@@ -1,8 +1,7 @@
 
 import { AppDispatch, IngredientType } from "../utils/types";
 import { request } from "../utils/utils";
-import { BURGER_CONSTRUCTOR_CHANGE_ROLL } from "./actions/burger-constructor-action";
-import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_INITIAL, BURGER_INGREDIENTS_INITIAL_FAILED, BURGER_INGREDIENTS_INITIAL_SUCCESS } from "./actions/burger-ingredients-action";
+import { BURGER_INGREDIENTS_INITIAL, BURGER_INGREDIENTS_INITIAL_FAILED, BURGER_INGREDIENTS_INITIAL_SUCCESS } from "./actions/burger-ingredients-action";
 import { ORDERDETAILS_OPEN, ORDERDETAILS_OPEN_FAILED, ORDERDETAILS_OPEN_SUCCESS } from "./actions/ingredient-order-details-action";
 
 export function initIngredients() {
