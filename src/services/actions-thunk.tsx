@@ -35,8 +35,10 @@ export function getOrderNumber(ingredientsId: string[]) {
         dispatch({
             type: ORDERDETAILS_OPEN,
         })
-        
-        request('/orders', { method: 'POST', body: JSON.stringify({ingredients: ingredientsId}) }).then(result => {
+        console.log({ method: 'POST', body: JSON.stringify({ingredients: ingredientsId}) });
+        request('/orders', { method: 'POST',headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          }, body: JSON.stringify({ingredients: ingredientsId}) }).then(result => {
             dispatch({
                 type: ORDERDETAILS_OPEN_SUCCESS,
                 id: result.order.number,

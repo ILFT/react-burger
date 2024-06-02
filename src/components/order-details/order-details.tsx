@@ -1,12 +1,14 @@
 import React from "react";
 import styles from "./order-details.module.css";
 import done from '../../images/done.png';
+import { useAppSelector } from "../../hooks/hooks";
 
 function OrderDetails() {
+    const idOrder = useAppSelector(store => store.ingredientOrderDetailData.id);
     return (
         <div className={styles.order_info}>
             <p className="text text_type_digits-large pb-16" >
-                034536
+                {idOrder}
             </p>
             <p className=" text text_type_main-medium">
                 идентификатор заказа
