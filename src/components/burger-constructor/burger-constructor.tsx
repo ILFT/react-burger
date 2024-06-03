@@ -1,94 +1,139 @@
-import React, { useState } from 'react';
+import { useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
-import { useModal } from '../../hooks/hooks'
-import { IngredientType } from '../../utils/types'
-
-function BurgerConstructor({ addIngredient, removeIngredient, changeRoll, burgerIngredients }: { addIngredient: Function, removeIngredient: Function, changeRoll?: IngredientType, burgerIngredients: IngredientType[] }) {
-
-    const rollUpLower = changeRoll;
-
-    const { isModalOpen, openModal, closeModal } = useModal();
-
-    const [, dropRef] = useDrop({
-        accept: 'ingredient',
-        drop: (item) => addIngredient(item)
-    })
+import { IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
+import ContructorIngredient from '../constructor-ingredient/constructor-ingredient';
+import { BURGER_CONSTRUCTOR_ADD_INGREDIENT, BURGER_CONSTRUCTOR_CHANGE_ROLL, BURGER_CONSTRUCTOR_DELETE_INGREDIENT } from '../../services/actions/burger-constructor-action';
+import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_DECREASE_INGREDIENT, BURGER_INGREDIENTS_INCREASE_INGREDIENT } from '../../services/actions/burger-ingredients-action';
+import { getOrderNumber } from '../../services/actions-thunk';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { v4 as uuid } from 'uuid';
 
 
-    function getCostBurger() {
-        if (rollUpLower) {
-            if (burgerIngredients.length > 0) {
-                return burgerIngredients.map(ingredient => (ingredient.price)).reduce((a, b) => {
-                    return a + b;
-                }) + 2 * rollUpLower.price;
-            } else {
-                return 2 * rollUpLower.price;
-            }
+function BurgerConstructor() {
+    const dispatch: any = useAppDispatch();
+
+    const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
+    const { ingredients, roll } = useAppSelector(store => store.burgerConstructorData) as IBurgerConstructor;
+
+    function addIngredient(ingredient: IngredientType) {
+
+        if (ingredient.type === 'bun') {
+            dispatch({
+                type: BURGER_CONSTRUCTOR_CHANGE_ROLL,
+                roll: ingredient
+            })
+            dispatch({
+                type: BURGER_INGREDIENTS_CHANGE_ROLL,
+                changeRoll: ingredient
+            })
+        } else {
+            dispatch({
+                type: BURGER_CONSTRUCTOR_ADD_INGREDIENT,
+                ingredient: ingredient,
+                uuid: uuid()
+            })
+            dispatch({
+                type: BURGER_INGREDIENTS_INCREASE_INGREDIENT,
+                increaseIngredient: ingredient
+            })
         }
 
     }
+
+    function clearConstructor() {
+        let tempArray = ingredients.slice();
+        tempArray.map((ingredient, index) => {
+            dispatch({
+                type: BURGER_CONSTRUCTOR_DELETE_INGREDIENT,
+                index: index
+            })
+            dispatch({
+                type: BURGER_INGREDIENTS_DECREASE_INGREDIENT,
+                decreaseIngredient: ingredient
+            })
+        })
+
+    }
+
+    const [, dropRef] = useDrop({
+        accept: 'ingredient',
+        drop: (item: IngredientType) => addIngredient(item)
+    })
+
+    function createOrder() {
+        if (roll) {
+            dispatch(getOrderNumber([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id]));
+        }
+    }
+
+
+
+    const costBurger = useMemo(() => {
+        if (roll) {
+            if (ingredients.length > 0) {
+                return ingredients.map(item => (item.ingredient.price)).reduce((a, b) => {
+                    return a + b;
+                }) + 2 * roll.price;
+            } else {
+                return 2 * roll.price;
+            }
+        }
+    }, [ingredients, roll])
+
+
+
 
     return (
 
         <section className={styles.constructor_burger} ref={dropRef}>
             <div className={styles.roll}>
-                {rollUpLower &&
+                {roll &&
                     <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text={rollUpLower.name + "(верх)"}
-                        price={rollUpLower.price}
-                        thumbnail={rollUpLower.image_mobile}
+                        text={roll.name + "(верх)"}
+                        price={roll.price}
+                        thumbnail={roll.image_mobile}
                     />
                 }
             </div>
             <div className={styles.container_ingredients} >
                 {
-                    burgerIngredients.map((ingredient, index) => (
-
-                        <div className={styles.burger_ingredient} key={index}>
-                            <DragIcon type="primary" />
-                            <ConstructorElement
-                                text={ingredient.name}
-                                price={ingredient.price}
-                                thumbnail={ingredient.image_mobile}
-                                handleClose={() => removeIngredient(index)}
-                            />
-                        </div>
-
+                    ingredients.map((item, index) => (
+                        <ContructorIngredient key={item.uuid} ingredient={item.ingredient} index={index} />
                     ))
                 }
             </div>
             <div className={styles.roll}>
-                {rollUpLower &&
+                {roll &&
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
-                        text={rollUpLower.name + "(низ)"}
-                        price={rollUpLower.price}
-                        thumbnail={rollUpLower.image_mobile}
+                        text={roll.name + "(низ)"}
+                        price={roll.price}
+                        thumbnail={roll.image_mobile}
                     />
                 }
             </div>
             <div className={styles.sum}>
                 <div className={styles.sum}>
                     <p className={styles.icon_text}>
-                        {getCostBurger()}
+                        {costBurger}
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={openModal}>
+                <Button htmlType="button" type="primary" size="medium" onClick={() => createOrder()}>
                     Оформить заказ
                 </Button>
             </div>
-            {isModalOpen &&
+            {modal.isModalOrder &&
                 <div className={styles.modal}>
                     {
-                        <Modal onClose={closeModal} >
+                        <Modal>
                             <OrderDetails />
                         </Modal>
                     }
