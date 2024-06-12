@@ -3,18 +3,12 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import { useDrag } from 'react-dnd'
 import { IngredientType } from '../../utils/types'
 import { INGREDIENTDETAILS_OPEN } from '../../services/actions/ingredient-order-details-action';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useModal } from '../../hooks/hooks';
+import { useNavigate } from 'react-router-dom';
 
 function IngredientCart({ ingredient }: { ingredient: IngredientType }) {
 
-        const dispatch = useAppDispatch();
-
-        function ingredientInfo(ingredient: IngredientType) {
-                dispatch({
-                        type: INGREDIENTDETAILS_OPEN,
-                        ingredient: ingredient
-                })
-        }
+        const modal =useModal();
 
         const [, dragRef] = useDrag({
                 type: 'ingredient',
@@ -23,7 +17,7 @@ function IngredientCart({ ingredient }: { ingredient: IngredientType }) {
 
         return (
                 <div className={styles.container_ingredient} ref={dragRef}>
-                        <div className={styles.container_ingredient_data} onClick={() => ingredientInfo(ingredient)}>
+                        <div className={styles.container_ingredient_data} onClick={() => modal.openModal(ingredient)}>
                                 <img src={ingredient.image} alt={ingredient.name} />
                                 <div className={styles.container_cost}>
                                         <p className="text text_type_main-default pr-1">{ingredient.price}</p>

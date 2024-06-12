@@ -1,15 +1,13 @@
 import { ReactNode } from "react";
 import styles from "./modal-overlay.module.css";
-import { useAppDispatch } from "../../hooks/hooks";
-import { closeModal } from "../../utils/utils";
+import { useModal } from "../../hooks/hooks";
 
 
 function ModalOverlay({ children }: { children: ReactNode }) {
 
-  const dispatch = useAppDispatch();
-
+  const modal =useModal();
   return (
-    <div className={styles.modal_overlay} onClick={() => dispatch(closeModal())}>
+    <div className={styles.modal_overlay} onClick={modal.closeModal}>
       {children}
     </div>
   );

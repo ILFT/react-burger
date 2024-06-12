@@ -8,16 +8,19 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { initIngredients } from '../../services/actions-thunk';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import LoginPage from '../../Pages/login/login';
 import NotFound from '../../Pages/not-found-page/not-found-page';
-import ForgotPasswordPage from '../../Pages/forgot-password/forgot-password';
 import ForgotPassword from '../../Pages/forgot-password/forgot-password';
 import Profile from '../../Pages/profile/profile';
 import Register from '../../Pages/register/register';
 import ResetPassword from '../../Pages/reset-password/reset-password';
+import Ingredient from '../../Pages/ingredient-details-page/ingredient-details-page';
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import { IIngredientOrderDetails } from '../../utils/types';
 
 
 
@@ -28,7 +31,7 @@ function App() {
 
   const [isLoad, setIsLoad] = useState<boolean>(false);
 
-
+  const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
 
 
   useEffect(() => {
@@ -43,10 +46,10 @@ function App() {
 
 
 
-  //        <Route path="/ingredients/:id" element={}/>
+
   //        <Route path="/error" element={}/>
   return (
-    <BrowserRouter>
+    <>
       <AppHeader />
       <Routes>
         <Route path="/" element={isLoad && (
@@ -63,10 +66,23 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/ingredients/:id" element={<Ingredient />} />
         <Route path="*" element={<NotFound />} />
 
       </Routes>
-    </BrowserRouter>);
+
+      {modal.isModalIngredient &&
+        <Routes>
+          <Route path="/ingredients/:id" element={
+            <Modal >
+              <IngredientDetails />
+            </Modal>
+          }>
+          </Route>
+        </Routes >
+      }
+    </>
+  );
 
 
 }

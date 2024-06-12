@@ -2,8 +2,6 @@ import { useRef, RefObject } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab,} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCart from '../ingredient-cart/ingredient-cart'
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IBurgerIngredients, IIngredientOrderDetails } from '../../utils/types'
 import { BURGER_INGREDIENTS_CHANGE_TAB } from '../../services/actions/burger-ingredients-action';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -18,7 +16,7 @@ function BurgerIngredients() {
 
 
         const { rolls, fillings, sauces, tab } = useAppSelector(store => store.burgerIngredientsData) as IBurgerIngredients;
-        const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
+        
 
 
         function changeTab(value: string, refTab: RefObject<HTMLDivElement>) {
@@ -102,15 +100,6 @@ function BurgerIngredients() {
 
 
                         </section >
-                        {modal.isModalIngredient &&
-                                <div className={styles.modal}>
-                                        {
-                                                <Modal >
-                                                        <IngredientDetails />
-                                                </Modal>
-                                        }
-                                </div>
-                        }
                 </div >
 
         );
