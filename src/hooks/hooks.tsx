@@ -4,6 +4,7 @@ import { AppDispatch, AppStore, RootState } from "../services/stores/store";
 import { useNavigate } from "react-router-dom";
 import { INGREDIENTDETAILS_OPEN, MODAL_CLOSE } from "../services/actions/ingredient-order-details-action";
 import { IngredientType } from "../utils/types";
+import { getOrderNumber } from "../services/actions-thunk";
 
 // кастомные хуки всегда должны начинаться с глагола `use`, чтобы реакт понял, что это хук. Он следит за их вызовами
 export const useModal = () => {
@@ -11,7 +12,7 @@ export const useModal = () => {
   const dispatch = useAppDispatch();
 
   // `useCallback` нужен для того, чтобы зафиксировать ссылку на функцию. Таким образом уменьшится кол-во перерисовок компонента, куда будет передана эта функция
-  const openModal = useCallback((ingredient: IngredientType) => {
+  const openModalIngredient = useCallback((ingredient: IngredientType) => {
     navigate(`/ingredients/${ingredient._id}`)
     dispatch({
       type: INGREDIENTDETAILS_OPEN,
@@ -19,12 +20,17 @@ export const useModal = () => {
     })
   }, []);
 
+  const openModalOrder = useCallback((ingredientsBurgerId: string[]) => {
+    dispatch(getOrderNumber(ingredientsBurgerId));
+  }, []);
+
   const closeModal = useCallback(() => {
     navigate(-1)
     dispatch({ type: MODAL_CLOSE })
   }, []);
   return {
-    openModal,
+    openModalIngredient,
+    openModalOrder,
     closeModal,
   };
 };

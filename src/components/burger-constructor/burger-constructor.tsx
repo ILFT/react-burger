@@ -9,15 +9,17 @@ import ContructorIngredient from '../constructor-ingredient/constructor-ingredie
 import { BURGER_CONSTRUCTOR_ADD_INGREDIENT, BURGER_CONSTRUCTOR_CHANGE_ROLL, BURGER_CONSTRUCTOR_DELETE_INGREDIENT } from '../../services/actions/burger-constructor-action';
 import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_DECREASE_INGREDIENT, BURGER_INGREDIENTS_INCREASE_INGREDIENT } from '../../services/actions/burger-ingredients-action';
 import { getOrderNumber } from '../../services/actions-thunk';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector, useModal } from '../../hooks/hooks';
 import { v4 as uuid } from 'uuid';
 
 
 function BurgerConstructor() {
     const dispatch: any = useAppDispatch();
 
-    const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
+    const isModal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
     const { ingredients, roll } = useAppSelector(store => store.burgerConstructorData) as IBurgerConstructor;
+
+    const modal = useModal();
 
     function addIngredient(ingredient: IngredientType) {
 
@@ -69,8 +71,7 @@ function BurgerConstructor() {
 
     function createOrder() {
         if (roll) {
-            dispatch(getOrderNumber([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id]));
-            
+            modal.openModalOrder([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id]);
         }
     }
 
@@ -134,7 +135,7 @@ function BurgerConstructor() {
                     Оформить заказ
                 </Button>
             </div>
-            {modal.isModalOrder &&
+            {isModal.isModalOrder &&
                 <div className={styles.modal}>
                     {
                         <Modal>

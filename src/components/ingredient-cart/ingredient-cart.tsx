@@ -17,7 +17,7 @@ function IngredientCart({ ingredient }: { ingredient: IngredientType }) {
 
         return (
                 <div className={styles.container_ingredient} ref={dragRef}>
-                        <div className={styles.container_ingredient_data} onClick={() => modal.openModal(ingredient)}>
+                        <div className={styles.container_ingredient_data} onClick={() => modal.openModalIngredient(ingredient)}>
                                 <img src={ingredient.image} alt={ingredient.name} />
                                 <div className={styles.container_cost}>
                                         <p className="text text_type_main-default pr-1">{ingredient.price}</p>
