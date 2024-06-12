@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 4%;
+    min-height: 35vh;
+}
+
+.container_menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.container_left {
+    display: flex;
+    flex-direction: column;
+    max-width: 25vw;
+    margin-left: 10%;
+    margin-right: 5%;
+    justify-content: space-between;
+}
+.ul_none_dot{
+    list-style-type: none;
+}
+
+.container_data{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 25vh;
+}
+
+.link {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    color: #8181b3;
+  }
+  
+  .link_active {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    color: #e7e7eb;
+  
+  }

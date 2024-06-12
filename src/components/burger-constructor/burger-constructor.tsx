@@ -45,7 +45,9 @@ function BurgerConstructor() {
     }
 
     function clearConstructor() {
+        console.log(ingredients);
         let tempArray = ingredients.slice();
+        console.log(tempArray);
         tempArray.map((ingredient, index) => {
             dispatch({
                 type: BURGER_CONSTRUCTOR_DELETE_INGREDIENT,
@@ -56,6 +58,7 @@ function BurgerConstructor() {
                 decreaseIngredient: ingredient
             })
         })
+        console.log(ingredients);
 
     }
 
@@ -67,6 +70,7 @@ function BurgerConstructor() {
     function createOrder() {
         if (roll) {
             dispatch(getOrderNumber([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id]));
+            
         }
     }
 
