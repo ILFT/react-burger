@@ -7,6 +7,7 @@ import { store } from "../../services/stores/store";
 function IngredientDetails() {
     const ingredientDetails = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData.ingredient) as IngredientType;
     return (
+        ingredientDetails &&
             <div className={styles.ingredient_info} >
 
                 <div className={styles.name_icon}>

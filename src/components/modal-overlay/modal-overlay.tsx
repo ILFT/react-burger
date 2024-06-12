@@ -1,13 +1,11 @@
 import { ReactNode } from "react";
 import styles from "./modal-overlay.module.css";
-import { useModal } from "../../hooks/hooks";
 
 
-function ModalOverlay({ children }: { children: ReactNode }) {
+function ModalOverlay({ children, closeModal }: { children: ReactNode, closeModal: Function }) {
 
-  const modal =useModal();
   return (
-    <div className={styles.modal_overlay} onClick={modal.closeModal}>
+    <div className={styles.modal_overlay} onClick={() => closeModal()}>
       {children}
     </div>
   );

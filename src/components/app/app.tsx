@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './app.module.css';
-import { BrowserRouter } from "react-router-dom"
+import {  useLocation, useNavigate, Route, Routes} from "react-router-dom"
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -8,9 +8,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { initIngredients } from '../../services/actions-thunk';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-
-import { Route, Routes } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/hooks';
 import LoginPage from '../../Pages/login/login';
 import NotFound from '../../Pages/not-found-page/not-found-page';
 import ForgotPassword from '../../Pages/forgot-password/forgot-password';
@@ -20,7 +18,7 @@ import ResetPassword from '../../Pages/reset-password/reset-password';
 import Ingredient from '../../Pages/ingredient-details-page/ingredient-details-page';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { IIngredientOrderDetails } from '../../utils/types';
+import { MODAL_CLOSE } from '../../services/actions/ingredient-order-details-action';
 
 
 
@@ -28,10 +26,10 @@ import { IIngredientOrderDetails } from '../../utils/types';
 function App() {
 
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const prevLocation = location.state && location.state.prevLocation
   const [isLoad, setIsLoad] = useState<boolean>(false);
-
-  const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
 
 
   useEffect(() => {
@@ -42,24 +40,26 @@ function App() {
 
   }, [])
 
-
-
-
+  function closeModal() {
+    dispatch({ type: MODAL_CLOSE })
+    navigate(-1)
+  }
 
 
   //        <Route path="/error" element={}/>
   return (
     <>
       <AppHeader />
-      <Routes>
+      <Routes location={prevLocation}>
         <Route path="/" element={isLoad && (
           <DndProvider backend={HTML5Backend}>
             <main className={styles.container}>
               <BurgerIngredients />
               <BurgerConstructor />
             </main>
-          </DndProvider>
-        )} />
+          </DndProvider>)}>
+
+        </Route>
 
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<LoginPage />} />
@@ -67,20 +67,22 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/ingredients/:id" element={<Ingredient />} />
+
+
         <Route path="*" element={<NotFound />} />
 
       </Routes>
 
-      {modal.isModalIngredient &&
+      {prevLocation &&
         <Routes>
           <Route path="/ingredients/:id" element={
-            <Modal >
+            <Modal closeModal={closeModal} >
               <IngredientDetails />
-            </Modal>
-          }>
-          </Route>
-        </Routes >
+            </Modal>} />
+        </Routes>
       }
+
+
     </>
   );
 

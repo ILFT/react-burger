@@ -1,21 +1,19 @@
-import { useEffect, ReactNode } from 'react';
+import { useEffect, ReactNode, MouseEventHandler } from 'react';
 import styles from "./modal.module.css";
 import ReactDOM from 'react-dom';
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { useModal } from '../../hooks/hooks';
 
 
 
-function Modal({ children }: { children: ReactNode }) {
+function Modal({ children, closeModal }: { children: ReactNode, closeModal: Function }) {
 
-    const modal =useModal();
-    
+
     useEffect(() => {
         function handleEscape(evt: KeyboardEvent) {
             if (evt.key === 'Escape') {
-                modal.closeModal()
+                closeModal()
             }
         }
         document.addEventListener('keydown', handleEscape);
@@ -27,10 +25,10 @@ function Modal({ children }: { children: ReactNode }) {
 
 
     return ReactDOM.createPortal(
-        <ModalOverlay >
+        <ModalOverlay closeModal={closeModal}>
             <div className={styles.modal_logic} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.name_icon}>
-                    <CloseIcon type="primary" onClick={modal.closeModal} />
+                    <CloseIcon type="primary" onClick={() => closeModal()} />
                 </div>
                 {children}
             </div>
