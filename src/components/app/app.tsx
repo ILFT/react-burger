@@ -45,7 +45,7 @@ function App() {
     navigate(-1)
   }
 
-
+  console.log(location)
   //        <Route path="/error" element={}/>
   return (
     <>
