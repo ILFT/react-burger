@@ -45,12 +45,11 @@ function App() {
     navigate(-1)
   }
 
-  console.log(location)
   //        <Route path="/error" element={}/>
   return (
     <>
       <AppHeader />
-      <Routes location={prevLocation}>
+      <Routes >
         <Route path="/" element={isLoad && (
           <DndProvider backend={HTML5Backend}>
             <main className={styles.container}>

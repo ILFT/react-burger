@@ -2,9 +2,15 @@ import React, { useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "../reset-password/reset-password.module.css";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { resetPasswordConfirm } from "../../services/actions-thunk";
 
 
 function ResetPassword() {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    //const success = useAppSelector(store => store.userData.conditionSuccess) ;
 
     const [valuePassword, setValuePassword] = React.useState('')
     const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
@@ -15,8 +21,19 @@ function ResetPassword() {
         setValueToken(e.target.value)
     }
 
+
+    function reset(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        dispatch(resetPasswordConfirm(valuePassword, valueToken)).then(result => {
+            if (result && result.success) {
+                navigate("/")
+            }
+        })
+
+    }
+
     return (
-        <form className={styles.container}>
+        <form className={styles.container} onSubmit={reset}>
             <h1 className="text text_type_main-medium ">Восстановление пароля</h1>
             <PasswordInput
                 onChange={onChangePassword}

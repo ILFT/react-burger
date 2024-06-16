@@ -1,6 +1,7 @@
 
+import { useNavigate } from "react-router-dom";
 import { AppDispatch, IngredientType } from "../utils/types";
-import { getCookie, request, setCookie } from "../utils/utils";
+import { deleteCookie, getCookie, request, setCookie } from "../utils/utils";
 import { BURGER_INGREDIENTS_INITIAL, BURGER_INGREDIENTS_INITIAL_FAILED, BURGER_INGREDIENTS_INITIAL_SUCCESS } from "./actions/burger-ingredients-action";
 import { ORDERDETAILS_OPEN, ORDERDETAILS_OPEN_FAILED, ORDERDETAILS_OPEN_SUCCESS } from "./actions/ingredient-order-details-action";
 import { ERROR_REQUEST, PASSWORD_REFRESH, PASSWORD_REFRESH_SUCCESS, PASSWORD_UPDATE, PASSWORD_UPDATE_SUCCESS, TOKEN_REFRESH, TOKEN_REFRESH_SUCCESS, USER_AUTHORIZATION, USER_AUTHORIZATION_SUCCESS, USER_EXIT, USER_EXIT_SUCCESS, USER_LOGIN, USER_LOGIN_SUCCESS, USER_REGISTER, USER_REGISTER_SUCCESS, USER_UPDATE_DATA, USER_UPDATE_DATA_SUCCESS } from "./actions/user-data-action";
@@ -36,7 +37,13 @@ export function getOrderNumber(ingredientsId: string[]) {
         dispatch({
             type: ORDERDETAILS_OPEN,
         })
-        request('/orders', { method: 'POST', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify({ ingredients: ingredientsId }) }).then(result => {
+        request('/orders', {
+            method: 'POST',
+            headers: new Headers({ 'content-type': 'application/json' }),
+            body: JSON.stringify({
+                ingredients: ingredientsId
+            })
+        }).then(result => {
             dispatch({
                 type: ORDERDETAILS_OPEN_SUCCESS,
                 id: result.order.number,
@@ -51,21 +58,44 @@ export function getOrderNumber(ingredientsId: string[]) {
     }
 }
 
-export function registerUser() {
+export function registerUser(email: string, password: string, name: string) {
 
-    return function (dispatch: AppDispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: USER_REGISTER,
         })
-        request('/auth/register', {
-            method: 'POST', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify({
-                email: "test-data@yandex.ru",
-                password: "password",
-                name: "Username"
+        const result = await request('/auth/register', {
+            method: 'POST',
+            headers: new Headers({ 'Content-type': 'application/json' }),
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                name: name
             })
-        }).then(result => {
+        }).catch(() => {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+
+        })
+
+        if (result && result.success) {
+            //localStorage.setItem('refreshToken', result.refreshToken);
+            //setCookie('accessToken', result.accessToken.split('Bearer ')[1])
+            dispatch({
+                type: USER_LOGIN_SUCCESS,
+                user: result.user,
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+
+        return result
+        /*.then(result => {
             localStorage.setItem('refreshToken', result.refreshToken);
-            setCookie('accessToken', result.accessToken.split('Bearer ')[0])
+            setCookie('accessToken', result.accessToken.split('Bearer ')[1])
             dispatch({
                 type: USER_REGISTER_SUCCESS,
                 user: result.user,
@@ -74,21 +104,45 @@ export function registerUser() {
             dispatch({
                 type: ERROR_REQUEST,
             })
-        })
+
+        })*/
     }
 }
-export function loginUser() {
+export function loginUser(email: string, password: string) {
 
-    return function (dispatch: AppDispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: USER_LOGIN,
         })
-        request('/auth/login', {
-            method: 'POST', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify({
-                email: "test-data@yandex.ru",
-                password: "password"
+
+        const result = await request('/auth/login', {
+            method: 'POST',
+            headers: new Headers({ 'Content-type': 'application/json' }),
+            body: JSON.stringify({
+                email: email,
+                password: password
             })
-        }).then(result => {
+        }).catch(() => {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        })
+
+        if (result && result.success) {
+            localStorage.setItem('refreshToken', result.refreshToken);
+            setCookie('accessToken', result.accessToken.split('Bearer ')[1])
+            dispatch({
+                type: USER_LOGIN_SUCCESS,
+                user: result.user,
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+
+        return result
+        /*.then(result => {
             dispatch({
                 type: USER_LOGIN_SUCCESS,
                 user: result.user,
@@ -97,42 +151,87 @@ export function loginUser() {
             dispatch({
                 type: ERROR_REQUEST,
             })
-        })
+        })*/
     }
 }
 
 export function logoutUser() {
 
-    return function (dispatch: AppDispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: USER_EXIT,
         })
-        request('/auth/logout', {
-            method: 'POST', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify({
+
+        const result = await request('/auth/logout', {
+            method: 'POST',
+            headers: new Headers({ 'Content-type': 'application/json' }),
+            body: JSON.stringify({
                 token: localStorage.getItem('refreshToken')
             })
-        }).then(() => {
-            dispatch({
-                type: USER_EXIT_SUCCESS
-            });
         }).catch(() => {
             dispatch({
                 type: ERROR_REQUEST,
             })
         })
+
+        if (result && result.success) {
+            localStorage.removeItem('refreshToken')
+            deleteCookie('accessToken')
+            dispatch({
+                type: USER_EXIT_SUCCESS,
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+
+        return result
+        /*.then(() => {
+             dispatch({
+                 type: USER_EXIT_SUCCESS
+             });
+         }).catch(() => {
+             dispatch({
+                 type: ERROR_REQUEST,
+             })
+         })*/
     }
 }
 export function tokenUser() {
 
-    return function (dispatch: AppDispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: TOKEN_REFRESH,
         })
-        request('/auth/token', {
-            method: 'POST', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify({
+        console.log(localStorage.getItem('refreshToken'))
+        const result = await request('/auth/token', {
+            method: 'POST',
+            headers: new Headers({ 'Content-type': 'application/json' }),
+            body: JSON.stringify({
                 token: localStorage.getItem('refreshToken')
             })
-        }).then(result => {
+        }).catch(() => {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        })
+
+        if (result && result.success) {
+            localStorage.setItem('refreshToken', result.refreshToken);
+            setCookie('accessToken', result.accessToken.split('Bearer ')[1])
+            dispatch({
+                type: TOKEN_REFRESH_SUCCESS,
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+
+        return result
+
+        /*.then(result => {
             setCookie('accessToken', result.accessToken.split('Bearer ')[0])
             dispatch({
                 type: TOKEN_REFRESH_SUCCESS,
@@ -141,19 +240,38 @@ export function tokenUser() {
             dispatch({
                 type: ERROR_REQUEST,
             })
-        })
+        })*/
     }
 }
 
 export function getUser() {
 
-    return function (dispatch: AppDispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: USER_AUTHORIZATION,
         })
-        request('/auth/user', {
-            method: 'GET', headers: new Headers({ 'content-type': 'application/json', 'Authorization': 'Bearer ' + getCookie('accessToken')})
-        }).then(result => {
+
+        const result = await request('/auth/user', {
+            method: 'GET',
+            headers: new Headers({ 'Content-type': 'application/json', 'authorization': 'Bearer ' + getCookie('accessToken') })
+        }).catch(() => {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        })
+
+        if (result && result.success) {
+            dispatch({
+                type: USER_AUTHORIZATION_SUCCESS,
+                user: result.user
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+        return result
+        /*.then(result => {
             dispatch({
                 type: USER_AUTHORIZATION_SUCCESS,
                 user: result.user
@@ -162,23 +280,43 @@ export function getUser() {
             dispatch({
                 type: ERROR_REQUEST,
             })
-        })
+        })*/
     }
 }
 
-export function patchUser() {
+export function patchUser(email: string, password: string, name: string) {
 
-    return function (dispatch: AppDispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: USER_UPDATE_DATA,
         })
-        request('/auth/token', {
-            method: 'PATCH', headers: new Headers({ 'content-type': 'application/json', 'Authorization': 'Bearer ' + getCookie('accessToken') }), body: JSON.stringify({
-                email: "test-data@yandex.ru",
-                password: "password",
-                name: "Username",
+        
+        const result = await request('/auth/user', {
+            method: 'PATCH',
+            headers: new Headers({ 'Content-type': 'application/json', 'authorization': 'Bearer ' + getCookie('accessToken') }),
+            body: JSON.stringify({
+                email: email,
+                name: name,
+                password: password,
             })
-        }).then(() => {
+        }).catch(() => {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        })
+
+        if (result && result.success) {
+            dispatch({
+                type: USER_UPDATE_DATA_SUCCESS
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+
+        return result
+        /*.then(() => {
             dispatch({
                 type: USER_UPDATE_DATA_SUCCESS
             });
@@ -186,43 +324,84 @@ export function patchUser() {
             dispatch({
                 type: ERROR_REQUEST,
             })
-        })
+        })*/
     }
 }
 
-export function resetPasswordRequest() {
+export function resetPasswordRequest(email: string) {
 
-    return function (dispatch: AppDispatch) {
+
+    return async function (dispatch: AppDispatch) {
+        //const navigate = useNavigate();
         dispatch({
             type: PASSWORD_REFRESH,
         })
-        request('/password-reset', {
-            method: 'POST', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify({
-                email: "test-data@yandex.ru"
+        //try {
+        const result = await request('/password-reset', {
+            method: 'POST',
+            headers: new Headers({ 'Content-type': 'application/json' }),
+            body: JSON.stringify({
+                email: email
             })
-        }).then(() => {
-            dispatch({
-                type: PASSWORD_REFRESH_SUCCESS,
-            });
         }).catch(() => {
             dispatch({
                 type: ERROR_REQUEST,
             })
         })
-    }
-}
-export function resetPasswordConfirm() {
 
-    return function (dispatch: AppDispatch) {
+        if (result && result.success) {
+            dispatch({
+                type: PASSWORD_REFRESH_SUCCESS,
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+
+        return result
+        /**/
+        //} catch (error) {
+        //    dispatch({
+        //        type: ERROR_REQUEST,
+        //    })
+        //}
+    }
+
+}
+
+export function resetPasswordConfirm(password: string, token: string) {
+
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: PASSWORD_UPDATE,
         })
-        request('/password-reset/reset', {
-            method: 'POST', headers: new Headers({ 'content-type': 'application/json' }), body: JSON.stringify({
-                password: "password",
-                token: getCookie('accessToken')
+        const result = await request(`/password-reset/reset`, {
+            method: 'POST',
+            headers: new Headers({ 'Content-type': 'application/json' }),
+            body: JSON.stringify({
+                password: password,
+                token: token
             })
-        }).then(() => {
+        }).catch(() => {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        })
+
+
+        if (result && result.success) {
+            dispatch({
+                type: PASSWORD_UPDATE_SUCCESS,
+            })
+        } else {
+            dispatch({
+                type: ERROR_REQUEST,
+            })
+        }
+
+        return result
+        /*.then(() => {
             dispatch({
                 type: PASSWORD_UPDATE_SUCCESS,
             });
@@ -230,7 +409,7 @@ export function resetPasswordConfirm() {
             dispatch({
                 type: ERROR_REQUEST,
             })
-        })
+        })*/
     }
 }
 

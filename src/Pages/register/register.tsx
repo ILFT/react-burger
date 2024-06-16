@@ -3,43 +3,47 @@ import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-de
 import { Link, useNavigate } from 'react-router-dom';
 
 import styles from "./register.module.css";
+import { registerUser } from "../../services/actions-thunk";
+import { useAppDispatch } from "../../hooks/hooks";
 
 function Register() {
 
-    const [valueName, setValueName] = useState('')
-    const onChangeName = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueName(e.target.value)
-    }
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
-    const [valueEmail, setValueEmail] = useState('')
-    const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueEmail(e.target.value)
-    }
-    const [valuePassword, setValuePassword] = React.useState('')
-    const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValuePassword(e.target.value)
+    const [valueName, setValueName] = useState<string>('')
+    const [valueEmail, setValueEmail] = useState<string>('')
+    const [valuePassword, setValuePassword] = React.useState<string>('')
+
+    function register(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        dispatch(registerUser(valueEmail, valuePassword, valueName)).then(result=>{
+            if (result && result.success) {
+                navigate("/")
+            }
+        })
     }
 
     return (
 
 
-        <form className={styles.container}>
+        <form className={styles.container} onSubmit={register}>
             <p className="text text_type_main-medium mb-6">Регистрация</p>
             <Input type={'text'}
                 placeholder={'Имя пользователя'}
-                onChange={onChangeName}
+                onChange={e => setValueName(e.target.value)}
                 value={valueName}
                 name={'name'}
                 errorText={'Ошибка'} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
 
             <EmailInput
-                onChange={onChangeEmail}
+                onChange={e => setValueEmail(e.target.value)}
                 value={valueEmail}
                 name={'email'}
                 isIcon={false}
             />
             <PasswordInput
-                onChange={onChangePassword}
+                onChange={e => setValuePassword(e.target.value)}
                 value={valuePassword}
                 name={'password'}
             />

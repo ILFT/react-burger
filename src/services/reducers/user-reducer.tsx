@@ -33,22 +33,25 @@ const userDataState: IUserData = {
     condition: null,
     conditionRequest: false,
     conditionFailed: false,
+    conditionSuccess: false,
     user : {email:"" , name:""}
 }
 
-export const burgerIngredientsReducer = (state = userDataState, action: TUserDataActions) => {
+export const userReducer = (state = userDataState, action: TUserDataActions) => {
     switch (action.type) {
         case USER_REGISTER: {
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
         case USER_REGISTER_SUCCESS: {
             return{
                 ...state,
                 conditionRequest: false,
+                conditionSuccess: true,
                 user: action.user
             } 
         }
@@ -57,7 +60,8 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
 
@@ -65,6 +69,7 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return{
                 ...state,
                 conditionRequest: false,
+                conditionSuccess: true,
                 user: action.user
             }
         }
@@ -73,7 +78,8 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
 
@@ -81,6 +87,7 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return{
                 ...state,
                 conditionRequest: false,
+                conditionSuccess: true,
                 user: action.user
             }
         }
@@ -89,13 +96,15 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
         case USER_UPDATE_DATA_SUCCESS: {
             return {
                 ...state,
-                conditionRequest: false
+                conditionRequest: false,
+                conditionSuccess: true,
             };
         }
 
@@ -103,13 +112,15 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
         case PASSWORD_REFRESH_SUCCESS: {
             return {
                 ...state,
-                conditionRequest: false
+                conditionRequest: false,
+                conditionSuccess: true,
             };
         }
  
@@ -117,13 +128,15 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
         case PASSWORD_UPDATE_SUCCESS: {
             return {
                 ...state,
-                conditionRequest: false
+                conditionRequest: false,
+                conditionSuccess: true,
             };
         }
 
@@ -131,13 +144,15 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
         case TOKEN_REFRESH_SUCCESS: {
             return {
                 ...state,
-                conditionRequest: false
+                conditionRequest: false,
+                conditionSuccess: true,
             };
         }
 
@@ -145,13 +160,15 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 condition: action,
-                conditionRequest: true
+                conditionRequest: true,
+                conditionSuccess: false,
             };
         }
         case USER_EXIT_SUCCESS: {
             return {
                 ...state,
                 conditionRequest: false,
+                conditionSuccess: true,
                 user : {email:"" , name:""}
             };
         }
@@ -160,7 +177,8 @@ export const burgerIngredientsReducer = (state = userDataState, action: TUserDat
             return {
                 ...state,
                 conditionRequest: false,
-                conditionFailed: true
+                conditionFailed: true,
+                conditionSuccess: false,
               };
         }
 

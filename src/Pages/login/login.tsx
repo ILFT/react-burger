@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from "./login.module.css";
+import { useAppDispatch } from "../../hooks/hooks";
+import { loginUser } from "../../services/actions-thunk";
 
 
 
 function LoginPage() {
 
-
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    
     const [valueEmail, setValueEmail] = useState('')
     const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setValueEmail(e.target.value)
@@ -19,9 +23,17 @@ function LoginPage() {
         setValuePassword(e.target.value)
     }
 
+    function login(event: React.FormEvent<HTMLFormElement>){
+        event.preventDefault();
+        dispatch(loginUser(valueEmail, valuePassword)).then(result=>{
+            if (result && result.success) {
+                navigate("/")
+            }
+        })
+    }
 
     return (
-        <form className={styles.container}>
+        <form className={styles.container} onSubmit={login}>
             <h1 className="text text_type_main-medium">   Вход  </h1>
             <EmailInput
                 onChange={onChangeEmail}

@@ -1,27 +1,114 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from "./profile.module.css";
+import { getUser, logoutUser, patchUser, tokenUser } from "../../services/actions-thunk";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getCookie } from "../../utils/utils";
 
 
 function Profile() {
 
-    const [valueName, setValueName] = useState('')
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const userData = useAppSelector(store => store.userData.user);
+
+    const [userDataChange, setUserDataChange] = useState<boolean>(false);
+
+    const [buttonClick, setbuttonClick] = useState<string>('');
+
+    const [valueName, setValueName] = useState<string>(userData.name)
     const onChangeName = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setValueName(e.target.value)
-    }
-    const [valueEmail, setValueEmail] = useState('')
-    const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueEmail(e.target.value)
+        setUserDataChange(true)
     }
 
-    const [valuePassword, setValuePassword] = React.useState('')
+    const [valueEmail, setValueEmail] = useState<string>(userData.email)
+    const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+        setValueEmail(e.target.value)
+        setUserDataChange(true)
+    }
+
+    const [valuePassword, setValuePassword] = React.useState<string>('')
     const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setValuePassword(e.target.value)
+        setUserDataChange(true)
+    }
+
+    /*useEffect(() => {
+        setValueEmail(userData.email)
+        setValueName(userData.name)
+        setValuePassword('')
+    
+      }, [userData])*/
+
+    function logOut(event: React.SyntheticEvent) {
+        event.preventDefault();
+        dispatch(logoutUser()).then(result => {
+            if (result.success) {
+                navigate("/")
+            }
+        })
+    }
+
+    function changeData(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        //(event.target as HTMLButtonElement).name
+        buttonClick === "Save" ? save() : reset()
+        setUserDataChange(false);
+    }
+
+    function save() {
+        if (getCookie('accessToken')) {
+            dispatch(patchUser(valueEmail, valuePassword, valueName)).then(result => {
+                if (result && result.success) {
+                    setValueEmail(userData.email)
+                    setValueName(userData.name)
+                    setValuePassword('')
+                }
+            })
+        } else {
+            dispatch(tokenUser()).then(result => {
+                if (result && result.success) {
+                    dispatch(patchUser(valueEmail, valuePassword, valueName)).then(result => {
+                        if (result.success) {
+                            setValueEmail(userData.email)
+                            setValueName(userData.name)
+                            setValuePassword('')
+                        }
+                    })
+                }
+            })
+        }
+    }
+
+    function reset() {
+        if (getCookie('accessToken')) {
+            dispatch(getUser()).then(result => {
+                if (result && result.success) {
+                    setValueEmail(userData.email)
+                    setValueName(userData.name)
+                    setValuePassword('')
+                }
+            })
+        } else {
+            dispatch(tokenUser()).then(result => {
+                if (result.success) {
+                    dispatch(getUser()).then(result => {
+                        if (result && result.success) {
+                            setValueEmail(userData.email)
+                            setValueName(userData.name)
+                            setValuePassword('')
+                        }
+                    })
+                }
+            })
+        }
     }
 
     return (
-        <form className={styles.container} >
+        <form className={styles.container} onSubmit={changeData}>
 
 
             <div className={styles.container_left} >
@@ -45,6 +132,7 @@ function Profile() {
                             <NavLink
                                 className={({ isActive }) => (isActive ? styles.link_active : styles.link)}
                                 to={'/'}
+                                onClick={logOut}
                             >Выход
                             </NavLink>
                         </li>
@@ -82,16 +170,17 @@ function Profile() {
                     icon={'EditIcon'}
                     value={valuePassword !== undefined ? valuePassword : ''}
                     id={"password"}
+
                 />
 
                 {
-                    (false) && (
+                    (userDataChange) && (
                         <div className={`mb-10 ${styles.buttons}  `}  >
-                            <Button name="Reset" htmlType="submit" type="secondary" size="medium" >
+                            <Button name="Reset" htmlType="submit" type="secondary" size="medium" onClick={() => setbuttonClick('Reset')}>
                                 Отменить
                             </Button>
                             <p></p>
-                            <Button name="Save" htmlType="submit" type="primary" size="medium"  >
+                            <Button name="Save" htmlType="submit" type="primary" size="medium" onClick={() => setbuttonClick('Save')}>
                                 Сохранить
                             </Button>
                         </div>)

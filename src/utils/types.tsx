@@ -30,6 +30,7 @@ export type IngredientTypeConstructor = {
 export type User = {
   email: string
   name: string
+  
 }
 
 export type RectResult = {
@@ -72,6 +73,7 @@ export interface IUserData {
   condition: string | null;
   conditionRequest: boolean;
   conditionFailed: boolean;
+  conditionSuccess: boolean;
 }
 
 export type TApplicationActions =

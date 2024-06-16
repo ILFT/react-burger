@@ -34,7 +34,9 @@ export function setCookie(name, value, props) {
     document.cookie = updatedCookie;
   } 
 
-
+  export function deleteCookie(name) {
+    document.cookie = `${name}=;Expires=${new Date(0).toUTCString()}`;
+  }
 
   export function getCookie(name) {
     const matches = document.cookie.match(
