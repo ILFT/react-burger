@@ -12,12 +12,12 @@ export const useForm = (initialValues: any) => {
     const [values, setValues] = useState(initialValues);
 
     const onChange = useCallback((event: any ) => {
-        const { name, value } = event.target;
+
         setValues({
             ...values,
-            [name]: value,
+            [event.target.name]: event.target.value,
         });
     }, [values])
 
-    return {values, onChange}
+    return [values, onChange, setValues]
 }

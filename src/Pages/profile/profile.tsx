@@ -15,22 +15,9 @@ function Profile() {
     const userData = useAppSelector(store => store.userData.user);
 
 
-    //const {values, onChange} = useForm({email: userData.email, password: "", name: userData.name})
-
-    const [valueName, setValueName] = useState(userData.name)
-    const onChangeName = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueName(e.target.value)
-        setUserDataChange(true)
-    }
-    const [valueEmail, setValueEmail] = useState(userData.email)
-    const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueEmail(e.target.value)
-        setUserDataChange(true)
-    }
-
-    const [valuePassword, setValuePassword] = useState('')
-    const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValuePassword(e.target.value)
+    const [values, onChange, setValues] = useForm({ email: userData.email, password: "", name: userData.name })
+    const onChangeInput = (event: any) => {
+        onChange(event)
         setUserDataChange(true)
     }
 
@@ -56,11 +43,9 @@ function Profile() {
     }
 
     function save() {
-        dispatch(patchUser(valueEmail, valuePassword, valueName)).then(result => {
+        dispatch(patchUser(values.email, values.password, values.name)).then(result => {
             if (result && result.success) {
-                setValueEmail(userData.email)
-                setValueName(userData.name)
-                setValuePassword('')
+                setValues({ email: userData.email, password: "", name: userData.name })
             }
         })
     }
@@ -68,9 +53,7 @@ function Profile() {
     function reset() {
         dispatch(getUser()).then(result => {
             if (result && result.success) {
-                setValueEmail(userData.email)
-                setValueName(userData.name)
-                setValuePassword('')
+                setValues({ email: userData.email, password: "", name: userData.name })
             }
         })
 
@@ -118,26 +101,26 @@ function Profile() {
                     type={"text"}
                     placeholder={"Имя"}
                     name={"name"}
-                    onChange={onChangeName}
+                    onChange={onChangeInput}
                     icon={'EditIcon'}
-                    value={valueName}
+                    value={values.name}
                     id={"name"}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                 />
                 <EmailInput
-                    onChange={onChangeEmail}
-                    value={valueEmail}
+                    onChange={onChangeInput}
+                    value={values.email}
                     name={'email'}
                     placeholder="Логин"
                     isIcon={true}
 
                 />
                 <PasswordInput
-                    onChange={onChangePassword}
-                    name={'passwordValue'}
+                    onChange={onChangeInput}
+                    name={'password'}
                     icon={'EditIcon'}
-                    value={valuePassword !== undefined ? valuePassword : ''}
+                    value={values.password !== undefined ? values.password : ''}
                     id={"password"}
 
                 />
