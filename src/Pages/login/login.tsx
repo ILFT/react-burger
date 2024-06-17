@@ -13,13 +13,15 @@ function LoginPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     
-    const [values, onChange] = useForm({email: "", password: ""})
+    //const {values, onChange} = useForm({email: "", password: ""})
 
+    const [valueEmail, setValueEmail] = useState('')
+    const [valuePassword, setValuePassword] = useState('')
 
 
     function login(event: React.FormEvent<HTMLFormElement>){
         event.preventDefault();
-        dispatch(loginUser(values.Email, values.Password)).then(result=>{
+        dispatch(loginUser(valueEmail, valuePassword)).then(result=>{
             if (result && result.success) {
                 navigate("/")
             }
@@ -30,14 +32,14 @@ function LoginPage() {
         <form className={styles.container} onSubmit={login}>
             <h1 className="text text_type_main-medium">   Вход  </h1>
             <EmailInput
-                onChange={onChange}
-                value={values.Email}
+                onChange={e => setValueEmail(e.target.value)}
+                value={valueEmail}
                 name={'email'}
                 isIcon={false}
             />
             <PasswordInput
-                onChange={onChange}
-                value={values.Password}
+                onChange={e => setValuePassword(e.target.value)}
+                value={valuePassword}
                 name={'password'}
             />
             <Button htmlType="submit" type="primary" size="large" >Войти</Button>

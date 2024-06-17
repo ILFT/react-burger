@@ -14,14 +14,14 @@ function ForgotPassword() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const [values, onChange] = useForm({email: ""})
-
+    //const {values, onChange} = useForm({email: ""})
+    const [valueEmail, setValueEmail] = useState('')
 
 
     async function resetPassword(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        dispatch(resetPasswordRequest(values.Email)).then(result=>{
+        dispatch(resetPasswordRequest(valueEmail)).then(result=>{
             if (result && result.success) {
                 navigate("/reset-password" )
 
@@ -34,8 +34,8 @@ function ForgotPassword() {
         <form className={styles.container} onSubmit={resetPassword}>
             <h1 className="text text_type_main-medium "> Восстановление пароля </h1>
             <EmailInput
-                onChange={onChange}
-                value={values.Email}
+                onChange={e => setValueEmail(e.target.value)}
+                value={valueEmail}
                 name={'email'}
                 isIcon={false}
             />

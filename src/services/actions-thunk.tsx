@@ -99,7 +99,8 @@ export function loginUser(email: string, password: string) {
         dispatch({
             type: USER_LOGIN,
         })
-
+        console.log(email)
+        console.log(password)
         const result = await request('/auth/login', {
             method: 'POST',
             headers: new Headers({ 'Content-type': 'application/json' }),

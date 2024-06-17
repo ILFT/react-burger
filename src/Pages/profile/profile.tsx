@@ -15,17 +15,29 @@ function Profile() {
     const userData = useAppSelector(store => store.userData.user);
 
 
-    const [values, onChange] = useForm({email: userData.email, password: "", name: userData.name})
+    //const {values, onChange} = useForm({email: userData.email, password: "", name: userData.name})
+
+    const [valueName, setValueName] = useState(userData.name)
+    const onChangeName = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+        setValueName(e.target.value)
+        setUserDataChange(true)
+    }
+    const [valueEmail, setValueEmail] = useState(userData.email)
+    const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+        setValueEmail(e.target.value)
+        setUserDataChange(true)
+    }
+
+    const [valuePassword, setValuePassword] = useState('')
+    const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+        setValuePassword(e.target.value)
+        setUserDataChange(true)
+    }
 
     const [userDataChange, setUserDataChange] = useState(false);
 
     const [buttonClick, setbuttonClick] = useState('');
 
-   
-    const onChangeInput = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        onChange(e)
-        setUserDataChange(true)
-    }
 
 
     function logOut(event: React.SyntheticEvent) {
@@ -44,19 +56,23 @@ function Profile() {
     }
 
     function save() {
-            dispatch(patchUser(values.Email, values.Password, values.Name)).then(result => {
-                if (result && result.success) {
-                    onChange({email: userData.email, password: "", name: userData.name})
-                }
-            })
+        dispatch(patchUser(valueEmail, valuePassword, valueName)).then(result => {
+            if (result && result.success) {
+                setValueEmail(userData.email)
+                setValueName(userData.name)
+                setValuePassword('')
+            }
+        })
     }
 
     function reset() {
-            dispatch(getUser()).then(result => {
-                if (result && result.success) {
-                    onChange({email: userData.email, password: "", name: userData.name})
-                }
-            })
+        dispatch(getUser()).then(result => {
+            if (result && result.success) {
+                setValueEmail(userData.email)
+                setValueName(userData.name)
+                setValuePassword('')
+            }
+        })
 
     }
 
@@ -102,26 +118,26 @@ function Profile() {
                     type={"text"}
                     placeholder={"Имя"}
                     name={"name"}
-                    onChange={onChangeInput}
+                    onChange={onChangeName}
                     icon={'EditIcon'}
-                    value={values.Name}
+                    value={valueName}
                     id={"name"}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                 />
                 <EmailInput
-                    onChange={onChangeInput}
-                    value={values.Email}
+                    onChange={onChangeEmail}
+                    value={valueEmail}
                     name={'email'}
                     placeholder="Логин"
                     isIcon={true}
 
                 />
                 <PasswordInput
-                    onChange={onChangeInput}
+                    onChange={onChangePassword}
                     name={'passwordValue'}
                     icon={'EditIcon'}
-                    value={values.Password !== undefined ? values.Password : ''}
+                    value={valuePassword !== undefined ? valuePassword : ''}
                     id={"password"}
 
                 />

@@ -19,5 +19,5 @@ export const useForm = (initialValues: any) => {
         });
     }, [values])
 
-    return [values, onChange]  
+    return {values, onChange}
 }
