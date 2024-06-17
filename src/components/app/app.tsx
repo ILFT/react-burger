@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './app.module.css';
-import {  useLocation, useNavigate, Route, Routes} from "react-router-dom"
+import { useLocation, useNavigate, Route, Routes } from "react-router-dom"
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
@@ -19,6 +19,8 @@ import Ingredient from '../../Pages/ingredient-details-page/ingredient-details-p
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { MODAL_CLOSE } from '../../services/actions/ingredient-order-details-action';
+import AccessProtected from '../access-protected-route/access-protected-route';
+import NotAccessProtected from '../not-access-protected-route/not-access-protected-route';
 
 
 
@@ -60,11 +62,11 @@ function App() {
 
         </Route>
 
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/register" element={<AccessProtected element={<Register />} />} />
+        <Route path="/login" element={<AccessProtected element={<LoginPage />} />} />
+        <Route path="/profile" element={<NotAccessProtected element={<Profile />} />} />
+        <Route path="/forgot-password" element={<AccessProtected element={<ForgotPassword />} />} />
+        <Route path="/reset-password" element={<AccessProtected element={<ResetPassword />} />} />
         <Route path="/ingredients/:id" element={<Ingredient />} />
 
 

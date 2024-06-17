@@ -26,7 +26,8 @@ function ForgotPassword() {
         //const res = await 
         dispatch(resetPasswordRequest(valueEmail)).then(result=>{
             if (result && result.success) {
-                navigate("/reset-password")
+                navigate("/reset-password" )
+                //{ state: { previous: location } }
             }
         })
             //.then(() => {
