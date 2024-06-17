@@ -4,7 +4,7 @@ import { Button, EmailInput, } from "@ya.praktikum/react-developer-burger-ui-com
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector, useForm } from "../../hooks/hooks";
 import { resetPasswordRequest } from "../../services/actions-thunk";
 
 
@@ -14,41 +14,19 @@ function ForgotPassword() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    //const success = useAppSelector(store => store.userData.conditionSuccess);
-
-    const [valueEmail, setValueEmail] = useState('')
+    const [values, onChange] = useForm({email: ""})
 
 
-    //const resetPassword = (event : React.FormEvent<HTMLFormElement>) =>{
-    //event.preventDefault();
+
     async function resetPassword(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        //const res = await 
-        dispatch(resetPasswordRequest(valueEmail)).then(result=>{
+
+        dispatch(resetPasswordRequest(values.Email)).then(result=>{
             if (result && result.success) {
                 navigate("/reset-password" )
-                //{ state: { previous: location } }
+
             }
         })
-            //.then(() => {
-            //    console.log(success)
-            //    console.log(valueEmail)
-            //    if (success) {
-            //        console.log(success + "1")
-            //        console.log(valueEmail + "1")
-            //        navigate("/reset-password")
-            //    }
-            //})
-            //.then(() => {
-            //    if (success) {
-            //       console.log(success + "2")
-            //        console.log(valueEmail + "2")
-            //        navigate("/reset-password")
-            //    }
-            //})
-        
-        
-        //navigate("/reset-password")
     }
 
 
@@ -56,8 +34,8 @@ function ForgotPassword() {
         <form className={styles.container} onSubmit={resetPassword}>
             <h1 className="text text_type_main-medium "> Восстановление пароля </h1>
             <EmailInput
-                onChange={e => setValueEmail(e.target.value)}
-                value={valueEmail}
+                onChange={onChange}
+                value={values.Email}
                 name={'email'}
                 isIcon={false}
             />
@@ -70,3 +48,7 @@ function ForgotPassword() {
 
 };
 export default ForgotPassword;
+
+
+
+

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {  useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "../reset-password/reset-password.module.css";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -10,13 +10,12 @@ function ResetPassword() {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    //const success = useAppSelector(store => store.userData.conditionSuccess) ;
     
-    const [valuePassword, setValuePassword] = React.useState('')
+    const [valuePassword, setValuePassword] = useState('')
     const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setValuePassword(e.target.value)
     }
-    const [valueToken, setValueToken] = React.useState('')
+    const [valueToken, setValueToken] = useState('')
     const onChangeToken = (e: { target: { value: React.SetStateAction<string>; }; }) => {
         setValueToken(e.target.value)
     }

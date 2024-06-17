@@ -12,7 +12,6 @@ function ContructorIngredient({ ingredient, index }: { ingredient: IngredientTyp
 
   const dispatch = useAppDispatch();
 
-  //const ingredients = useSelector<ReturnType<typeof store.getState>>(store => store.burgerConstructorData.ingredients);
 
 
   function removeIngredient(index: number, ingredient: IngredientType) {

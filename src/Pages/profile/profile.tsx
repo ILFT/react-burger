@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from "./profile.module.css";
 import { getUser, logoutUser, patchUser, tokenUser } from "../../services/actions-thunk";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector, useForm } from "../../hooks/hooks";
 import { getCookie } from "../../utils/utils";
 
 
@@ -14,34 +14,19 @@ function Profile() {
     const navigate = useNavigate();
     const userData = useAppSelector(store => store.userData.user);
 
-    const [userDataChange, setUserDataChange] = useState<boolean>(false);
 
-    const [buttonClick, setbuttonClick] = useState<string>('');
+    const [values, onChange] = useForm({email: userData.email, password: "", name: userData.name})
 
-    const [valueName, setValueName] = useState<string>(userData.name)
-    const onChangeName = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueName(e.target.value)
+    const [userDataChange, setUserDataChange] = useState(false);
+
+    const [buttonClick, setbuttonClick] = useState('');
+
+   
+    const onChangeInput = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+        onChange(e)
         setUserDataChange(true)
     }
 
-    const [valueEmail, setValueEmail] = useState<string>(userData.email)
-    const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueEmail(e.target.value)
-        setUserDataChange(true)
-    }
-
-    const [valuePassword, setValuePassword] = React.useState<string>('')
-    const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValuePassword(e.target.value)
-        setUserDataChange(true)
-    }
-
-    /*useEffect(() => {
-        setValueEmail(userData.email)
-        setValueName(userData.name)
-        setValuePassword('')
-    
-      }, [userData])*/
 
     function logOut(event: React.SyntheticEvent) {
         event.preventDefault();
@@ -54,57 +39,25 @@ function Profile() {
 
     function changeData(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        //(event.target as HTMLButtonElement).name
         buttonClick === "Save" ? save() : reset()
         setUserDataChange(false);
     }
 
     function save() {
-        if (getCookie('accessToken')) {
-            dispatch(patchUser(valueEmail, valuePassword, valueName)).then(result => {
+            dispatch(patchUser(values.Email, values.Password, values.Name)).then(result => {
                 if (result && result.success) {
-                    setValueEmail(userData.email)
-                    setValueName(userData.name)
-                    setValuePassword('')
+                    onChange({email: userData.email, password: "", name: userData.name})
                 }
             })
-        } else {
-            dispatch(tokenUser()).then(result => {
-                if (result && result.success) {
-                    dispatch(patchUser(valueEmail, valuePassword, valueName)).then(result => {
-                        if (result.success) {
-                            setValueEmail(userData.email)
-                            setValueName(userData.name)
-                            setValuePassword('')
-                        }
-                    })
-                }
-            })
-        }
     }
 
     function reset() {
-        if (getCookie('accessToken')) {
             dispatch(getUser()).then(result => {
                 if (result && result.success) {
-                    setValueEmail(userData.email)
-                    setValueName(userData.name)
-                    setValuePassword('')
+                    onChange({email: userData.email, password: "", name: userData.name})
                 }
             })
-        } else {
-            dispatch(tokenUser()).then(result => {
-                if (result.success) {
-                    dispatch(getUser()).then(result => {
-                        if (result && result.success) {
-                            setValueEmail(userData.email)
-                            setValueName(userData.name)
-                            setValuePassword('')
-                        }
-                    })
-                }
-            })
-        }
+
     }
 
     return (
@@ -149,26 +102,26 @@ function Profile() {
                     type={"text"}
                     placeholder={"Имя"}
                     name={"name"}
-                    onChange={onChangeName}
+                    onChange={onChangeInput}
                     icon={'EditIcon'}
-                    value={valueName}
+                    value={values.Name}
                     id={"name"}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                 />
                 <EmailInput
-                    onChange={onChangeEmail}
-                    value={valueEmail}
+                    onChange={onChangeInput}
+                    value={values.Email}
                     name={'email'}
                     placeholder="Логин"
                     isIcon={true}
 
                 />
                 <PasswordInput
-                    onChange={onChangePassword}
+                    onChange={onChangeInput}
                     name={'passwordValue'}
                     icon={'EditIcon'}
-                    value={valuePassword !== undefined ? valuePassword : ''}
+                    value={values.Password !== undefined ? values.Password : ''}
                     id={"password"}
 
                 />

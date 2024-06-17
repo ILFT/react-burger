@@ -1,5 +1,4 @@
 
-import { useNavigate } from "react-router-dom";
 import { AppDispatch, IngredientType } from "../utils/types";
 import { deleteCookie, getCookie, request, setCookie } from "../utils/utils";
 import { BURGER_INGREDIENTS_INITIAL, BURGER_INGREDIENTS_INITIAL_FAILED, BURGER_INGREDIENTS_INITIAL_SUCCESS } from "./actions/burger-ingredients-action";
@@ -80,8 +79,6 @@ export function registerUser(email: string, password: string, name: string) {
         })
 
         if (result && result.success) {
-            //localStorage.setItem('refreshToken', result.refreshToken);
-            //setCookie('accessToken', result.accessToken.split('Bearer ')[1])
             dispatch({
                 type: USER_LOGIN_SUCCESS,
                 user: result.user,
@@ -93,19 +90,7 @@ export function registerUser(email: string, password: string, name: string) {
         }
 
         return result
-        /*.then(result => {
-            localStorage.setItem('refreshToken', result.refreshToken);
-            setCookie('accessToken', result.accessToken.split('Bearer ')[1])
-            dispatch({
-                type: USER_REGISTER_SUCCESS,
-                user: result.user,
-            });
-        }).catch(() => {
-            dispatch({
-                type: ERROR_REQUEST,
-            })
 
-        })*/
     }
 }
 export function loginUser(email: string, password: string) {
@@ -142,16 +127,7 @@ export function loginUser(email: string, password: string) {
         }
 
         return result
-        /*.then(result => {
-            dispatch({
-                type: USER_LOGIN_SUCCESS,
-                user: result.user,
-            });
-        }).catch(() => {
-            dispatch({
-                type: ERROR_REQUEST,
-            })
-        })*/
+
     }
 }
 
@@ -187,15 +163,6 @@ export function logoutUser() {
         }
 
         return result
-        /*.then(() => {
-             dispatch({
-                 type: USER_EXIT_SUCCESS
-             });
-         }).catch(() => {
-             dispatch({
-                 type: ERROR_REQUEST,
-             })
-         })*/
     }
 }
 export function tokenUser() {
@@ -231,16 +198,6 @@ export function tokenUser() {
 
         return result
 
-        /*.then(result => {
-            setCookie('accessToken', result.accessToken.split('Bearer ')[0])
-            dispatch({
-                type: TOKEN_REFRESH_SUCCESS,
-            });
-        }).catch(() => {
-            dispatch({
-                type: ERROR_REQUEST,
-            })
-        })*/
     }
 }
 
@@ -251,7 +208,7 @@ export function getUser() {
             type: USER_AUTHORIZATION,
         })
 
-        const result = await request('/auth/user', {
+        const result = await requestWithRefresh('/auth/user', {
             method: 'GET',
             headers: new Headers({ 'Content-type': 'application/json', 'authorization': 'Bearer ' + getCookie('accessToken') })
         }).catch(() => {
@@ -271,16 +228,7 @@ export function getUser() {
             })
         }
         return result
-        /*.then(result => {
-            dispatch({
-                type: USER_AUTHORIZATION_SUCCESS,
-                user: result.user
-            });
-        }).catch(() => {
-            dispatch({
-                type: ERROR_REQUEST,
-            })
-        })*/
+
     }
 }
 
@@ -290,8 +238,8 @@ export function patchUser(email: string, password: string, name: string) {
         dispatch({
             type: USER_UPDATE_DATA,
         })
-        
-        const result = await request('/auth/user', {
+
+        const result = await requestWithRefresh('/auth/user', {
             method: 'PATCH',
             headers: new Headers({ 'Content-type': 'application/json', 'authorization': 'Bearer ' + getCookie('accessToken') }),
             body: JSON.stringify({
@@ -316,15 +264,7 @@ export function patchUser(email: string, password: string, name: string) {
         }
 
         return result
-        /*.then(() => {
-            dispatch({
-                type: USER_UPDATE_DATA_SUCCESS
-            });
-        }).catch(() => {
-            dispatch({
-                type: ERROR_REQUEST,
-            })
-        })*/
+
     }
 }
 
@@ -332,11 +272,11 @@ export function resetPasswordRequest(email: string) {
 
 
     return async function (dispatch: AppDispatch) {
-        //const navigate = useNavigate();
+
         dispatch({
             type: PASSWORD_REFRESH,
         })
-        //try {
+
         const result = await request('/password-reset', {
             method: 'POST',
             headers: new Headers({ 'Content-type': 'application/json' }),
@@ -360,12 +300,7 @@ export function resetPasswordRequest(email: string) {
         }
 
         return result
-        /**/
-        //} catch (error) {
-        //    dispatch({
-        //        type: ERROR_REQUEST,
-        //    })
-        //}
+
     }
 
 }
@@ -401,15 +336,23 @@ export function resetPasswordConfirm(password: string, token: string) {
         }
 
         return result
-        /*.then(() => {
-            dispatch({
-                type: PASSWORD_UPDATE_SUCCESS,
-            });
-        }).catch(() => {
-            dispatch({
-                type: ERROR_REQUEST,
-            })
-        })*/
+
     }
 }
+
+
+
+export async function requestWithRefresh(url: RequestInfo | URL, options: RequestInit | undefined) {
+
+    const result = await request(url, options).catch(async (error) => {
+        if (error.message === 'jwt expired') {
+            await tokenUser()
+            return await request(url, options)
+        } else {
+            return Promise.reject(error)
+        }
+    })
+    return result
+}
+
 

@@ -3,7 +3,7 @@ import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer
 import { Link, useNavigate } from 'react-router-dom';
 
 import styles from "./login.module.css";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useForm } from "../../hooks/hooks";
 import { loginUser } from "../../services/actions-thunk";
 
 
@@ -13,19 +13,13 @@ function LoginPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     
-    const [valueEmail, setValueEmail] = useState('')
-    const onChangeEmail = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValueEmail(e.target.value)
-    }
+    const [values, onChange] = useForm({email: "", password: ""})
 
-    const [valuePassword, setValuePassword] = React.useState('')
-    const onChangePassword = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-        setValuePassword(e.target.value)
-    }
+
 
     function login(event: React.FormEvent<HTMLFormElement>){
         event.preventDefault();
-        dispatch(loginUser(valueEmail, valuePassword)).then(result=>{
+        dispatch(loginUser(values.Email, values.Password)).then(result=>{
             if (result && result.success) {
                 navigate("/")
             }
@@ -36,14 +30,14 @@ function LoginPage() {
         <form className={styles.container} onSubmit={login}>
             <h1 className="text text_type_main-medium">   Вход  </h1>
             <EmailInput
-                onChange={onChangeEmail}
-                value={valueEmail}
+                onChange={onChange}
+                value={values.Email}
                 name={'email'}
                 isIcon={false}
             />
             <PasswordInput
-                onChange={onChangePassword}
-                value={valuePassword}
+                onChange={onChange}
+                value={values.Password}
                 name={'password'}
             />
             <Button htmlType="submit" type="primary" size="large" >Войти</Button>
