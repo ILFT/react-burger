@@ -4,16 +4,20 @@ import { useDrag } from 'react-dnd'
 import { IngredientType } from '../../utils/types'
 import { INGREDIENTDETAILS_OPEN } from '../../services/actions/ingredient-order-details-action';
 import { useAppDispatch } from '../../hooks/hooks';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function IngredientCart({ ingredient }: { ingredient: IngredientType }) {
 
-        const dispatch = useAppDispatch();
-
+        const navigate = useNavigate();
+        const dispatch = useAppDispatch()
+        const location = useLocation();
         function ingredientInfo(ingredient: IngredientType) {
+                
                 dispatch({
                         type: INGREDIENTDETAILS_OPEN,
                         ingredient: ingredient
                 })
+                navigate(`/ingredients/${ingredient._id}`,{state :{prevLocation : location}})
         }
 
         const [, dragRef] = useDrag({

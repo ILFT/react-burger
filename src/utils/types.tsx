@@ -3,6 +3,7 @@ import { TBurgerConstructorActions } from '../services/actions/burger-constructo
 import { TBurgerIngredientsActions } from '../services/actions/burger-ingredients-action'
 import { TIngredientDetailsActions } from '../services/actions/ingredient-order-details-action'
 import { store } from '../services/stores/store'
+import { TUserDataActions } from '../services/actions/user-data-action'
 
 
 export type IngredientType = {
@@ -26,6 +27,12 @@ export type IngredientTypeConstructor = {
   uuid: string
 }
 
+export type User = {
+  email: string
+  name: string
+  
+}
+
 export type RectResult = {
   bottom: number;
   height: number;
@@ -34,6 +41,7 @@ export type RectResult = {
   top: number;
   width: number;
 } | null;
+
 
 
 export interface IIngredientOrderDetails {
@@ -60,10 +68,19 @@ export interface IBurgerConstructor {
 }
 
 
+export interface IUserData {
+  user: User;
+  condition: string | null;
+  conditionRequest: boolean;
+  conditionFailed: boolean;
+  conditionSuccess: boolean;
+}
+
 export type TApplicationActions =
   TIngredientDetailsActions |
   TBurgerIngredientsActions |
-  TBurgerConstructorActions;
+  TBurgerConstructorActions |
+  TUserDataActions;
 
 
 export type RootState = ReturnType<typeof store.getState>;

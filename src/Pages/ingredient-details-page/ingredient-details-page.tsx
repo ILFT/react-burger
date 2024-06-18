@@ -1,18 +1,26 @@
+import styles from "./ingredient-details-page.module.css";
 
-import styles from "./ingredient-details.module.css";
-import { IngredientType } from '../../utils/types'
-import { useSelector } from "react-redux";
-import { store } from "../../services/stores/store";
+import { Link, useParams } from "react-router-dom";
+import { useMemo } from 'react';
+import { useAppSelector } from "../../hooks/hooks";
+import { IBurgerIngredients } from "../../utils/types";
 
-function IngredientDetails() {
-    const ingredientDetails = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData.ingredient) as IngredientType;
-    return (
-        ingredientDetails &&
+
+function Ingredient() {
+
+
+    const { id } = useParams();
+    const { rolls, fillings, sauces } = useAppSelector(store => store.burgerIngredientsData) as IBurgerIngredients;
+    const ingredientDetails = useMemo(() => {
+        return [...rolls, ...fillings, ...sauces].find((ingredient) => ingredient._id === id);
+    }, [[...rolls, ...fillings, ...sauces], id]);
+
+    if (ingredientDetails) {
+        return (
             <div className={styles.ingredient_info} >
 
                 <div className={styles.name_icon}>
                     <p className="text text_type_main-medium">Делати ингредиента</p>
-
                 </div>
                 <div className={styles.image_ingredient_div}>
                     <img src={ingredientDetails.image} className={styles.ingredient_image} alt={ingredientDetails.name} />
@@ -40,12 +48,13 @@ function IngredientDetails() {
                         <p className="text text_type_main-default text_color_inactive">{ingredientDetails.carbohydrates}</p>
                     </div>
                 </div>
-            </div> 
+            </div>)
+
+    }
+    return <Link to={"*"} />
 
 
-    );
 
-};
+}
 
-
-export default IngredientDetails;
+export default Ingredient;

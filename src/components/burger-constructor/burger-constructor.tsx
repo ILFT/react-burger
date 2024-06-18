@@ -11,13 +11,15 @@ import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_DECREASE_INGREDIENT,
 import { getOrderNumber } from '../../services/actions-thunk';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { v4 as uuid } from 'uuid';
+import { MODAL_CLOSE } from '../../services/actions/ingredient-order-details-action';
 
 
 function BurgerConstructor() {
     const dispatch: any = useAppDispatch();
 
-    const modal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
+    const isModal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
     const { ingredients, roll } = useAppSelector(store => store.burgerConstructorData) as IBurgerConstructor;
+
 
     function addIngredient(ingredient: IngredientType) {
 
@@ -45,7 +47,9 @@ function BurgerConstructor() {
     }
 
     function clearConstructor() {
+        console.log(ingredients);
         let tempArray = ingredients.slice();
+        console.log(tempArray);
         tempArray.map((ingredient, index) => {
             dispatch({
                 type: BURGER_CONSTRUCTOR_DELETE_INGREDIENT,
@@ -56,6 +60,7 @@ function BurgerConstructor() {
                 decreaseIngredient: ingredient
             })
         })
+        console.log(ingredients);
 
     }
 
@@ -68,6 +73,9 @@ function BurgerConstructor() {
         if (roll) {
             dispatch(getOrderNumber([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id]));
         }
+    }
+    function closeModal() {
+        dispatch({ type: MODAL_CLOSE })
     }
 
 
@@ -130,10 +138,10 @@ function BurgerConstructor() {
                     Оформить заказ
                 </Button>
             </div>
-            {modal.isModalOrder &&
+            {isModal.isModalOrder &&
                 <div className={styles.modal}>
                     {
-                        <Modal>
+                        <Modal closeModal={closeModal}>
                             <OrderDetails />
                         </Modal>
                     }
