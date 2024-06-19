@@ -1,10 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from "./profile.module.css";
 import { getUser, logoutUser, patchUser, tokenUser } from "../../services/actions-thunk";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks/hooks";
-import { getCookie } from "../../utils/utils";
 
 
 function Profile() {
@@ -29,14 +28,14 @@ function Profile() {
     }, [userData.email,userData.name])
 
     
-    const onChangeInput = (event: any) => {
+    const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event)
         setUserDataChange(true)
     }
 
     
 
-    function logOut(event: React.SyntheticEvent) {
+    function logOut(event: SyntheticEvent) {
         event.preventDefault();
         dispatch(logoutUser()).then(result => {
             if (result && result.success) {
@@ -45,7 +44,7 @@ function Profile() {
         })
     }
 
-    function changeData(event: React.FormEvent<HTMLFormElement>) {
+    function changeData(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         buttonClick === "Save" ? save() : reset()
         setUserDataChange(false);

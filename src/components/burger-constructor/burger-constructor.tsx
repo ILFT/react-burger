@@ -17,8 +17,8 @@ import { MODAL_CLOSE } from '../../services/actions/ingredient-order-details-act
 function BurgerConstructor() {
     const dispatch: any = useAppDispatch();
 
-    const isModal = useAppSelector(store => store.ingredientOrderDetailData) as IIngredientOrderDetails;
-    const { ingredients, roll } = useAppSelector(store => store.burgerConstructorData) as IBurgerConstructor;
+    const isModal = useAppSelector(store => store.ingredientOrderDetailData);
+    const { ingredients, roll } = useAppSelector(store => store.burgerConstructorData);
 
 
     function addIngredient(ingredient: IngredientType) {

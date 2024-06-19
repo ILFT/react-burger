@@ -1,23 +1,21 @@
-import React, { useState } from "react";
+import React, { FormEvent } from "react";
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 
 import styles from "./register.module.css";
 import { registerUser } from "../../services/actions-thunk";
-import { useAppDispatch } from "../../hooks/hooks";
+import { useAppDispatch, useForm } from "../../hooks/hooks";
 
 function Register() {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const [valueName, setValueName] = useState<string>('')
-    const [valueEmail, setValueEmail] = useState<string>('')
-    const [valuePassword, setValuePassword] = React.useState<string>('')
+    const [values, onChange] = useForm({email: "", password: "", name:""})
 
-    function register(event: React.FormEvent<HTMLFormElement>) {
+    function register(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        dispatch(registerUser(valueEmail, valuePassword, valueName)).then(result=>{
+        dispatch(registerUser(values.email, values.password, values.name)).then(result=>{
             if (result && result.success) {
                 navigate("/")
             }
@@ -31,20 +29,20 @@ function Register() {
             <p className="text text_type_main-medium mb-6">Регистрация</p>
             <Input type={'text'}
                 placeholder={'Имя пользователя'}
-                onChange={e => setValueName(e.target.value)}
-                value={valueName}
+                onChange={onChange}
+                value={values.name}
                 name={'name'}
                 errorText={'Ошибка'} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
 
             <EmailInput
-                onChange={e => setValueEmail(e.target.value)}
-                value={valueEmail}
+                onChange={onChange}
+                value={values.email}
                 name={'email'}
                 isIcon={false}
             />
             <PasswordInput
-                onChange={e => setValuePassword(e.target.value)}
-                value={valuePassword}
+                onChange={onChange}
+                value={values.password}
                 name={'password'}
             />
             <Button htmlType="submit" type="primary" size="medium" >

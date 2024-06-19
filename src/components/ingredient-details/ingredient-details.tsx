@@ -1,11 +1,10 @@
 
+import { useAppSelector } from "../../hooks/hooks";
 import styles from "./ingredient-details.module.css";
-import { IngredientType } from '../../utils/types'
-import { useSelector } from "react-redux";
-import { store } from "../../services/stores/store";
+
 
 function IngredientDetails() {
-    const ingredientDetails = useSelector<ReturnType<typeof store.getState>>(store => store.ingredientOrderDetailData.ingredient) as IngredientType;
+    const ingredientDetails = useAppSelector(store => store.ingredientOrderDetailData.ingredient);
     return (
         ingredientDetails &&
             <div className={styles.ingredient_info} >
