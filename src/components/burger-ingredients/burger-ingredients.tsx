@@ -16,7 +16,7 @@ function BurgerIngredients() {
 
 
 
-        const { rolls, fillings, sauces, tab } = useAppSelector(store => store.burgerIngredientsData) as IBurgerIngredients;
+        const { rolls, fillings, sauces, tab } = useAppSelector(store => store.burgerIngredientsData);
 
 
 

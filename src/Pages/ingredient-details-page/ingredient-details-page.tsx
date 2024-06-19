@@ -3,14 +3,13 @@ import styles from "./ingredient-details-page.module.css";
 import { Link, useParams } from "react-router-dom";
 import { useMemo } from 'react';
 import { useAppSelector } from "../../hooks/hooks";
-import { IBurgerIngredients } from "../../utils/types";
 
 
 function Ingredient() {
 
 
     const { id } = useParams();
-    const { rolls, fillings, sauces } = useAppSelector(store => store.burgerIngredientsData) as IBurgerIngredients;
+    const { rolls, fillings, sauces } = useAppSelector(store => store.burgerIngredientsData);
     const ingredientDetails = useMemo(() => {
         return [...rolls, ...fillings, ...sauces].find((ingredient) => ingredient._id === id);
     }, [[...rolls, ...fillings, ...sauces], id]);

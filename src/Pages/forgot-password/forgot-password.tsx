@@ -3,7 +3,7 @@ import { Button, EmailInput, } from "@ya.praktikum/react-developer-burger-ui-com
 
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks/hooks";
 import { resetPasswordRequest } from "../../services/actions-thunk";
 
@@ -17,7 +17,7 @@ function ForgotPassword() {
     const [values, onChange] = useForm({email: ""})
 
 
-    async function resetPassword(event: React.FormEvent<HTMLFormElement>) {
+    async function resetPassword(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         dispatch(resetPasswordRequest(values.email)).then(result=>{

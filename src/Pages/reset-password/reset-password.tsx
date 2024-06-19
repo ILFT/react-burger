@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "../reset-password/reset-password.module.css";
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -13,7 +13,7 @@ function ResetPassword() {
 
     const [values, onChange] = useForm({ password: "", token: "" })
 
-    function reset(event: React.FormEvent<HTMLFormElement>) {
+    function reset(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         dispatch(resetPasswordConfirm(values.password, values.token)).then(result => {
             if (result && result.success) {

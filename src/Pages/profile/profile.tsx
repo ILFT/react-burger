@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from "./profile.module.css";
 import { getUser, logoutUser, patchUser, tokenUser } from "../../services/actions-thunk";
 import { useAppDispatch, useAppSelector, useForm } from "../../hooks/hooks";
-import { getCookie } from "../../utils/utils";
 
 
 function Profile() {
@@ -13,30 +12,39 @@ function Profile() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const userData = useAppSelector(store => store.userData.user);
-
-
+    const [userDataChange, setUserDataChange] = useState(false);
+    const [buttonClick, setbuttonClick] = useState('');
     const [values, onChange, setValues] = useForm({ email: userData.email, password: "", name: userData.name })
-    const onChangeInput = (event: any) => {
+
+
+    useEffect(() => {
+        if (!userData.email && !userData.name) {
+            dispatch(getUser())
+        }
+        if(userData.email && userData.name){
+            setValues({ email: userData.email, password: "", name: userData.name })
+        }
+
+    }, [userData.email,userData.name])
+
+    
+    const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event)
         setUserDataChange(true)
     }
 
-    const [userDataChange, setUserDataChange] = useState(false);
+    
 
-    const [buttonClick, setbuttonClick] = useState('');
-
-
-
-    function logOut(event: React.SyntheticEvent) {
+    function logOut(event: SyntheticEvent) {
         event.preventDefault();
         dispatch(logoutUser()).then(result => {
-            if (result.success) {
+            if (result && result.success) {
                 navigate("/")
             }
         })
     }
 
-    function changeData(event: React.FormEvent<HTMLFormElement>) {
+    function changeData(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         buttonClick === "Save" ? save() : reset()
         setUserDataChange(false);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ function LoginPage() {
     const [values, onChange] = useForm({email: "", password: ""})
 
 
-    function login(event: React.FormEvent<HTMLFormElement>){
+    function login(event: FormEvent<HTMLFormElement>){
         event.preventDefault();
         dispatch(loginUser(values.email, values.password)).then(result=>{
             if (result && result.success) {
