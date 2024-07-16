@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hooks";
-import { TOrder } from "../../utils/types";
+import { IngredientType, TOrder } from "../../utils/types";
 import styles from "./feed-order.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useMemo, useState } from "react";
@@ -26,23 +26,45 @@ function FeedOrder() {
         if (!order && id) {
             getOrderByNumber(id).then(result => {
                 setOrder(result.orders[0])
-                
+
             });
         }
-        if(order){
-            setCostOrder([...fillings, ...sauces].filter(item => order.ingredients.includes(item._id)).map(item => item.price).reduce((a,b)=> { return a + b}) + 2 * rolls.filter(item => order.ingredients.includes(item._id)).map(item => item.price).reduce((a,b)=> { return a + b}))
+        if (order) {
+            setCostOrder([...fillings, ...sauces].filter(item => order.ingredients.includes(item._id)).map(item => item.price).reduce((a, b) => { return a + b }) + 2 * rolls.filter(item => order.ingredients.includes(item._id)).map(item => item.price).reduce((a, b) => { return a + b }))
         }
-        
+
     }, [order])
 
     return (
-        
+
         <div>
             <span>#{order?.number}</span>
             <span>{order?.name}</span>
             <span>{orderStatus.get(order ? order.status : "")}</span>
             <span>Состав:</span>
-            <ul></ul>
+            <ul>
+                {order?.ingredients.reduce((result: { id: string, count: number }[], item) => {
+                    let rt = result.find((element: { id: string, count: number }) => element.id === item)
+                    if (rt) {
+                        rt.count += 1;
+                    } else {
+                        result.push({ id: item, count: 1 })
+                    }
+                    return result;
+                }, []).map((item: { id: string, count: number }) => {
+                    return (
+                        <li>
+                            <div className={(styles.icon)}>
+
+                                <img src={[...rolls, ...fillings, ...sauces].find(element => element._id === item.id)?.image} alt="ингредиент бургера" className={styles.ingredientImage} />
+                                
+                            </div>
+                            <span className={` text_type_main-default mr-6 ml-4`}> {[...rolls, ...fillings, ...sauces].find(element => element._id === item.id)?.name}  </span>
+
+                        </li>
+                    )
+                })}
+            </ul>
             <div>
                 <span>{order?.createdAt + ' i-GMT+3'}</span>
                 <span>{costOrder}<CurrencyIcon type="secondary" /></span>
