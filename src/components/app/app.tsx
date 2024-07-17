@@ -71,7 +71,7 @@ function App() {
         <Route path="/feed" element={<Ingredient />} />
         <Route path="/feed/:id" element={<FeedOrder />} />
         <Route path="/profile/oreders" element={<NotAccessProtected element={<FeedOrder />} />} />
-        <Route path="/profile/oreders/:id" element={<NotAccessProtected element={<Profile />} />} />
+        <Route path="/profile/oreders/:id" element={<NotAccessProtected element={<FeedOrder />} />} />
 
         <Route path="*" element={<NotFound />} />
 
