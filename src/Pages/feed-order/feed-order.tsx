@@ -37,12 +37,12 @@ function FeedOrder() {
 
     return (
 
-        <div>
+        <div className={styles.feed}>
             <span>#{order?.number}</span>
-            <span>{order?.name}</span>
+            <span className={styles.ingredient_name}>{order?.name}</span>
             <span>{orderStatus.get(order ? order.status : "")}</span>
             <span>Состав:</span>
-            <ul>
+            <ul className={styles.list}>
                 {order?.ingredients.reduce((result: { id: string, count: number }[], item) => {
                     let rt = result.find((element: { id: string, count: number }) => element.id === item)
                     if (rt) {
@@ -53,14 +53,10 @@ function FeedOrder() {
                     return result;
                 }, []).map((item: { id: string, count: number }) => {
                     return (
-                        <li>
-                            <div className={(styles.icon)}>
-
-                                <img src={[...rolls, ...fillings, ...sauces].find(element => element._id === item.id)?.image} alt="ингредиент бургера" className={styles.ingredientImage} />
-                                
-                            </div>
+                        <li className={styles.ingredient}>
+                            <img src={[...rolls, ...fillings, ...sauces].find(element => element._id === item.id)?.image} alt="ингредиент бургера" className={styles.ingredient_image} />
                             <span className={` text_type_main-default mr-6 ml-4`}> {[...rolls, ...fillings, ...sauces].find(element => element._id === item.id)?.name}  </span>
-
+                            <span className={` text_type_main-default mr-6 ml-4`}> {item.count + " x " + [...rolls, ...fillings, ...sauces].find(element => element._id === item.id)?.price} <CurrencyIcon type="secondary" /></span>
                         </li>
                     )
                 })}
