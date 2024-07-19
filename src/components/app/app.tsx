@@ -22,6 +22,8 @@ import { MODAL_CLOSE } from '../../services/actions/ingredient-order-details-act
 import AccessProtected from '../access-protected-route/access-protected-route';
 import NotAccessProtected from '../not-access-protected-route/not-access-protected-route';
 import FeedOrder from '../../Pages/feed-order/feed-order';
+import Feed from '../../Pages/feed/feed';
+import Order from '../../Pages/user-order/user-order';
 
 
 
@@ -68,9 +70,9 @@ function App() {
         <Route path="/reset-password" element={<AccessProtected element={<ResetPassword />} />} />
         <Route path="/ingredients/:id" element={<Ingredient />} />
 
-        <Route path="/feed" element={<Ingredient />} />
+        <Route path="/feed" element={<Feed/>} />
         <Route path="/feed/:id" element={<FeedOrder />} />
-        <Route path="/profile/oreders" element={<NotAccessProtected element={<FeedOrder />} />} />
+        <Route path="/profile/oreders" element={<NotAccessProtected element={<Order />} />} />
         <Route path="/profile/oreders/:id" element={<NotAccessProtected element={<FeedOrder />} />} />
 
         <Route path="*" element={<NotFound />} />
