@@ -6,14 +6,60 @@
     overflow-y: auto;
     list-style-type: none;
     padding-left: 0px;
+    display: flex;
+    margin-left: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
+
+.split{
+
+    display: flex;
+    justify-content: space-between;
+}
+
+
 .ingredient_image {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     display: block;
     object-fit: cover;
     border-radius: 50%;
     background: #131316;
     outline: 2px solid #891bc0;
-  }
+}
+
+.ingredient_image_plus{
+
+    width: 50px;
+    height: 50px;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #131316;
+    outline: 2px solid #891bc0;
+    opacity: 0.6;
+}
+.li_size{
+    margin-top: 5px;
+    height: 70px;
+}
+
+.li_size_plus{
+    margin-top: 5px;
+    height: 70px;
+    
+}
+.feed_frame {
+    background-color: #292c2a;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 20px;
+    width: 600px;
+    border-radius: 26px;
+    margin-bottom: 40px;
+    text-decoration: none;
+    color: #fff;
+}

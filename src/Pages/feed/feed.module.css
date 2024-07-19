@@ -1,0 +1,48 @@
+.main_container {
+
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.list {
+    overflow-y: auto;
+    list-style-type: none;
+    padding-left: 0px;
+    height: 82vh;
+}
+.order_array{
+    max-width: 60%;
+   
+}
+.container {
+    display: flex;
+    flex-direction: column;
+
+}
+.section_size{
+    max-height: 40vh;
+}
+
+.container_order {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 73%;
+    min-width: 300px;
+    max-width: 500px;
+    overflow-x: auto;
+    gap: 10px;
+}
+
+.container_number {
+    display: flex;
+    gap: 20px;
+}
+
+.total_order {
+    text-shadow: 0px 0px 16px rgba(50, 50, 250, 0.3), 0px 0px 8px rgba(50, 50, 250, 0.3), 0px 4px 32px rgba(50, 50, 250, 0.6);
+}
+
+.done {
+    color: #00CCCC;
+}

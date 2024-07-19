@@ -59,10 +59,10 @@ function FeedOrder() {
     return (
         <div className={styles.feed_parent}>
         <div className={styles.feed}>
-            <span className={styles.number_order}>#{order?.number}</span>
-            <span className={`text_type_main-default mb-2  mt-5`}>{order?.name}</span>
+            <span className={`text_type_main-default ${styles.number_order}`}>#{order?.number}</span>
+            <span className={`text text_type_main-medium mb-2  mt-5`}>{order?.name}</span>
             <span className={`text_type_main-default mb-8  mt-2   ${order?.status === 'done' && styles.done}`}>{orderStatus.get(order ? order.status : "")}</span>
-            <span>Состав:</span>
+            <span className={`text text_type_main-medium`}>Состав:</span>
             <ul className={styles.list}>
                 {ingredientCount && ingredientCount.map((item: { id: string, count: number }) => {
                     return (
@@ -77,7 +77,7 @@ function FeedOrder() {
                 })}
             </ul>
             <div className={styles.date_cost}>
-                <span >{order && <FormattedDate date={new Date(order.createdAt)} />}</span>
+                <span >{order && <FormattedDate  className="text text_type_main-default text_color_inactive" date={new Date(order.createdAt)} />}</span>
                 <span className={` text_type_main-default mr-6 ml-4`}>{costOrder} <CurrencyIcon type="secondary" /></span>
             </div>
         </div>
