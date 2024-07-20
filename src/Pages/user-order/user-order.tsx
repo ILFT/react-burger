@@ -80,7 +80,7 @@ function Order() {
             </div>
             <ul className={styles.list}>
                 {
-                    orders && orders.map(item => <li key={item._id}><FeedFrame order={item} status={item.status}/></li>)
+                    orders && orders.map(item => <li key={item._id}><FeedFrame order={item} isOrder={true}/></li>)
                 }
             </ul>
 

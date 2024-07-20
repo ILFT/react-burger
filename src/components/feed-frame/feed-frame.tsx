@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 
-function FeedFrame({ order, status }: { order: TOrder, status?: string }) {
+function FeedFrame({ order, isOrder }: { order: TOrder, isOrder?: boolean }) {
     const location = useLocation();
 
     const { rolls, fillings, sauces } = useAppSelector(store => store.burgerIngredientsData);
@@ -49,13 +49,13 @@ function FeedFrame({ order, status }: { order: TOrder, status?: string }) {
     }, [ingredientCount])
 
     return (
-        <Link to={status ? `/profile/orders/${order.number}` : `/feed/${order.number}`} state={{ prevLocation: location }} className={styles.feed_frame}>
+        <Link to={isOrder ? `/profile/orders/${order.number}` : `/feed/${order.number}`} state={{ prevLocation: location }} className={styles.feed_frame}>
             <div className={styles.split}>
                 <span className={`text_type_main-default ml-5 mt-2`}>#{order.number}</span>
                 <FormattedDate className={`text text_type_main-default text_color_inactive mr-5 mt-2`} date={new Date(order.createdAt)} />
             </div>
             <span className={`text text_type_main-medium ml-5 `}>{order.name}</span>
-            {status && <span className={`text_type_main-default mb-8  mt-2   ${status === 'done' && styles.done}`}>{orderStatus.get(status)}</span>}
+            {isOrder && <span className={`text_type_main-default mb-8  mt-2   ${order.status === 'done' && styles.done}`}>{orderStatus.get(order.status)}</span>}
             <div className={styles.split}>
                 <ul className={styles.list}>
                     {ingredientWithoutDuplicate.map((item, index) => {

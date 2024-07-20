@@ -27,7 +27,7 @@ function FeedOrder() {
             getOrderByNumber(id).then(result => {
                 setOrder(result.orders[0])
 
-            });
+            }).catch(console.error);
         }
     }, [])
 
