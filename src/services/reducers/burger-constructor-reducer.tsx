@@ -2,6 +2,7 @@
 import {
     BURGER_CONSTRUCTOR_ADD_INGREDIENT,
     BURGER_CONSTRUCTOR_CHANGE_ROLL,
+    BURGER_CONSTRUCTOR_CLEAR,
     BURGER_CONSTRUCTOR_DELETE_INGREDIENT,
     BURGER_CONSTRUCTOR_MOVE_INGEDIENT,
     TBurgerConstructorActions,
@@ -46,6 +47,13 @@ export const burgerConstructorReducer = (state = burgerConstructorInitialState, 
             return {
                 ...state,
                 ingredients: tempIngredients
+            }
+        }
+        case BURGER_CONSTRUCTOR_CLEAR: {
+            return {
+                ...state,
+                ingredients: [],
+                roll: undefined
             }
         }
         default:

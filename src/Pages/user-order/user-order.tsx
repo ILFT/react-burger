@@ -15,9 +15,9 @@ function Order() {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const wsUrl = `${WS_ORDERS_ALL}?token=${getCookie('accessToken')}`;
+    const wsUrl = `${WS_ORDERS}?token=${getCookie('accessToken')}`;
 
-    const { orders }: { orders: TOrder[], total: number, totalToday: number } = useAppSelector(store => store.webSocket);
+    const { orders } = useAppSelector(store => store.webSocket);
 
 
     useEffect(() => {
@@ -50,7 +50,7 @@ function Order() {
                     <ul className={`text text_type_main-medium text_color_inactive ${styles.ul_none_dot}`} >
                         <li className={`mb-10 `}>
                             <NavLink
-                                className={({ isActive }) => (isActive ? styles.link_active : styles.link)}
+                                className={styles.link}
                                 to={'/profile'}
                             >Профиль
                             </NavLink>

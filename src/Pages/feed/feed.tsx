@@ -12,7 +12,7 @@ function Feed() {
     const dispatch = useAppDispatch();
     const wsUrl = `${WS_ORDERS_ALL}`;
 
-    const { orders, total, totalToday }: { orders: TOrder[], total: number, totalToday: number } = useAppSelector(store => store.webSocket);
+    const { orders, total, totalToday } = useAppSelector(store => store.webSocket);
     const [doneOrders, setDoneOrders] = useState(orders.filter(item => item.status === 'done'))
     const [createOrders, setCreateOrders] = useState(orders.filter(item => item.status === 'created'))
 
@@ -49,14 +49,13 @@ function Feed() {
                     <section className={styles.section_size}>
                         <span className="text text_type_main-medium">Готовы:</span>
                         <div className={styles.container_order}>
-                            {doneOrders.map(item => <span className={`text_type_digits-default ${styles.done}`}>{item.number}</span>)}
-
+                            {doneOrders.map(item => <span className={`text_type_digits-default ${styles.done}`} key={item._id}>{item.number}</span>)}
                         </div>
                     </section>
                     <section className={styles.section_size}>
                         <span className="text text_type_main-medium">В работе:</span>
                         <div className={styles.container_order}>
-                            {createOrders.map(item => <span className={`text_type_digits-default `}>{item.number}</span>)}
+                            {createOrders.map(item => <span className={`text_type_digits-default `} key={item._id}>{item.number}</span>)}
                         </div>
                     </section>
                 </div>

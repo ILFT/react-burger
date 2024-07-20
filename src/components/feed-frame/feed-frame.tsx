@@ -60,12 +60,12 @@ function FeedFrame({ order, status }: { order: TOrder, status?: string }) {
                 <ul className={styles.list}>
                     {ingredientWithoutDuplicate.map((item, index) => {
                         if (index < 5) {
-                            return <li className={styles.li_size}><img src={item?.image} alt="ингредиент бургера" className={styles.ingredient_image} /></li>
+                            return <li className={styles.li_size} key ={item?._id}><img src={item?.image} alt="ингредиент бургера" className={styles.ingredient_image} /></li>
                         } else {
                             return
                         }
                     })}
-                    {(ingredientWithoutDuplicate.length > 5 ) && <li className={styles.li_size_plus}><img src={ingredientWithoutDuplicate[5]?.image} alt="ингредиент бургера" className={styles.ingredient_image_plus}/><span className={styles.text_up}>+ {ingredientWithoutDuplicate.length - 5}</span ></li> }
+                    {(ingredientWithoutDuplicate.length > 5 ) && <li className={styles.li_size_plus}  key ={ingredientWithoutDuplicate[5]?._id}><img src={ingredientWithoutDuplicate[5]?.image} alt="ингредиент бургера" className={styles.ingredient_image_plus}/><span className={styles.text_up}>+ {ingredientWithoutDuplicate.length - 5}</span ></li> }
                 </ul>
                 <span className={` text_type_main-default mt-5 mr-6 ml-4 `}>{costOrder} <CurrencyIcon type="primary" /></span>
             </div>

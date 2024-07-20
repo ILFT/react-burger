@@ -10,7 +10,7 @@ import { getOrderByNumber } from "../../utils/utils";
 function FeedOrder() {
     const { rolls, fillings, sauces } = useAppSelector(store => store.burgerIngredientsData);
     const { id } = useParams();
-    const { orders }: { orders: TOrder[] } = useAppSelector(store => store.webSocket);
+    const { orders }= useAppSelector(store => store.webSocket);
     const [order, setOrder] = useState(orders.find(element => element._id === id));
     const [costOrder, setCostOrder] = useState(0);
     const [ingredientCount, setIngredientCount] = useState<{ id: string; count: number; }[]>();

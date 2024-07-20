@@ -32,13 +32,13 @@ export function initIngredients() {
 
 export function getOrderNumber(ingredientsId: string[]) {
 
-    return function (dispatch: AppDispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: ORDERDETAILS_OPEN,
         })
-        request('/orders', {
+        requestWithRefresh('/orders', {
             method: 'POST',
-            headers: new Headers({ 'content-type': 'application/json' }),
+            headers: new Headers({ 'content-type': 'application/json', 'authorization': 'Bearer ' + getCookie('accessToken') }),
             body: JSON.stringify({
                 ingredients: ingredientsId
             })
