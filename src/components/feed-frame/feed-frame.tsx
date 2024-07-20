@@ -49,7 +49,7 @@ function FeedFrame({ order, status }: { order: TOrder, status?: string }) {
     }, [ingredientCount])
 
     return (
-        <Link to={status ? `/profile/order/${order.number}` : `/feed/${order.number}`} state={{ prevLocation: location }} className={styles.feed_frame}>
+        <Link to={status ? `/profile/orders/${order.number}` : `/feed/${order.number}`} state={{ prevLocation: location }} className={styles.feed_frame}>
             <div className={styles.split}>
                 <span className={`text_type_main-default ml-5 mt-2`}>#{order.number}</span>
                 <FormattedDate className={`text text_type_main-default text_color_inactive mr-5 mt-2`} date={new Date(order.createdAt)} />
@@ -65,7 +65,7 @@ function FeedFrame({ order, status }: { order: TOrder, status?: string }) {
                             return
                         }
                     })}
-                    {(ingredientWithoutDuplicate.length > 5 ) && <li className={styles.li_size_plus}><img src={ingredientWithoutDuplicate[5]?.image} alt="ингредиент бургера" className={styles.ingredient_image_plus}/>+ {ingredientWithoutDuplicate.length - 5}</li> }
+                    {(ingredientWithoutDuplicate.length > 5 ) && <li className={styles.li_size_plus}><img src={ingredientWithoutDuplicate[5]?.image} alt="ингредиент бургера" className={styles.ingredient_image_plus}/><span className={styles.text_up}>+ {ingredientWithoutDuplicate.length - 5}</span ></li> }
                 </ul>
                 <span className={` text_type_main-default mt-5 mr-6 ml-4 `}>{costOrder} <CurrencyIcon type="primary" /></span>
             </div>

@@ -72,8 +72,8 @@ function App() {
 
         <Route path="/feed" element={<Feed/>} />
         <Route path="/feed/:id" element={<FeedOrder />} />
-        <Route path="/profile/oreders" element={<NotAccessProtected element={<Order />} />} />
-        <Route path="/profile/oreders/:id" element={<NotAccessProtected element={<FeedOrder />} />} />
+        <Route path="/profile/orders" element={<NotAccessProtected element={<Order />} />} />
+        <Route path="/profile/orders/:id" element={<NotAccessProtected element={<FeedOrder />} />} />
 
         <Route path="*" element={<NotFound />} />
 
@@ -97,7 +97,7 @@ function App() {
       }
       {prevLocation &&
         <Routes>
-          <Route path="/profile/oreders/:id" element={<NotAccessProtected element={
+          <Route path="/profile/orders/:id" element={<NotAccessProtected element={
             <Modal closeModal={closeModal} >
               <FeedOrder />
             </Modal>}/>} />

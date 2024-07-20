@@ -13,7 +13,7 @@
 }
 
 
-.split{
+.split {
 
     display: flex;
     justify-content: space-between;
@@ -30,7 +30,7 @@
     outline: 2px solid #891bc0;
 }
 
-.ingredient_image_plus{
+.ingredient_image_plus {
 
     width: 50px;
     height: 50px;
@@ -40,17 +40,22 @@
     background: #131316;
     outline: 2px solid #891bc0;
     opacity: 0.6;
+
 }
-.li_size{
+
+.li_size {
     margin-top: 5px;
     height: 70px;
 }
 
-.li_size_plus{
+.li_size_plus {
     margin-top: 5px;
     height: 70px;
-    
+    display: inline-block;
+    position: relative;
+    text-align: center;
 }
+
 .feed_frame {
     background-color: #292c2a;
     display: flex;
@@ -62,4 +67,10 @@
     margin-bottom: 40px;
     text-decoration: none;
     color: #fff;
+}
+
+.text_up {
+    position: absolute;
+    top: 12px;
+    left: 8px;
 }
