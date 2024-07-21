@@ -8,6 +8,7 @@ import {
   BURGER_INGREDIENTS_INITIAL_SUCCESS,
   BURGER_INGREDIENTS_INITIAL_FAILED,
   TBurgerIngredientsActions,
+  BURGER_INGREDIENTS_CLEAR,
 } from '../actions/burger-ingredients-action';
 
 
@@ -105,6 +106,15 @@ export const burgerIngredientsReducer = (state = burgerIngredientsInitialState, 
           })
         }
       }
+    }
+    case BURGER_INGREDIENTS_CLEAR: {
+      return {
+        ...state,
+        rolls: state.rolls.map(roll => { return { ...roll, count: 0 } }),
+        fillings: state.fillings.map(filling => { return { ...filling, count: 0 } }),
+        sauces: state.sauces.map(sauce => { return { ...sauce, count: 0 } }),
+        ingredientsRequest: false
+      };
     }
     default: {
       return state;

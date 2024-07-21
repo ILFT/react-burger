@@ -6,17 +6,18 @@ import OrderDetails from '../order-details/order-details';
 import { useDrop } from 'react-dnd'
 import { IBurgerConstructor, IIngredientOrderDetails, IngredientType } from '../../utils/types'
 import ContructorIngredient from '../constructor-ingredient/constructor-ingredient';
-import { BURGER_CONSTRUCTOR_ADD_INGREDIENT, BURGER_CONSTRUCTOR_CHANGE_ROLL, BURGER_CONSTRUCTOR_DELETE_INGREDIENT } from '../../services/actions/burger-constructor-action';
-import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_DECREASE_INGREDIENT, BURGER_INGREDIENTS_INCREASE_INGREDIENT } from '../../services/actions/burger-ingredients-action';
+import { BURGER_CONSTRUCTOR_ADD_INGREDIENT, BURGER_CONSTRUCTOR_CHANGE_ROLL, BURGER_CONSTRUCTOR_CLEAR, BURGER_CONSTRUCTOR_DELETE_INGREDIENT } from '../../services/actions/burger-constructor-action';
+import { BURGER_INGREDIENTS_CHANGE_ROLL, BURGER_INGREDIENTS_CLEAR, BURGER_INGREDIENTS_DECREASE_INGREDIENT, BURGER_INGREDIENTS_INCREASE_INGREDIENT } from '../../services/actions/burger-ingredients-action';
 import { getOrderNumber } from '../../services/actions-thunk';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { v4 as uuid } from 'uuid';
 import { MODAL_CLOSE } from '../../services/actions/ingredient-order-details-action';
+import { useNavigate } from 'react-router-dom';
 
 
 function BurgerConstructor() {
-    const dispatch: any = useAppDispatch();
-
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const isModal = useAppSelector(store => store.ingredientOrderDetailData);
     const { ingredients, roll } = useAppSelector(store => store.burgerConstructorData);
 
@@ -47,21 +48,13 @@ function BurgerConstructor() {
     }
 
     function clearConstructor() {
-        console.log(ingredients);
-        let tempArray = ingredients.slice();
-        console.log(tempArray);
-        tempArray.map((ingredient, index) => {
-            dispatch({
-                type: BURGER_CONSTRUCTOR_DELETE_INGREDIENT,
-                index: index
-            })
-            dispatch({
-                type: BURGER_INGREDIENTS_DECREASE_INGREDIENT,
-                decreaseIngredient: ingredient
-            })
+        dispatch({
+            type: BURGER_CONSTRUCTOR_CLEAR,
         })
-        console.log(ingredients);
-
+        dispatch({
+            type: BURGER_INGREDIENTS_CLEAR,
+        })
+    
     }
 
     const [, dropRef] = useDrop({
@@ -70,9 +63,14 @@ function BurgerConstructor() {
     })
 
     function createOrder() {
-        if (roll) {
-            dispatch(getOrderNumber([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id]));
+        if(localStorage.getItem('refreshToken')){
+            if (roll) {
+                dispatch(getOrderNumber([roll._id, ...ingredients.map(res => res.ingredient._id), roll._id])).then(()=>clearConstructor());
+            }
+        }else{
+            navigate("/login")
         }
+        
     }
     function closeModal() {
         dispatch({ type: MODAL_CLOSE })

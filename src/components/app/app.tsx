@@ -21,6 +21,9 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { MODAL_CLOSE } from '../../services/actions/ingredient-order-details-action';
 import AccessProtected from '../access-protected-route/access-protected-route';
 import NotAccessProtected from '../not-access-protected-route/not-access-protected-route';
+import FeedOrder from '../../Pages/feed-order/feed-order';
+import Feed from '../../Pages/feed/feed';
+import Order from '../../Pages/user-order/user-order';
 
 
 
@@ -32,7 +35,6 @@ function App() {
   const location = useLocation();
   const prevLocation = location.state && location.state.prevLocation
   const [isLoad, setIsLoad] = useState<boolean>(false);
-
 
   useEffect(() => {
     if (!isLoad) {
@@ -50,7 +52,7 @@ function App() {
   return (
     <>
       <AppHeader />
-      <Routes >
+      <Routes location={prevLocation }>
         <Route path="/" element={isLoad && (
           <DndProvider backend={HTML5Backend}>
             <main className={styles.container}>
@@ -68,6 +70,10 @@ function App() {
         <Route path="/reset-password" element={<AccessProtected element={<ResetPassword />} />} />
         <Route path="/ingredients/:id" element={<Ingredient />} />
 
+        <Route path="/feed" element={<Feed/>} />
+        <Route path="/feed/:id" element={<FeedOrder />} />
+        <Route path="/profile/orders" element={<NotAccessProtected element={<Order />} />} />
+        <Route path="/profile/orders/:id" element={<NotAccessProtected element={<FeedOrder />} />} />
 
         <Route path="*" element={<NotFound />} />
 
@@ -81,6 +87,23 @@ function App() {
             </Modal>} />
         </Routes>
       }
+      {prevLocation &&
+        <Routes>
+          <Route path="/feed/:id" element={
+            <Modal closeModal={closeModal} >
+              <FeedOrder />
+            </Modal>} />
+        </Routes>
+      }
+      {prevLocation &&
+        <Routes>
+          <Route path="/profile/orders/:id" element={<NotAccessProtected element={
+            <Modal closeModal={closeModal} >
+              <FeedOrder />
+            </Modal>}/>} />
+        </Routes>
+      }
+      
 
 
     </>

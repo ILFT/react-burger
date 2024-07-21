@@ -1,5 +1,9 @@
 
+import { resourceLimits } from "worker_threads";
+import { useAppSelector } from "../hooks/hooks";
 import { BASE_URL } from "./constants";
+import { IngredientType, IngredientTypeConstructor, TOrder } from "./types";
+import { error } from "console";
 
 
 export function checkResponse(response: Response) {
@@ -44,4 +48,12 @@ export function getCookie(name: string) {
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
-} 
+}
+
+export  function getOrderByNumber(number: string) {
+
+  return  request('/orders/' + number, {
+    method: 'GET'
+  })
+  
+}

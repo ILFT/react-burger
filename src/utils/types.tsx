@@ -4,6 +4,7 @@ import { TBurgerIngredientsActions } from '../services/actions/burger-ingredient
 import { TIngredientDetailsActions } from '../services/actions/ingredient-order-details-action'
 import { store } from '../services/stores/store'
 import { TUserDataActions } from '../services/actions/user-data-action'
+import { TWSOrdersActions } from '../services/actions/websocket-action'
 
 
 export type IngredientType = {
@@ -30,7 +31,15 @@ export type IngredientTypeConstructor = {
 export type User = {
   email: string
   name: string
-  
+
+}
+export type TWSActions = {
+  wsInit: string,
+  onOpen: string,
+  onClose: string,
+  onError: string,
+  onMessage: string,
+  wsSendOrder: string,
 }
 
 export type RectResult = {
@@ -42,7 +51,22 @@ export type RectResult = {
   width: number;
 } | null;
 
+export type TOrder = {
+  _id: string,
+  ingredients: string[],
+  status: string,
+  name: string,
+  createdAt: string,
+  updatedAt: string,
+  number: number,
 
+};
+
+export type TOrdersResponse = {
+  orders: TOrder[],
+  total: number;
+  totalToday: number;
+};
 
 export interface IIngredientOrderDetails {
   ingredient: IngredientType | null
@@ -62,6 +86,13 @@ export interface IBurgerIngredients {
   ingredientsFailed: boolean,
 }
 
+
+export interface TWebSocketState {
+  wsConnected: boolean,
+  orders: TOrder[],
+  total: number,
+  totalToday: number,
+};
 export interface IBurgerConstructor {
   ingredients: IngredientTypeConstructor[];
   roll: IngredientType | undefined;
@@ -80,7 +111,8 @@ export type TApplicationActions =
   TIngredientDetailsActions |
   TBurgerIngredientsActions |
   TBurgerConstructorActions |
-  TUserDataActions;
+  TUserDataActions | 
+  TWSOrdersActions;
 
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -18,8 +18,8 @@ function AppHeader() {
                         </NavLink>
                     </li>
                     <li className={styles.container_menu_element}>
-                        <NavLink to='/list' className={({ isActive }) => (isActive ? styles.link_active : styles.link)}>
-                            <ListIcon type={location.pathname === '/list' ? "primary" : "secondary"} />
+                        <NavLink to='/feed' className={({ isActive }) => (isActive ? styles.link_active : styles.link)}>
+                            <ListIcon type={location.pathname === '/feed' ? "primary" : "secondary"} />
                             <p className={styles.icon_text}>Лента заказов</p>
                         </NavLink>
                     </li>
