@@ -10,7 +10,7 @@ import {
 
 
 
-const initialState: TWebSocketState = {
+export const initialState: TWebSocketState = {
     wsConnected: false,
     orders: [],
     total: 0,

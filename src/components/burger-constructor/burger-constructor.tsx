@@ -95,7 +95,7 @@ function BurgerConstructor() {
 
     return (
 
-        <section className={styles.constructor_burger} ref={dropRef}>
+        <section className={styles.constructor_burger} ref={dropRef} data-test="constructor">
             <div className={styles.roll}>
                 {roll &&
                     <ConstructorElement

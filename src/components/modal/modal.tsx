@@ -27,7 +27,7 @@ function Modal({ children, closeModal }: { children: ReactNode, closeModal: Func
     return ReactDOM.createPortal(
         <ModalOverlay closeModal={closeModal}>
             <div className={styles.modal_logic} onClick={(e) => e.stopPropagation()}>
-                <div className={styles.name_icon}>
+                <div className={styles.name_icon} data-test="close-icon">
                     <CloseIcon type="primary" onClick={() => closeModal()} />
                 </div>
                 {children}

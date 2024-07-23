@@ -29,7 +29,7 @@ import {
 } from '../actions/user-data-action';
 
 
-const userDataState: IUserData = {
+export const userDataState: IUserData = {
     condition: null,
     conditionRequest: false,
     conditionFailed: false,

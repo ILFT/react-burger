@@ -12,7 +12,7 @@ import {
 
 
 
-const ingredientDetailsInitialState: IIngredientOrderDetails =
+export const ingredientDetailsInitialState: IIngredientOrderDetails =
 {
     ingredient: null,
     id: null,
@@ -57,6 +57,7 @@ export const ingredientOrderDetailsReducer = (state = ingredientDetailsInitialSt
         }
         case MODAL_CLOSE: {
             return {
+                ...state,
                 ingredient: null,
                 id: null,
                 isModalIngredient: false,

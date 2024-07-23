@@ -33,11 +33,13 @@ function LoginPage() {
                 value={values.email}
                 name={'email'}
                 isIcon={false}
+                data-test='email'
             />
             <PasswordInput
                 onChange={onChange}
                 value={values.password}
                 name={'password'}
+                data-test='password'
             />
             <Button htmlType="submit" type="primary" size="large" >Войти</Button>
             <p className="text text_type_main-default text_color_inactive">Вы — новый пользователь?
