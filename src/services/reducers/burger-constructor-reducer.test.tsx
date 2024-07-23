@@ -7,17 +7,13 @@ import {
     TBurgerConstructorActions
 } from '../actions/burger-constructor-action';
 
-import { burgerConstructorReducer } from './burger-constructor-reducer';
+import { burgerConstructorInitialState, burgerConstructorReducer } from './burger-constructor-reducer';
 
 import { IBurgerConstructor } from '../../utils/types';
 import { mockIngredient, mockIngredientConstructor, mockIngredientConstructorFirst, mockIngredientConstructorSecond, mockRoll } from '../../data/test-data';
 
 
-const burgerConstructorInitialState: IBurgerConstructor = {
 
-    ingredients: [],
-    roll: undefined,
-}
 
 
 

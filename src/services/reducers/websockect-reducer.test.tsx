@@ -9,15 +9,9 @@ import {
     TWSOrdersActions
 } from '../actions/websocket-action';
 
-import { webSocketReducer } from './websockect-reducer';
+import { initialState, webSocketReducer } from './websockect-reducer';
 
 
-const initialState: TWebSocketState = {
-    wsConnected: false,
-    orders: [],
-    total: 0,
-    totalToday: 0
-};
 
 
 

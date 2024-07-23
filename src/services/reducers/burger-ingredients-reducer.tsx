@@ -12,7 +12,7 @@ import {
 } from '../actions/burger-ingredients-action';
 
 
-const burgerIngredientsInitialState: IBurgerIngredients = {
+export const burgerIngredientsInitialState: IBurgerIngredients = {
   rolls: [],
   fillings: [],
   sauces: [],

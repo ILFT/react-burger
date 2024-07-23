@@ -35,3 +35,27 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('start', () => {
+    cy.visit('');
+})
+
+Cypress.Commands.add('startCheck', () => {
+    cy.visit('');
+    cy.contains('Соберите бургер');
+})
+
+Cypress.Commands.add('dragDrop', (label) => {
+    cy.get('div').contains(label).trigger('dragstart');
+    cy.get('[data-test="constructor"]')
+        .trigger('drop');
+})
+Cypress.Commands.add('closeModal', () => {
+    cy.get('[data-test="close-icon"]')
+    .find('svg')
+    .click();
+})
+
+Cypress.Commands.add('buttonClick', () => {
+    cy.get('Button').click();
+})

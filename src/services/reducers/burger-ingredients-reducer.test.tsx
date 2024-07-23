@@ -10,21 +10,12 @@ import {
     TBurgerIngredientsActions,
 } from '../actions/burger-ingredients-action';
 
-import { burgerConstructorReducer } from './burger-constructor-reducer';
-
 import { IBurgerIngredients } from '../../utils/types';
-import { burgerIngredientsReducer } from './burger-ingredients-reducer';
+import { burgerIngredientsInitialState, burgerIngredientsReducer } from './burger-ingredients-reducer';
 import { mockFill, mockIngredient, mockRoll, mockRollFirst, mockRollSecond, mockSuace } from '../../data/test-data';
 
 
-const burgerIngredientsInitialState: IBurgerIngredients = {
-    rolls: [],
-    fillings: [],
-    sauces: [],
-    tab: 'rolls',
-    ingredientsRequest: false,
-    ingredientsFailed: false,
-}
+
 
 
 

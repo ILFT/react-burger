@@ -30,19 +30,11 @@ import {
     USER_AUTHORIZATION_SUCCESS
 } from '../actions/user-data-action';
 
-import { userReducer } from './user-reducer'
+import { userDataState, userReducer } from './user-reducer'
 
 
 
 
-
-const userDataState: IUserData = {
-    condition: null,
-    conditionRequest: false,
-    conditionFailed: false,
-    conditionSuccess: false,
-    user: { email: "", name: "" }
-}
 
 
 

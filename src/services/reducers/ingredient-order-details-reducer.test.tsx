@@ -9,21 +9,12 @@ import {
     ORDERDETAILS_OPEN_FAILED,
 } from '../actions/ingredient-order-details-action';
 
-import { ingredientOrderDetailsReducer } from './ingredient-order-details-reducer'
+import { ingredientDetailsInitialState, ingredientOrderDetailsReducer } from './ingredient-order-details-reducer'
 
 
 
 
 
-const ingredientDetailsInitialState: IIngredientOrderDetails =
-{
-    ingredient: null,
-    id: null,
-    isModalIngredient: false,
-    isModalOrder: false,
-    orderDetailsRequest: false,
-    orderDetailsFailed: false
-}
 
 
 

@@ -12,7 +12,7 @@ import {
 
 
 
-const ingredientDetailsInitialState: IIngredientOrderDetails =
+export const ingredientDetailsInitialState: IIngredientOrderDetails =
 {
     ingredient: null,
     id: null,

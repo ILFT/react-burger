@@ -13,7 +13,7 @@ import { IBurgerConstructor } from '../../utils/types';
 
 
 
-const burgerConstructorInitialState: IBurgerConstructor = {
+export const burgerConstructorInitialState: IBurgerConstructor = {
     ingredients: [],
     roll: undefined
 }

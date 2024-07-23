@@ -1,39 +1,32 @@
+
 describe('Создание заказа', () => {
     before(() => {
-        cy.visit('http://localhost:3000');
-        cy.contains('Соберите бургер');
+        cy.startCheck()
     });
 
     it('Сборка и оформлениезаказа', () => {
-        cy.get('div').contains('Краторная булка N-200i').trigger('dragstart');
-        cy.get('[data-test="constructor"]')
-            .trigger('drop');
-        cy.get('div').contains('Биокотлета из марсианской Магнолии').trigger('dragstart');
-        cy.get('[data-test="constructor"]')
-            .trigger('drop');
-        cy.get('div').contains('Соус традиционный галактический').trigger('dragstart');
-        cy.get('[data-test="constructor"]')
-            .trigger('drop');
+        cy.dragDrop('Краторная булка N-200i')
+        cy.dragDrop('Биокотлета из марсианской Магнолии')
+        cy.dragDrop('Соус традиционный галактический')
+
 
         // Переход на страницу авторизации
-        cy.get('Button').click();
+        cy.buttonClick();
         cy.location().should((loc) => expect(loc.pathname).to.eq('/login'));
 
         // Заполнение данных на странице авторизации
         cy.get('[data-test="email"]').type('ftmtilkh@gmail.com');
         cy.get('[data-test="password"]').type('12345678');
-        cy.get('Button').click();
+        cy.buttonClick();
         cy.wait(500);
         cy.location().should((loc) => expect(loc.pathname).to.eq('/'));
 
 
         //Оформлени езаказа
-        cy.get('Button').click();
+        cy.buttonClick();
 
         cy.wait(20000);
-        cy.get('[data-test="close-icon"]')
-            .find('svg')
-            .click();
+        cy.closeModal()
 
     });
 
