@@ -1,4 +1,4 @@
-https://ilft.github.io/react-burger/
+https://ilft.github.io
 
 
 # Getting Started with Create React App
