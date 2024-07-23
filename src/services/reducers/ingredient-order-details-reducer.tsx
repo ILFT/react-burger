@@ -57,6 +57,7 @@ export const ingredientOrderDetailsReducer = (state = ingredientDetailsInitialSt
         }
         case MODAL_CLOSE: {
             return {
+                ...state,
                 ingredient: null,
                 id: null,
                 isModalIngredient: false,

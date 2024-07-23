@@ -1,6 +1,5 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 import { TWSActions } from '../../utils/types';
-import { TWSOrdersActions } from "../actions/websocket-action";
 
 export const webSocketMiddleware = (wsActions: TWSActions): Middleware => {
     return ((store: MiddlewareAPI) => {
