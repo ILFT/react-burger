@@ -33,7 +33,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "cypress": "npx cypress open",
-    "cypress:open": "./node_modules/.bin/cypress open"
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "e2e:electron": "cypress run --browser electron"
   },
   "eslintConfig": {
     "extends": [
